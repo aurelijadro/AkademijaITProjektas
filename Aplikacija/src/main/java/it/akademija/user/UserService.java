@@ -1,6 +1,7 @@
 package it.akademija.user;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -23,7 +24,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	UserRepository userRepository;
-	
+
 	@Autowired
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
@@ -34,9 +35,14 @@ public class UserService implements UserDetailsService {
 		return userRepository.findAll();
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional
 	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
+		return userRepository.findUserByUsername(username);
+	}
+	
+	@Transactional
+	public Optional<User> findById(Long id) {
+		return userRepository.findById(id);
 	}
 
 	@Transactional
@@ -44,6 +50,16 @@ public class UserService implements UserDetailsService {
 		User user = new User(null, newUser.getName(), newUser.getSurname(), newUser.getUsername(),
 				newUser.getPassword());
 		return userRepository.save(user);
+	}
+
+	@Transactional
+	public User updateUser(String username, NewUser newUser) {
+		User existingUser = findByUsername(username);
+		existingUser.setName(newUser.getName());
+		existingUser.setSurname(newUser.getSurname());
+		existingUser.setUsername(newUser.getUsername());
+		existingUser.setPassword(newUser.getPassword());
+		return existingUser;
 	}
 
 }
