@@ -5,11 +5,14 @@ import { useMyData } from "../context";
 export default function Login() {
   axios.defaults.withCredentials = true;
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   const handleSubmit = event => {
     event.preventDefault();
     let userData = new URLSearchParams();
-    userData.append("username", this.state.email);
-    userData.append("password", this.state.pass);
+    userData.append("username", username);
+    userData.append("password", password);
     axios
       .post("http://localhost:8081/login", userData, {
         headers: { "Content-type": "application/x-www-form-urlencoded" }
@@ -23,13 +26,12 @@ export default function Login() {
     event.preventDefault();
   };
 
-  onEmailChange = event => {
-    this.setState({ email: event.target.value });
+  const onUsernameChange = event => {
+    setUsername(event.target.value);
   };
-  onPassChange = event => {
-    this.setState({ pass: event.target.value });
+  const onPasswordChange = event => {
+    setPassword(event.target.value);
   };
-  onSubmit = event => {};
 
   return (
     <div className="row">
@@ -39,18 +41,18 @@ export default function Login() {
           <input
             type="text"
             required
+            value={username}
             className="form-control col-4"
             placeholder="Vartotojo vardas"
-            value={userName}
-            onChange={event => setUserName(event.target.value)}
+            onChange={event => onUsernameChange(event)}
           ></input>
           <input
             type="text"
             required
+            value={password}
             className="form-control col-4"
             placeholder="Slaptažodis"
-            value={userName}
-            onChange={event => setPassword(event.target.value)}
+            onChange={event => onPasswordChange(event)}
           ></input>
           <button className="btn btn-dark col-4" type="submit">
             Prisijungti
