@@ -6,9 +6,7 @@ import AdminPanel from "./components/AdminPanel";
 import ProductAdministrationComponent from "./components/ProductAdministration";
 import Login from "./components/Login";
 import "./App.css";
-import { Nav } from "./components/NavBar";
 import { serverDovanaToClientDovana } from "./model/dovanos";
-import { serverLetterToClientLetter } from "./model/letters";
 import { Switch, Route } from "react-router";
 import { AppDataContext } from "./context";
 import Header from "./components/Header";
@@ -36,28 +34,28 @@ function App() {
       });
   };
 
-  const refreshLetters = () => {
-    fetch(url + "/api/letters")
-      .then(res => {
-        if (!res.ok) throw new Error(`response status ${res.status}`);
-        return res.json();
-      })
-      .then(letters => {
-        setLetters(letters.map(serverLetterToClientLetter));
-      });
-  };
+  // const refreshLetters = () => {
+  //   fetch(url + "/api/letters")
+  //     .then(res => {
+  //       if (!res.ok) throw new Error(`response status ${res.status}`);
+  //       return res.json();
+  //     })
+  //     .then(letters => {
+  //       setLetters(letters.map(serverLetterToClientLetter));
+  //     });
+  // };
 
   const appData = {
     dovanos: dovanos,
     refreshProducts: refreshProducts,
     setDovanos: setDovanos,
     letters: letters,
-    refreshLetters: refreshLetters,
+    // refreshLetters: refreshLetters,
     setLetters: setLetters
   };
 
-  useEffect(refreshProducts, []);
-  useEffect(refreshLetters, []);
+  // useEffect(refreshProducts, []);
+  // useEffect(refreshLetters, []);
 
   return (
     <AppDataContext.Provider value={appData}>

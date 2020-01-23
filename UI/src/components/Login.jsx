@@ -14,7 +14,7 @@ export default function Login() {
     userData.append("username", username);
     userData.append("password", password);
     axios
-      .post("http://localhost:8081/login", userData, {
+      .post("http://localhost:8080/login", userData, {
         headers: { "Content-type": "application/x-www-form-urlencoded" }
       })
       .then(resp => {
@@ -47,7 +47,7 @@ export default function Login() {
             onChange={event => onUsernameChange(event)}
           ></input>
           <input
-            type="text"
+            type="password"
             required
             value={password}
             className="form-control col-4"
