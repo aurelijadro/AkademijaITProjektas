@@ -11,33 +11,39 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UserService 
-implements UserDetailsService
-{
-	
+public class UserService implements UserDetailsService {
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = findByUsername(username);
-		if(user == null) 
+		if (user == null)
 			throw new UsernameNotFoundException(username + " not found.");
-			return new org.springframework.security.core.userdetails.User(
-					user.getUsername(), user.getPassword(), AuthorityUtils.createAuthorityList(new String [] { "ROLE_"}));
-		}
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+				AuthorityUtils.createAuthorityList(new String[] { "ROLE_" }));
+	}
 
-	@Autowired UserRepository userRepository;
+	UserRepository userRepository;
 	
+	@Autowired
+	public UserService(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
 	@Transactional
 	public List<User> getUsers() {
 		return userRepository.findAll();
 	}
-	
+
 	@Transactional(readOnly = true)
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
-	
-	
 
-
+	@Transactional
+	public User addUser(NewUser newUser) {
+		User user = new User(null, newUser.getName(), newUser.getSurname(), newUser.getUsername(),
+				newUser.getPassword());
+		return userRepository.save(user);
+	}
 
 }

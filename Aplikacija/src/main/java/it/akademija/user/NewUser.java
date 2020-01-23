@@ -1,20 +1,11 @@
 package it.akademija.user;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-@Entity
-public class User {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+public class NewUser {
 
 	@NotNull
 	@Length(min = 1, max = 100)
@@ -33,23 +24,12 @@ public class User {
 	@Length(min = 1, max = 100)
 	private String password;
 
-	public User() {
-	}
-
-	public User(Long id, String name, String surname, String username, String password) {
-		this.id = id;
+	public NewUser(String name, String surname, String username, String password) {
+		super();
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
 		this.password = password;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {

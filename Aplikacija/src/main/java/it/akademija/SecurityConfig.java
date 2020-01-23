@@ -32,9 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				// be saugumo UI dalis ir swaggeris
-				.antMatchers("/", "/swagger-ui.html", "/console").permitAll()
+				.antMatchers("/", "/swagger-ui.html", "/console", "/api/**").permitAll()
 				// visi /api/ saugus (dar galima .anyRequest() )
-				.antMatchers("/api/**", "/calc/**").authenticated().and().formLogin() // leidziam login
+				.antMatchers("/calc/**").authenticated().and().formLogin() // leidziam login
 				// prisijungus
 				.successHandler(new SimpleUrlAuthenticationSuccessHandler())
 				// esant blogiems user/pass
