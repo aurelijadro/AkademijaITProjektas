@@ -8,6 +8,9 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,19 +40,26 @@ public class UserService implements UserDetailsService {
 
 	@Transactional
 	public User findByUsername(String username) {
-		return userRepository.findUserByUsername(username);
+		return userRepository.findByUsername(username);
 	}
-	
+
 	@Transactional
 	public Optional<User> findById(Long id) {
 		return userRepository.findById(id);
 	}
 
 	@Transactional
+	public boolean exists(String username) {
+		return userRepository.existsUserByUsername(username);
+	}
+
+	@Transactional
 	public User addUser(NewUser newUser) {
+
 		User user = new User(null, newUser.getName(), newUser.getSurname(), newUser.getUsername(),
 				newUser.getPassword());
 		return userRepository.save(user);
+
 	}
 
 	@Transactional

@@ -38,7 +38,7 @@ public class UserController {
 
 	@RequestMapping(path = "/{username}", method = RequestMethod.GET)
 	@ApiOperation(value = "Find user by username", notes = "Returns user by username")
-	public User getUserByUsername(@ApiParam(value = "user username", required = true) @PathVariable String username, 
+	public User getUserByUsername(@ApiParam(value = "user username", required = true) @PathVariable String username,
 			HttpServletResponse response) {
 		User user = userService.findByUsername(username);
 		if (user == null) {
@@ -61,15 +61,21 @@ public class UserController {
 //	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Add new user", notes = "Returns new user")
-	public User addNewUser(@RequestBody final NewUser newUser) {
-		return userService.addUser(newUser);
+	public User addNewUser(@RequestBody final NewUser newUser, HttpServletResponse response) {
+		if (userService.findByUsername(newUser.getUsername()) == null) {
+			response.setStatus(200);
+			return userService.addUser(newUser);
+		}
+		response.setStatus(404);
+		return null;
+
 	}
 
 	@RequestMapping(path = "/{username}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Update existing user info", notes = "Returns user with new info")
-	public User updateUser(@PathVariable String username, @RequestBody final NewUser newUser, HttpServletResponse response) {
+	public User updateUser(@PathVariable String username, @RequestBody final NewUser newUser,
+			HttpServletResponse response) {
 		User user = userService.findByUsername(username);
 		if (user == null) {
 			response.setStatus(404);
