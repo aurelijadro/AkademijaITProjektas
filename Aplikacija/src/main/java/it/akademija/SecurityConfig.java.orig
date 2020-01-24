@@ -14,10 +14,16 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+<<<<<<< HEAD
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+=======
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+>>>>>>> e7adaeb69ebafe67f5dc24c67644f59aa68631c9
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
@@ -34,12 +40,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userService);
+<<<<<<< HEAD
+		auth.inMemoryAuthentication().withUser("qwerty").password("123456").roles("USER", "CALC");
+=======
 //		auth.inMemoryAuthentication().withUser("uu").password("pp").roles("USER", "CALC");
 	}
 
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
+>>>>>>> e7adaeb69ebafe67f5dc24c67644f59aa68631c9
 	}
 
 	@Override
@@ -54,16 +64,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 					@Override
 					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+<<<<<<< HEAD
+							Authentication authentication) throws IOException, ServletException {
+=======
 							org.springframework.security.core.Authentication authentication)
 							throws IOException, ServletException {
+>>>>>>> e7adaeb69ebafe67f5dc24c67644f59aa68631c9
 						response.setHeader("Access-Control-Allow-Credentials", "true");
 						response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 						response.setHeader("Content-Type", "application/json;charset=UTF-8");
 						response.getWriter().print("{\"username\": \""
 								+ SecurityContextHolder.getContext().getAuthentication().getName() + "\"}");
+<<<<<<< HEAD
+					}
+=======
 
 					}
 
+>>>>>>> e7adaeb69ebafe67f5dc24c67644f59aa68631c9
 				})
 				// esant blogiems user/pass
 				.failureHandler(new SimpleUrlAuthenticationFailureHandler()).loginPage("/login").permitAll() // jis jau
@@ -71,9 +89,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 																												// !
 				.and().logout().permitAll() // leidziam /logout
 				.and().csrf().disable() // nenaudojam tokenu
-				// toliau forbidden klaidai
+// toliau forbidden klaidai
 				.exceptionHandling().authenticationEntryPoint(securityEntryPoint).and().headers().frameOptions()
-				.disable(); // H2 konsolei
+				.disable(); // H2
+							// konsolei
 	}
+<<<<<<< HEAD
+	
+}
+=======
 
 }
+>>>>>>> e7adaeb69ebafe67f5dc24c67644f59aa68631c9
