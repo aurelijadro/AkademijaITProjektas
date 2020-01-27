@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import axios from "axios";
-import UserComponent from "./UserComponent";
+import DocTypeComponent from "./DocTypeComponent";
 import { Link } from 'react-router-dom';
 import NavigationForAdmin from './NavigationForAdmin';
 
-class UserList extends Component {
+class DocTypeList extends Component {
     constructor() {
         super();
-        this.state = { users: [] };
+        this.state = { doctypes: [] };
         axios
-            .get("http://localhost:8080/api/users")
+            .get("http://localhost:8080/api/doctypes")
             .then(response => {
-                this.setState({ users: response.data });
+                this.setState({ doctypes: response.data });
             })
             .catch(error => {
                 console.log(error);
@@ -19,14 +19,12 @@ class UserList extends Component {
     }
 
     render() {
-        var user = this.state.users.map((user, index) => {
+        var doctype = this.state.doctypes.map((doctype, index) => {
             return (
-                <UserComponent
+                <DocTypeComponent
                     key={index}
-                    id={user.id}
-                    username={user.username}
-                    name={user.name}
-                    surname={user.surname}
+                    id={doctype.id}
+                    title={doctype.title}
                 />
             );
         });
@@ -39,22 +37,20 @@ class UserList extends Component {
                         </div>
                     </div>
                 </div>
-                <Link to="/admin/users/add"><button type="button" className="btn btn-light" onClick={this.props.onAddNew}>Pridėti naują vartotoją</button></Link>
+                <Link to="/admin/doctypes/add"><button type="button" className="btn btn-light" onClick={this.props.onAddNew}>Pridėti naują dokumentų tipą</button></Link>
                 <Link to="/admin"><button type="button" className="btn btn-light" onClick={this.props.onBack}>Grįžti į pradinį langą</button></Link>
                 <table className=" text-center table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Prisijungimo vardas</th>
-                            <th scope="col">Vardas</th>
-                            <th scope="col">Pavardė</th>
+                            <th scope="col">Dokumentų tipo pavadinimas</th>
                         </tr>
                     </thead>
-                    <tbody>{user}</tbody>
+                    <tbody>{doctype}</tbody>
                 </table>
             </div>
         );
     }
 }
 
-export default UserList;
+export default DocTypeList;
