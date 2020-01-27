@@ -11,7 +11,7 @@ import { Switch, Route } from "react-router";
 import { AppDataContext } from "./context";
 import Header from "./components/Header";
 import AdminDashboard from "./components/AdminDashboard";
-import UserContainer from "./components/UserContainer";
+import UserList from "./components/UserList";
 
 // function ProductPage() {
 //   const appData = useContext(AppDataContext);
@@ -68,7 +68,7 @@ function App() {
         <Switch>
 
           <Route exact path="/admin" component={AdminDashboard} />
-          <Route exact path="/admin/users" component={UserContainer} />
+          <Route exact path="/admin/users" component={UserList} />
           {/* <Route path="/dovanos" exact component={ProductListComponent} />
           <Route path="/dovanos/:id" exact component={ProductPage} />
           <Route path="/admin" exact component={AdminPanel} />
