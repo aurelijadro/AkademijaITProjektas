@@ -10,8 +10,12 @@ import { serverDovanaToClientDovana } from "./model/dovanos";
 import { Switch, Route } from "react-router";
 import { AppDataContext } from "./context";
 import Header from "./components/Header";
+<<<<<<< HEAD
+import UserPage from "./components/UserPage";
+=======
 import AdminDashboard from "./components/AdminDashboard";
 import UserContainer from "./components/UserContainer";
+>>>>>>> 51870a1a6304c15cec93be7a26cad134e9bc69d2
 
 // function ProductPage() {
 //   const appData = useContext(AppDataContext);
@@ -66,10 +70,15 @@ function App() {
 
       <div className="container mx-auto">
         <Switch>
+<<<<<<< HEAD
+          <Route path="/user" exact component={UserPage} />
+          <Route path="/dovanos" exact component={ProductListComponent} />
+=======
 
           <Route exact path="/admin" component={AdminDashboard} />
           <Route exact path="/admin/users" component={UserContainer} />
           {/* <Route path="/dovanos" exact component={ProductListComponent} />
+>>>>>>> 51870a1a6304c15cec93be7a26cad134e9bc69d2
           <Route path="/dovanos/:id" exact component={ProductPage} />
           <Route path="/admin" exact component={AdminPanel} />
           <Route
