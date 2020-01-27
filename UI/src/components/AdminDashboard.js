@@ -10,30 +10,30 @@ class AdminDashboard extends Component {
                     <img src="..." className="card-img-top" alt="..." />
                     <div className="card-body">
                         <h5 className="card-title">Vartotojai</h5>
-                        <p className="card-text">Naujo vartotojo kurimas, informacijos atnaujinimas.</p>
+                        <p className="card-text">Naujo vartotojo kūrimas, informacijos atnaujinimas.</p>
                     </div>
                     <div className="card-footer">
-                        <Link to={`/admin/users`}><button type="button" className="btn btn-secondary btn-lg btn-block">Issami informacija</button></Link>
+                        <Link to={`/admin/users`}><button type="button" className="btn btn-secondary btn-lg btn-block">Išsami informacija</button></Link>
                     </div>
                 </div>
                 <div className="card">
                     <img src="..." className="card-img-top" alt="..." />
                     <div className="card-body">
-                        <h5 className="card-title">Grupes</h5>
-                        <p className="card-text">Nauju grupiu kurimas, informacijos atnaujinimas.</p>
+                        <h5 className="card-title">Grupės</h5>
+                        <p className="card-text">Naujų grupių kūrimas, informacijos atnaujinimas.</p>
                     </div>
                     <div className="card-footer">
-                        <Link to={`/admin/groups`}><button type="button" className="btn btn-secondary btn-lg btn-block">Issami informacija</button></Link>
+                        <Link to={`/admin/groups`}><button type="button" className="btn btn-secondary btn-lg btn-block">Išsami informacija</button></Link>
                     </div>
                 </div>
                 <div className="card">
                     <img src="..." className="card-img-top" alt="..." />
                     <div className="card-body">
-                        <h5 className="card-title">Dokumentu tipai</h5>
-                        <p className="card-text">Nauju dokumentu tipu kurimas, informacijos atnaujinimas.</p>
+                        <h5 className="card-title">Dokumentų tipai</h5>
+                        <p className="card-text">Naujų dokumentų tipų kūrimas, informacijos atnaujinimas.</p>
                     </div>
                     <div className="card-footer">
-                        <Link to={`/admin/doctypes`}><button type="button" className="btn btn-secondary btn-lg btn-block">Issami informacija</button></Link>
+                        <Link to={`/admin/doctypes`}><button type="button" className="btn btn-secondary btn-lg btn-block">Išsami informacija</button></Link>
                     </div>
                 </div>
             </div>

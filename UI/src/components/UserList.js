@@ -31,15 +31,15 @@ class UserList extends Component {
         });
         return (
             <div>
-                <Link to="/admin/users/add"><button type="button" className="btn btn-light" onClick={this.props.onAddNew}>Prideti nauja vartotoja</button></Link>
-                <Link to="/admin"><button type="button" className="btn btn-light" onClick={this.props.onBack}>Grizti i pradini langa</button></Link>
+                <Link to="/admin/users/add"><button type="button" className="btn btn-light" onClick={this.props.onAddNew}>Pridėti naują vartotoją</button></Link>
+                <Link to="/admin"><button type="button" className="btn btn-light" onClick={this.props.onBack}>Grįžti į pradinį langą</button></Link>
                 <table className=" text-center table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Prisijungimo vardas</th>
                             <th scope="col">Vardas</th>
-                            <th scope="col">Pavarde</th>
+                            <th scope="col">Pavardė</th>
                         </tr>
                     </thead>
                     <tbody>{user}</tbody>
