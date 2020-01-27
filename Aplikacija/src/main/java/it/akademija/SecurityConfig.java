@@ -48,8 +48,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// be saugumo UI dalis ir swaggeris
 				.antMatchers("/swagger-ui.html", "/console", "/api/**").permitAll()
 				// visi /api/ saugus (dar galima .anyRequest() )
+				.antMatchers("/user").access("hasRole('ROLE_USER')").antMatchers("/admin")
+				.access("hasRole('ROLE_ADMIN')") // admin
 				.antMatchers("/").authenticated().and().formLogin() // leidziam login
 				// prisijungus
+
 				.successHandler(new AuthenticationSuccessHandler() {
 
 					@Override

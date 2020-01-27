@@ -57,7 +57,7 @@ public class UserService implements UserDetailsService {
 	public User addUser(NewUser newUser) {
 
 		User user = new User(null, newUser.getName(), newUser.getSurname(), newUser.getUsername(),
-				newUser.getPassword());
+				newUser.getPassword(), newUser.getRoleName());
 		return userRepository.save(user);
 
 	}

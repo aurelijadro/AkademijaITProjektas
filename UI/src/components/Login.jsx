@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useMyData } from "../context";
+import { Redirect } from "react-router-dom";
 
 export default function Login() {
   axios.defaults.withCredentials = true;
@@ -18,7 +19,7 @@ export default function Login() {
         headers: { "Content-type": "application/x-www-form-urlencoded" }
       })
       .then(resp => {
-        console.log("user " + resp.data.username + " logged in");
+        return <Redirect to="/user" />;
       })
       .catch(e => {
         console.log(e);
