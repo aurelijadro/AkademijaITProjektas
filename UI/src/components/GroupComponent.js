@@ -1,15 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const UserComponent = props => {
+const GroupComponent = props => {
     return (
         <tr>
             <th scope="row">{props.id}</th>
-            <td>{props.username}</td>
-            <td>{props.name}</td>
-            <td>{props.surname}</td>
+            <td>{props.title}</td>
             <td>
-                <Link to={"admin/users/edit/" + props.id} className="btn btn-light">
+                <Link to={"admin/groups/edit/" + props.id} className="btn btn-light">
                     Atnaujinti informaciją
         </Link>
             </td>
@@ -17,5 +15,4 @@ const UserComponent = props => {
     );
 };
 
-export default UserComponent;
-
+export default GroupComponent;

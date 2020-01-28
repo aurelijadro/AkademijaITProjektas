@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import axios from "axios";
-import UserComponent from "./UserComponent";
+import GroupComponent from "./GroupComponent";
 import { Link } from 'react-router-dom';
 import NavigationForAdmin from './NavigationForAdmin';
 
-class UserList extends Component {
+class GroupList extends Component {
     constructor() {
         super();
-        this.state = { users: [] };
+        this.state = { groups: [] };
         axios
-            .get("http://localhost:8080/api/users")
+            .get("http://localhost:8080/api/groups")
             .then(response => {
-                this.setState({ users: response.data });
+                this.setState({ groups: response.data });
             })
             .catch(error => {
                 console.log(error);
@@ -19,14 +19,12 @@ class UserList extends Component {
     }
 
     render() {
-        var user = this.state.users.map((user, index) => {
+        var group = this.state.groups.map((group, index) => {
             return (
-                <UserComponent
+                <GroupComponent
                     key={index}
-                    id={user.id}
-                    username={user.username}
-                    name={user.name}
-                    surname={user.surname}
+                    id={group.id}
+                    title={group.title}
                 />
             );
         });
@@ -39,22 +37,20 @@ class UserList extends Component {
                         </div>
                     </div>
                 </div>
-                <Link to="/admin/users/add"><button type="button" className="btn btn-light" onClick={this.props.onAddNew}>Pridėti naują vartotoją</button></Link>
+                <Link to="/admin/groups/add"><button type="button" className="btn btn-light" onClick={this.props.onAddNew}>Pridėti naują grupę</button></Link>
                 <Link to="/admin"><button type="button" className="btn btn-light" onClick={this.props.onBack}>Grįžti į pradinį langą</button></Link>
                 <table className=" text-center table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Prisijungimo vardas</th>
-                            <th scope="col">Vardas</th>
-                            <th scope="col">Pavardė</th>
+                            <th scope="col">Grupės pavadinimas</th>
                         </tr>
                     </thead>
-                    <tbody>{user}</tbody>
+                    <tbody>{group}</tbody>
                 </table>
             </div>
         );
     }
 }
 
-export default UserList;
+export default GroupList;

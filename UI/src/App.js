@@ -11,7 +11,10 @@ import { Switch, Route } from "react-router";
 import { AppDataContext } from "./context";
 import Header from "./components/Header";
 import AdminDashboard from "./components/AdminDashboard";
-import UserContainer from "./components/UserContainer";
+import UserList from "./components/UserList";
+import NavigationForAdmin from "./components/NavigationForAdmin";
+import GroupList from "./components/GroupList";
+import DocTypeList from "./components/DocTypeList";
 
 // function ProductPage() {
 //   const appData = useContext(AppDataContext);
@@ -66,22 +69,10 @@ function App() {
 
       <div className="container mx-auto">
         <Switch>
-
           <Route exact path="/admin" component={AdminDashboard} />
-          <Route exact path="/admin/users" component={UserContainer} />
-          {/* <Route path="/dovanos" exact component={ProductListComponent} />
-          <Route path="/dovanos/:id" exact component={ProductPage} />
-          <Route path="/admin" exact component={AdminPanel} />
-          <Route
-            path="/admin/dovanos/new"
-            exact
-            component={ProductAdministrationComponent}
-          />
-          <Route
-            path="/admin/dovanos/:id"
-            exact
-            component={ProductAdministrationComponent}
-          /> */}
+          <Route exact path="/admin/users" component={UserList} />
+          <Route exact path="/admin/groups" component={GroupList} />
+          <Route exact path="/admin/doctypes" component={DocTypeList} />
         </Switch>
       </div>
     </AppDataContext.Provider>
