@@ -28,32 +28,32 @@ class CreateUserForm extends Component {
   render() {
     const { name, surname, username, password } = this.state;
     return (
-      <div class="container">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">
-                Create New User
+      <div className="container">
+        <div className="panel panel-default">
+          <div className="panel-heading">
+            <h3 className="panel-title">
+              Create New User
             </h3>
           </div>
-          <div class="panel-body">
+          <div className="panel-body">
             <form onSubmit={this.onSubmit}>
-              <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" class="form-control" name="name" value={name} onChange={this.onChange} placeholder="Name" required />
+              <div className="form-group">
+                <label>Name:</label>
+                <input type="text" className="form-control" name="name" value={name} onChange={this.onChange} placeholder="Name" required />
               </div>
-              <div class="form-group">
-                <label for="surname">Surname:</label>
-                <input type="text" class="form-control" name="surname" value={surname} onChange={this.onChange} placeholder="Surname" required />
+              <div className="form-group">
+                <label>Surname:</label>
+                <input type="text" className="form-control" name="surname" value={surname} onChange={this.onChange} placeholder="Surname" required />
               </div>
-              <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" class="form-control" name="username" value={username} onChange={this.onChange} placeholder="Username" required />
+              <div className="form-group">
+                <label>Username:</label>
+                <input type="text" className="form-control" name="username" value={username} onChange={this.onChange} placeholder="Username" required />
               </div>
-              <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" name="password" value={password} onChange={this.onChange} placeholder="Password" required />
+              <div className="form-group">
+                <label>Password:</label>
+                <input type="password" className="form-control" name="password" value={password} onChange={this.onChange} placeholder="Password" required />
               </div>
-              <button class="btn btn-primary" type="submit">Submit</button>
+              <button className="btn btn-primary" type="submit">Submit</button>
             </form>
           </div>
         </div>
