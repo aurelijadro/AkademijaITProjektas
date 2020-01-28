@@ -8,6 +8,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +25,7 @@ public class UserService implements UserDetailsService {
 		if (user == null)
 			throw new UsernameNotFoundException(username + " not found.");
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-				AuthorityUtils.createAuthorityList(new String[] { "ROLE_" }));
+				AuthorityUtils.createAuthorityList(new String[] { "ROLE_" + user.getRole() }));
 	}
 
 	UserRepository userRepository;
@@ -56,8 +58,10 @@ public class UserService implements UserDetailsService {
 	@Transactional
 	public User addUser(NewUser newUser) {
 
-		User user = new User(null, newUser.getName(), newUser.getSurname(), newUser.getUsername(),
-				newUser.getPassword(), newUser.getRoleName());
+		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+		User user = new User(newUser.getName(), newUser.getSurname(), newUser.getUsername(),
+				(encoder.encode(newUser.getPassword())), newUser.getRoleName());
 		return userRepository.save(user);
 
 	}

@@ -3,9 +3,8 @@ import axios from "axios";
 import { useMyData } from "../context";
 import { Redirect } from "react-router-dom";
 
+axios.defaults.withCredentials = true;
 export default function Login() {
-  axios.defaults.withCredentials = true;
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,7 +18,8 @@ export default function Login() {
         headers: { "Content-type": "application/x-www-form-urlencoded" }
       })
       .then(resp => {
-        return <Redirect to="/user" />;
+        console.log("user logged in!");
+        return <Redirect to="/admin" />;
       })
       .catch(e => {
         console.log(e);
