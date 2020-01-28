@@ -30,6 +30,8 @@ public class UserService implements UserDetailsService {
 
 	UserRepository userRepository;
 
+	PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
 	@Autowired
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
@@ -58,8 +60,6 @@ public class UserService implements UserDetailsService {
 	@Transactional
 	public User addUser(NewUser newUser) {
 
-		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
 		User user = new User(newUser.getName(), newUser.getSurname(), newUser.getUsername(),
 				(encoder.encode(newUser.getPassword())), newUser.getRoleName());
 		return userRepository.save(user);
@@ -72,7 +72,7 @@ public class UserService implements UserDetailsService {
 		existingUser.setName(newUser.getName());
 		existingUser.setSurname(newUser.getSurname());
 		existingUser.setUsername(newUser.getUsername());
-		existingUser.setPassword(newUser.getPassword());
+		existingUser.setPassword(encoder.encode(newUser.getPassword()));
 		return existingUser;
 	}
 
