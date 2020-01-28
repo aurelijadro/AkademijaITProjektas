@@ -15,6 +15,7 @@ import UserList from "./components/UserList";
 import NavigationForAdmin from "./components/NavigationForAdmin";
 import GroupList from "./components/GroupList";
 import DocTypeList from "./components/DocTypeList";
+import CreateUserForm from "./components/CreateUserForm";
 
 // function ProductPage() {
 //   const appData = useContext(AppDataContext);
@@ -71,6 +72,7 @@ function App() {
         <Switch>
           <Route exact path="/admin" component={AdminDashboard} />
           <Route exact path="/admin/users" component={UserList} />
+          <Route exact path="/admin/users/add" component={CreateUserForm} />
           <Route exact path="/admin/groups" component={GroupList} />
           <Route exact path="/admin/doctypes" component={DocTypeList} />
         </Switch>
