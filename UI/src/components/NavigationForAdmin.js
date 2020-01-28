@@ -20,7 +20,7 @@ var NavigationForAdmin = (props) => {
                     </li>
                 </ul>
                 <Link to="/">
-                    < button type="button" className="btn btn-light">Logout</button>
+                    < button type="button" className="btn btn-light">Atsijungti</button>
                 </Link>
             </div>
         </nav>

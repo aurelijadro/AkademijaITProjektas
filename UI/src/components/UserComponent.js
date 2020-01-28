@@ -9,7 +9,7 @@ const UserComponent = props => {
             <td>{props.name}</td>
             <td>{props.surname}</td>
             <td>
-                <Link to={"admin/users/edit/" + props.id} className="btn btn-light">
+                <Link to={"users/edit/" + props.username} className="btn btn-light">
                     Atnaujinti informaciją
         </Link>
             </td>

@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-// import ProductListComponent from "./components/ProductList";
-// import ProductPage from "./components/ProductPage";
-// import AdminPanel from "./components/AdminPanel";
-// import ProductAdministrationComponent from "./components/ProductAdministration";
 import Login from "./components/Login";
 import "./App.css";
 import { serverDovanaToClientDovana } from "./model/dovanos";
@@ -16,6 +12,8 @@ import NavigationForAdmin from "./components/NavigationForAdmin";
 import GroupList from "./components/GroupList";
 import DocTypeList from "./components/DocTypeList";
 import CreateUserForm from "./components/CreateUserForm";
+import EditUserForm from "./components/EditUserForm";
+import EditFormContainer from "./components/EditFormContainer";
 
 // function ProductPage() {
 //   const appData = useContext(AppDataContext);
@@ -73,6 +71,7 @@ function App() {
           <Route exact path="/admin" component={AdminDashboard} />
           <Route exact path="/admin/users" component={UserList} />
           <Route exact path="/admin/users/add" component={CreateUserForm} />
+          <Route exact path="/admin/users/edit/:username" component={EditFormContainer} />
           <Route exact path="/admin/groups" component={GroupList} />
           <Route exact path="/admin/doctypes" component={DocTypeList} />
         </Switch>
