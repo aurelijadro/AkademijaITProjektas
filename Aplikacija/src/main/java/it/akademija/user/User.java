@@ -2,12 +2,16 @@ package it.akademija.user;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+
+import it.akademija.role.UserRole;
 
 @Entity
 public class User {
@@ -33,15 +37,19 @@ public class User {
 	@Length(min = 1, max = 100)
 	private String password;
 
+	@Column(name = "role", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private UserRole role;
+
 	public User() {
 	}
 
-	public User(Long id, String name, String surname, String username, String password) {
-		this.id = id;
+	public User(String name, String surname, String username, String password, String role) {
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
 		this.password = password;
+		this.role = UserRole.valueOf(role);
 	}
 
 	public Long getId() {
@@ -82,6 +90,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getRole() {
+		return role.toString();
+	}
+
+	public void setRole(String role) {
+		this.role = UserRole.valueOf(role);
 	}
 
 }
