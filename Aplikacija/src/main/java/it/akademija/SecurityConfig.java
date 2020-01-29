@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -36,28 +37,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 // .password("pp").roles("USER", "CALC");
 	}
 
+	@Bean
+	public AuthenticationSuccessHandler gentooAuthenticationSuccessHandler() {
+		return new GentooSimpleUrlAuthenticationSuccessHandler();
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				// be saugumo UI dalis ir swaggeris
 				.antMatchers("/", "/api/**", "/swagger-ui.html", "console", "/admin").permitAll()
 				// visi /api/ saugus (dar galima .anyRequest() )
-				.antMatchers("/calc").authenticated().and().formLogin().defaultSuccessUrl("/admin") // leidziam
+				.antMatchers("/calc").authenticated().and().formLogin() // leidziam
 				// login
 				// prisijungus
-				.successHandler(new AuthenticationSuccessHandler() {
-					@Override
-					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-							Authentication authentication) throws IOException, ServletException {
-						response.setHeader("Access-Control-Allow-Credentials", "true");
-						response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
-						response.setHeader("Content-Type", "application/json;charset=UTF-8");
-						response.setHeader("Location", "/admin");
-						response.setStatus(302);
-						response.getWriter().print("{\"username\": \""
-								+ SecurityContextHolder.getContext().getAuthentication().getName() + "\"}");
-					}
-				})
+				.successHandler(gentooAuthenticationSuccessHandler())
+//				.successHandler(new AuthenticationSuccessHandler() {
+//					@Override
+//					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+//							Authentication authentication) throws IOException, ServletException {
+//						response.setHeader("Access-Control-Allow-Credentials", "true");
+//						response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+//						response.setHeader("Content-Type", "application/json;charset=UTF-8");
+//						response.getWriter().print("{\"username\": \""
+//								+ SecurityContextHolder.getContext().getAuthentication().getName() + "\"}");
+//					}
+//				})
 				// esant blogiems user/pass
 				.failureHandler(new SimpleUrlAuthenticationFailureHandler()).loginPage("/login").permitAll() // jis jau
 																												// egzistuoja
