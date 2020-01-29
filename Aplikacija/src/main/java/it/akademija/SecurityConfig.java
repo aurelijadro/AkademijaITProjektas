@@ -40,10 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				// be saugumo UI dalis ir swaggeris
-				.antMatchers("/**", "/api/**", "/swagger-ui.html", "console").permitAll()
+				.antMatchers("/", "/api/**", "/swagger-ui.html", "console", "/admin").permitAll()
 				// visi /api/ saugus (dar galima .anyRequest() )
-				.antMatchers("/calc").authenticated().and().formLogin() // leidziam
-																		// login
+				.antMatchers("/calc").authenticated().and().formLogin().defaultSuccessUrl("/admin") // leidziam
+				// login
 				// prisijungus
 				.successHandler(new AuthenticationSuccessHandler() {
 					@Override
@@ -52,6 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						response.setHeader("Access-Control-Allow-Credentials", "true");
 						response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 						response.setHeader("Content-Type", "application/json;charset=UTF-8");
+						response.setHeader("Location", "/admin");
+						response.setStatus(302);
 						response.getWriter().print("{\"username\": \""
 								+ SecurityContextHolder.getContext().getAuthentication().getName() + "\"}");
 					}
