@@ -26,6 +26,7 @@ class EditFormContainer extends Component {
             )
             .then(response => {
                 this.setState(response.data);
+                this.setState({ password: "" })
             })
             .catch(error => console.log(error));
     };
