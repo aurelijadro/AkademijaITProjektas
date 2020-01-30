@@ -24,6 +24,18 @@ public class DoctypeService {
 	@Transactional
 	public Doctype findDoctypeByTitle(String title) {
 		return doctypeRepository.findByTitle(title);
-		
+	}
+	
+	@Transactional
+	public Doctype addDoctype(NewDoctype newDoctype) {
+		Doctype doctype = new Doctype(newDoctype.getTitle());
+		return doctypeRepository.save(doctype);
+	}
+	
+	@Transactional
+	public Doctype updateDoctype(String title, NewDoctype newDoctype) {
+		Doctype existingDoctype = findDoctypeByTitle(title);
+		existingDoctype.setTitle(newDoctype.getTitle());
+		return existingDoctype;
 	}
 }

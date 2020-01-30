@@ -53,11 +53,6 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public boolean exists(String username) {
-		return userRepository.existsUserByUsername(username);
-	}
-
-	@Transactional
 	public User addUser(NewUser newUser) {
 
 		User user = new User(newUser.getName(), newUser.getSurname(), newUser.getUsername(),

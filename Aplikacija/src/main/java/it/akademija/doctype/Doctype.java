@@ -22,8 +22,7 @@ public class Doctype {
 	public Doctype() {
 	}
 
-	public Doctype(Long id, String title) {
-		this.id = id;
+	public Doctype(String title) {
 		this.title = title;
 	}
 
