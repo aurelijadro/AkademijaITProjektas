@@ -71,7 +71,7 @@ public class NewUser {
 		return role;
 	}
 
-	public void setRoleName(String role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 
