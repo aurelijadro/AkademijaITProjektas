@@ -31,13 +31,12 @@ const EditFormComponent = props => {
                         <div className="form-group">
                             <label>
                                 Pasirinkite vartotojo prieigos statusą:
-          <select value={props.role} onChoice={props.onChoice}>
+                                <select name="role" value={props.role} onChange={props.onChange}>
                                     <option value="ADMIN">ADMIN</option>
                                     <option value="USER">USER</option>
                                     <option value="MODERATOR">MODERATOR</option>
                                 </select>
                             </label>
-                            {/* <input type="role" className="form-control" name="role" value={props.role} onChoice={props.onChoice} placeholder="Prieigos statusas" required /> */}
                         </div>
                         <button className="btn btn-primary" type="submit">Išsaugoti</button>
                         <Link to="/admin/users"><button className="btn btn-primary" onClick={props.onBack}>Grįžti į vartotojų sąrašą</button></Link>

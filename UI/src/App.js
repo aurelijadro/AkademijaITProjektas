@@ -66,7 +66,7 @@ function App() {
       <Header />
       <Route exact path="/" component={Login} />
 
-      <div className="container mx-auto">
+      <div className="container-fluid mx-auto">
         <Switch>
           <Route exact path="/admin" component={AdminDashboard} />
           <Route exact path="/admin/users" component={UserList} />

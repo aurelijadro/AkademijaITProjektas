@@ -31,6 +31,7 @@ class EditFormContainer extends Component {
     };
 
     onChoice = (event) => {
+        console.log(event.target.value)
         this.setState({ value: event.target.value });
     }
 
@@ -42,6 +43,13 @@ class EditFormContainer extends Component {
 
     onSubmit = event => {
         event.preventDefault();
+        console.log({
+            name: this.state.name,
+            surname: this.state.surname,
+            username: this.state.username,
+            password: this.state.password,
+            role: this.state.role
+        })
         axios
             .put(
                 "http://localhost:8080/api/users/" + this.props.match.params.username,
@@ -50,7 +58,7 @@ class EditFormContainer extends Component {
                     surname: this.state.surname,
                     username: this.state.username,
                     password: this.state.password,
-                    role: this.state.role,
+                    role: this.state.role
 
                 }
             )

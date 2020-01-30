@@ -24,3 +24,7 @@ a {
 nav li a {
   color: white !important;
 }
+
+.container-fluid {
+  padding: 0;
+}
