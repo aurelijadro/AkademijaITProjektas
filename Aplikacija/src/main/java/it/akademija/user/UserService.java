@@ -73,6 +73,7 @@ public class UserService implements UserDetailsService {
 		existingUser.setSurname(newUser.getSurname());
 		existingUser.setUsername(newUser.getUsername());
 		existingUser.setPassword(encoder.encode(newUser.getPassword()));
+		existingUser.setRole(newUser.getRoleName());
 		return existingUser;
 	}
 

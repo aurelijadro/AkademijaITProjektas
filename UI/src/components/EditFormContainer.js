@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
-import EditFormPresentation from "./EditFormPresentation";
+// import EditFormPresentation from "./EditFormPresentation";
+import EditFormComponent from "./EditFormComponent,";
 
 class EditFormContainer extends Component {
     constructor() {
@@ -10,6 +11,7 @@ class EditFormContainer extends Component {
             surname: "",
             username: "",
             password: "",
+            role: "",
         };
     }
 
@@ -28,6 +30,10 @@ class EditFormContainer extends Component {
             .catch(error => console.log(error));
     };
 
+    onChoice = (event) => {
+        this.setState({ value: event.target.value });
+    }
+
     onChange = (e) => {
         const state = this.state
         state[e.target.name] = e.target.value;
@@ -44,6 +50,8 @@ class EditFormContainer extends Component {
                     surname: this.state.surname,
                     username: this.state.username,
                     password: this.state.password,
+                    role: this.state.role,
+
                 }
             )
             .then(() => {
@@ -63,7 +71,18 @@ class EditFormContainer extends Component {
     render() {
         return (
             <div>
-                <EditFormPresentation
+                <EditFormComponent
+                    role={this.state.role}
+                    onBack={this.onBack}
+                    onSubmit={this.onSubmit}
+                    onChange={this.onChange}
+                    onChoice={this.onChoice}
+                    name={this.state.name}
+                    surname={this.state.surname}
+                    username={this.state.username}
+                    password={this.state.password} />
+                {/* <EditFormPresentation
+                    showMenu={this.showMenu}
                     onBack={this.onBack}
                     onSubmit={this.onSubmit}
                     onChange={this.onChange}
@@ -71,7 +90,8 @@ class EditFormContainer extends Component {
                     surname={this.state.surname}
                     username={this.state.username}
                     password={this.state.password}
-                />
+                    role={this.state.role}
+                /> */}
             </div>
         );
     }

@@ -28,12 +28,23 @@ const EditFormComponent = props => {
                             <label>Slaptažodis:</label>
                             <input type="password" className="form-control" name="password" value={props.password} onChange={props.onChange} placeholder="Slaptažodis" required />
                         </div>
+                        <div className="form-group">
+                            <label>
+                                Pasirinkite vartotojo prieigos statusą:
+          <select value={props.role} onChoice={props.onChoice}>
+                                    <option value="ADMIN">ADMIN</option>
+                                    <option value="USER">USER</option>
+                                    <option value="MODERATOR">MODERATOR</option>
+                                </select>
+                            </label>
+                            {/* <input type="role" className="form-control" name="role" value={props.role} onChoice={props.onChoice} placeholder="Prieigos statusas" required /> */}
+                        </div>
                         <button className="btn btn-primary" type="submit">Išsaugoti</button>
                         <Link to="/admin/users"><button className="btn btn-primary" onClick={props.onBack}>Grįžti į vartotojų sąrašą</button></Link>
                     </form>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

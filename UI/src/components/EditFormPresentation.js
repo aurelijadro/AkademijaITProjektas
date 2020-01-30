@@ -13,6 +13,7 @@ const EditFormPresentation = props => {
                     surname={props.surname}
                     username={props.username}
                     password={props.password}
+                    userRole={props.userRole}
                 />
             </div>
         </div>
