@@ -24,15 +24,15 @@ public class NewUser {
 	@Length(min = 1, max = 100)
 	private String password;
 
-	private String roleName;
+	private String role;
 
-	public NewUser(String name, String surname, String username, String password, String roleName) {
+	public NewUser(String name, String surname, String username, String password, String role) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
 		this.password = password;
-		this.roleName = roleName;
+		this.role = role;
 	}
 
 	public String getName() {
@@ -67,12 +67,12 @@ public class NewUser {
 		this.password = password;
 	}
 
-	public String getRoleName() {
-		return roleName;
+	public String getRole() {
+		return role;
 	}
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public void setRoleName(String role) {
+		this.role = role;
 	}
 
 }

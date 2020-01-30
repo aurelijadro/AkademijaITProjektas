@@ -19,7 +19,6 @@ export default function Login() {
       })
       .then(resp => {
         console.log("user logged in!");
-        return <Redirect to="/admin" />;
       })
       .catch(e => {
         console.log(e);

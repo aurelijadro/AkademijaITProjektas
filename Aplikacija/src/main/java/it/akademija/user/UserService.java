@@ -61,7 +61,7 @@ public class UserService implements UserDetailsService {
 	public User addUser(NewUser newUser) {
 
 		User user = new User(newUser.getName(), newUser.getSurname(), newUser.getUsername(),
-				(encoder.encode(newUser.getPassword())), newUser.getRoleName());
+				(encoder.encode(newUser.getPassword())), newUser.getRole());
 		return userRepository.save(user);
 
 	}
@@ -73,7 +73,7 @@ public class UserService implements UserDetailsService {
 		existingUser.setSurname(newUser.getSurname());
 		existingUser.setUsername(newUser.getUsername());
 		existingUser.setPassword(encoder.encode(newUser.getPassword()));
-		existingUser.setRole(newUser.getRoleName());
+		existingUser.setRole(newUser.getRole());
 		return existingUser;
 	}
 

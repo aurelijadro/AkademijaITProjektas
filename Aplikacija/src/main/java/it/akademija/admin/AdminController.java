@@ -19,8 +19,9 @@ public class AdminController {
 //
 //	}
 
-	@RequestMapping(value = { "/", "/admin/**", "/user/**" })
-	public String index() {
+	@RequestMapping(value = { "/", "/admin/**", "/user/**", "/doctypes/" })
+	public String index(HttpServletResponse response) {
+		response.setStatus(307);
 		return "index.html";
 	}
 

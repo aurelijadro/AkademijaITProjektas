@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
@@ -30,6 +31,12 @@ public class GentooSimpleUrlAuthenticationSuccessHandler implements Authenticati
 			throws IOException {
 
 		String targetUrl = determineTargetUrl(authentication);
+
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.setHeader("Content-Type", "application/json;charset=UTF-8");
+		response.getWriter()
+				.print("{\"username\": \"" + SecurityContextHolder.getContext().getAuthentication().getName() + "\"}");
 
 		if (response.isCommitted()) {
 
