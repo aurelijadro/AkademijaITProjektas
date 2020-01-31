@@ -7,14 +7,13 @@ import { Switch, Route } from "react-router";
 import { AppDataContext } from "./context";
 import Header from "./components/Header";
 import AdminDashboard from "./components/AdminDashboard";
-import UserList from "./components/UserList";
-import NavigationForAdmin from "./components/NavigationForAdmin";
-import GroupList from "./components/GroupList";
-import DocTypeList from "./components/DocTypeList";
-import CreateUserForm from "./components/CreateUserForm";
-import EditUserForm from "./components/EditUserForm";
-import EditFormContainer from "./components/EditFormContainer";
-import EditDoctypeFormContainer from "./components/EditDoctypeFormContainer";
+import UserList from "./components/User/UserList";
+import GroupList from "./components/Group/GroupList";
+import DocTypeList from "./components/Doctype/DocTypeList";
+import CreateUserForm from "./components/User/CreateUserForm";
+import EditUserForm from "./non-used-components/EditUserForm";
+import EditFormContainer from "./components/User/EditFormContainer";
+import EditDoctypeFormContainer from "./components/Doctype/EditDoctypeFormContainer";
 
 // function ProductPage() {
 //   const appData = useContext(AppDataContext);

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-// import EditFormPresentation from "./EditFormPresentation";
 import EditFormComponent from "./EditFormComponent,";
 
 class EditFormContainer extends Component {
@@ -16,10 +15,10 @@ class EditFormContainer extends Component {
     }
 
     componentDidMount() {
-        this.getProduct();
+        this.getUser();
     }
 
-    getProduct = () => {
+    getUser = () => {
         axios
             .get(
                 "http://localhost:8080/api/users/" + this.props.match.params.username
@@ -30,11 +29,6 @@ class EditFormContainer extends Component {
             })
             .catch(error => console.log(error));
     };
-
-    onChoice = (event) => {
-        console.log(event.target.value)
-        this.setState({ value: event.target.value });
-    }
 
     onChange = (e) => {
         const state = this.state
@@ -85,22 +79,11 @@ class EditFormContainer extends Component {
                     onBack={this.onBack}
                     onSubmit={this.onSubmit}
                     onChange={this.onChange}
-                    onChoice={this.onChoice}
-                    name={this.state.name}
-                    surname={this.state.surname}
-                    username={this.state.username}
-                    password={this.state.password} />
-                {/* <EditFormPresentation
-                    showMenu={this.showMenu}
-                    onBack={this.onBack}
-                    onSubmit={this.onSubmit}
-                    onChange={this.onChange}
                     name={this.state.name}
                     surname={this.state.surname}
                     username={this.state.username}
                     password={this.state.password}
-                    role={this.state.role}
-                /> */}
+                />
             </div>
         );
     }

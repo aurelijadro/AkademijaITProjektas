@@ -9,7 +9,7 @@ const DocTypeComponent = props => {
             <td>
                 <Link to={"doctypes/edit/" + props.title} className="btn btn-light">
                     Atnaujinti informaciją
-        </Link>
+                </Link>
             </td>
         </tr>
     );

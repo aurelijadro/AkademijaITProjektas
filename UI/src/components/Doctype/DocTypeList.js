@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import DocTypeComponent from "./DocTypeComponent";
 import { Link } from 'react-router-dom';
-import NavigationForAdmin from './NavigationForAdmin';
+import NavigationForAdmin from '../NavigationForAdmin';
 
 class DocTypeList extends Component {
     constructor() {

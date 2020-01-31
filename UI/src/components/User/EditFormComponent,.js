@@ -14,19 +14,24 @@ const EditFormComponent = props => {
                     <form onSubmit={props.onSubmit}>
                         <div className="form-group">
                             <label>Vardas:</label>
-                            <input type="text" className="form-control" name="name" value={props.name} onChange={props.onChange} placeholder="Vardas" required />
+                            <input type="text" className="form-control"
+                                name="name" value={props.name} onChange={props.onChange} placeholder="Vardas" required />
+
                         </div>
                         <div className="form-group">
                             <label>Pavardė:</label>
-                            <input type="text" className="form-control" name="surname" value={props.surname} onChange={props.onChange} placeholder="Pavardė" required />
+                            <input type="text" className="form-control"
+                                name="surname" value={props.surname} onChange={props.onChange} placeholder="Pavardė" required />
                         </div>
                         <div className="form-group">
                             <label>Vartotojo vardas:</label>
-                            <input type="text" className="form-control" name="username" value={props.username} onChange={props.onChange} placeholder="Vartotojo vardas" required />
+                            <input type="text" className="form-control"
+                                name="username" value={props.username} onChange={props.onChange} placeholder="Vartotojo vardas" required />
                         </div>
                         <div className="form-group">
                             <label>Slaptažodis:</label>
-                            <input type="password" className="form-control" name="password" value={props.password} onChange={props.onChange} placeholder="Slaptažodis" required />
+                            <input type="password" className="form-control"
+                                name="password" value={props.password} onChange={props.onChange} placeholder="Slaptažodis" required />
                         </div>
                         <div className="form-group">
                             <label>
