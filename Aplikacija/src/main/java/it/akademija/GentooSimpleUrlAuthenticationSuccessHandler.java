@@ -39,7 +39,7 @@ public class GentooSimpleUrlAuthenticationSuccessHandler implements Authenticati
 				.print("{\"username\": \"" + SecurityContextHolder.getContext().getAuthentication().getName() + "\"}");
 
 		if (response.isCommitted()) {
-
+			System.out.println();
 			return;
 		}
 

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useMyData } from "../context";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 
 axios.defaults.withCredentials = true;
-export default function Login() {
+const Login = withRouter(({ history, ...props }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,6 +19,9 @@ export default function Login() {
       })
       .then(resp => {
         console.log("user logged in!");
+        alert("Laba diena");
+        history.push("/admin");
+        // return <Redirect to="/admin" />;
       })
       .catch(e => {
         console.log(e);
@@ -62,4 +65,6 @@ export default function Login() {
       <div className="col-3"></div>
     </div>
   );
-}
+});
+
+export default Login;
