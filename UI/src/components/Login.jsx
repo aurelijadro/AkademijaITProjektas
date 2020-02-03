@@ -18,10 +18,10 @@ const Login = withRouter(({ history, ...props }) => {
         headers: { "Content-type": "application/x-www-form-urlencoded" }
       })
       .then(resp => {
-        console.log("user logged in!");
-        alert("Laba diena");
-        history.push("/admin");
-        // return <Redirect to="/admin" />;
+        // console.log(resp.data);
+        const role = resp.data.role.toLowerCase();
+
+        history.push("/" + role);
       })
       .catch(e => {
         console.log(e);

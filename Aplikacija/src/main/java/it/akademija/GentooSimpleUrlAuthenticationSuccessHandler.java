@@ -35,6 +35,7 @@ public class GentooSimpleUrlAuthenticationSuccessHandler implements Authenticati
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 		response.setHeader("Content-Type", "application/json;charset=UTF-8");
+		response.setHeader("Role", targetUrl);
 		response.getWriter()
 				.print("{\"username\": \"" + SecurityContextHolder.getContext().getAuthentication().getName() + "\"}");
 
