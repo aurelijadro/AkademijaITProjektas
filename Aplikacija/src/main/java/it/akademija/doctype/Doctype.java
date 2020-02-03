@@ -13,7 +13,7 @@ public class Doctype {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	public Long id;
+	private Long id;
 	
 	@NotNull
 	@Length(min = 1, max = 100)

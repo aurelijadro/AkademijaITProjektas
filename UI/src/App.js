@@ -14,6 +14,9 @@ import CreateUserForm from "./components/User/CreateUserForm";
 import EditUserForm from "./non-used-components/EditUserForm";
 import EditFormContainer from "./components/User/EditFormContainer";
 import EditDoctypeFormContainer from "./components/Doctype/EditDoctypeFormContainer";
+import AddDoctypeFormContainer from "./components/Doctype/AddDoctypeFormContainer";
+import UserDashboard from "./components/UserDashboard";
+import MainDocumentList from "./components/Document/MainDocumentList";
 
 // function ProductPage() {
 //   const appData = useContext(AppDataContext);
@@ -74,7 +77,10 @@ function App() {
           <Route exact path="/admin/users/edit/:username" component={EditFormContainer} />
           <Route exact path="/admin/groups" component={GroupList} />
           <Route exact path="/admin/doctypes" component={DocTypeList} />
+          <Route exact path="/admin/doctypes/add" component={AddDoctypeFormContainer} />
           <Route exact path="/admin/doctypes/edit/:title" component={EditDoctypeFormContainer} />
+          <Route exact path="/user" component={UserDashboard} />
+          <Route exact path="/user/documents/non-submited" component={MainDocumentList} />
         </Switch>
       </div>
     </AppDataContext.Provider>

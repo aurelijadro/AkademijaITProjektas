@@ -14,7 +14,7 @@ const EditDoctypeFormComponent = props => {
                     <form onSubmit={props.onSubmit}>
                         <div className="form-group">
                             <label>Dokumento pavadinimas:</label>
-                            <input type="text" className="form-control" name="name" value={props.title} onChange={props.onChange} placeholder="Pavadinimas" required />
+                            <input type="text" className="form-control" name="title" value={props.title} onChange={props.onChange} placeholder="Pavadinimas" required />
                         </div>
                         <button className="btn btn-primary" type="submit">Išsaugoti</button>
                         <Link to="/admin/doctypes"><button className="btn btn-primary" onClick={props.onBack}>Grįžti į dokumentų tipų sąrašą</button></Link>

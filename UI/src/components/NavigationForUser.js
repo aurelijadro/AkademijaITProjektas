@@ -1,22 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-var NavigationForAdmin = (props) => {
+var NavigationForUser = (props) => {
     return (
         <nav id="navbar" className="navbar navbar-expand-sm  navbar-light bg-dark">
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item">
-                        <Link to="/admin" className="nav-link">Pagrindinis</Link>
+                        <Link to="/user" className="nav-link">Pagrindinis</Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/admin/users/add" className="nav-link">Naujas vartotojas</Link>
+                        <Link to="/user/documents/add" className="nav-link">Sukurti naują dokumentą</Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/admin/groups/add" className="nav-link">Nauja grupė</Link>
+                        <Link to="/user/documents/non-submited" className="nav-link">Sukurtų dokumentų sąrašas</Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/admin/doctypes/add" className="nav-link">Naujas dokumentų tipas</Link>
+                        <Link to="/user/documents/submited" className="nav-link">Pateiktų dokumentų sąrašas</Link>
                     </li>
                 </ul>
                 <Link to="/">
@@ -27,4 +27,4 @@ var NavigationForAdmin = (props) => {
     );
 }
 
-export default NavigationForAdmin;
+export default NavigationForUser;

@@ -1,5 +1,5 @@
 import React from "react";
-import EditFormComponent from "./EditFormComponent,";
+import EditFormComponent from "../components/EditFormComponent,";
 
 const EditFormPresentation = props => {
     return (
