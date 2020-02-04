@@ -9,7 +9,7 @@ class GroupList extends Component {
         super();
         this.state = { groups: [] };
         axios
-            .get("http://localhost:8080/api/groups")
+            .get("http://localhost:8081/api/groups")
             .then(response => {
                 this.setState({ groups: response.data });
             })

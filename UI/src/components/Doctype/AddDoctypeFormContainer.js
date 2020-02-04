@@ -21,7 +21,7 @@ class AddDoctypeFormContainer extends Component {
             title: this.state.title,
         }
         axios
-            .post("http://localhost:8080/api/doctypes", data)
+            .post("http://localhost:8081/api/doctypes", data)
             .then((response) => {
                 this.props.history.push("/admin/doctypes")
             })

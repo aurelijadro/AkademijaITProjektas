@@ -9,7 +9,7 @@ class DocTypeList extends Component {
         super();
         this.state = { doctypes: [] };
         axios
-            .get("http://localhost:8080/api/doctypes")
+            .get("http://localhost:8081/api/doctypes")
             .then(response => {
                 this.setState({ doctypes: response.data });
             })

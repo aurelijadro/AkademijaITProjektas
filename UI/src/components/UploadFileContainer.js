@@ -17,7 +17,7 @@ class UploadFileContainer extends Component {
         for (let i = 0; i < e.target.files.length; i++) {
             formData.append('file', e.target.files[i]);
         }
-        axios.post("http://localhost:8080/api/documents/upload", formData)
+        axios.post("http://localhost:8081/api/documents/upload", formData)
             .then(res => {
                 console.log(res.data);
                 alert("File uploaded succesfully.")

@@ -17,7 +17,7 @@ class EditDoctypeFormContainer extends Component {
     getDoctype = () => {
         axios
             .get(
-                "http://localhost:8080/api/doctypes/" + this.props.match.params.title
+                "http://localhost:8081/api/doctypes/" + this.props.match.params.title
             )
             .then(response => {
                 this.setState(response.data);
@@ -38,7 +38,7 @@ class EditDoctypeFormContainer extends Component {
         })
         axios
             .put(
-                "http://localhost:8080/api/doctypes/" + this.props.match.params.title,
+                "http://localhost:8081/api/doctypes/" + this.props.match.params.title,
                 {
                     title: this.state.title
 

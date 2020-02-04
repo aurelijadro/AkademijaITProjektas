@@ -9,7 +9,7 @@ class UserList extends Component {
         super();
         this.state = { users: [] };
         axios
-            .get("http://localhost:8080/api/users")
+            .get("http://localhost:8081/api/users")
             .then(response => {
                 this.setState({ users: response.data });
             })

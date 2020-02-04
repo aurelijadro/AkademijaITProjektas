@@ -9,7 +9,7 @@ class MainDocumentListForDashboard extends Component {
         super();
         this.state = { documents: [] };
         axios
-            .get("http://localhost:8080/api/documents")
+            .get("http://localhost:8081/api/documents")
             .then(response => {
                 this.setState({ documents: response.data });
             })

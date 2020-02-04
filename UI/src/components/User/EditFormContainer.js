@@ -21,7 +21,7 @@ class EditFormContainer extends Component {
     getUser = () => {
         axios
             .get(
-                "http://localhost:8080/api/users/" + this.props.match.params.username
+                "http://localhost:8081/api/users/" + this.props.match.params.username
             )
             .then(response => {
                 this.setState(response.data);
@@ -38,16 +38,9 @@ class EditFormContainer extends Component {
 
     onSubmit = event => {
         event.preventDefault();
-        console.log({
-            name: this.state.name,
-            surname: this.state.surname,
-            username: this.state.username,
-            password: this.state.password,
-            role: this.state.role
-        })
         axios
             .put(
-                "http://localhost:8080/api/users/" + this.props.match.params.username,
+                "http://localhost:8081/api/users/" + this.props.match.params.username,
                 {
                     name: this.state.name,
                     surname: this.state.surname,

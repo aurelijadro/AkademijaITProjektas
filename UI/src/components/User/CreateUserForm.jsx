@@ -10,7 +10,7 @@ class CreateUserForm extends Component {
       username: '',
       password: '',
       role: 'USER',
-      url: "http://localhost:8080",
+      url: "http://localhost:8081",
       nameError: '',
       surnameError: '',
       usernameError: '',
