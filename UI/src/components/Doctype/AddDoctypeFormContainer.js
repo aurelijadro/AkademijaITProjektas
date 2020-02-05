@@ -26,7 +26,6 @@ class AddDoctypeFormContainer extends Component {
                 this.props.history.push("/admin/doctypes")
             })
             .catch((error) => {
-                console.log(error);
             })
         event.preventDefault();
     }

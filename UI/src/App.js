@@ -1,71 +1,23 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import Login from "./components/Login";
 import "./App.css";
-import { serverDovanaToClientDovana } from "./model/dovanos";
 import { Switch, Route } from "react-router";
-import { AppDataContext } from "./context";
 import Header from "./components/Header";
 import AdminDashboard from "./components/AdminDashboard";
 import UserList from "./components/User/UserList";
 import GroupList from "./components/Group/GroupList";
 import DocTypeList from "./components/Doctype/DocTypeList";
 import CreateUserForm from "./components/User/CreateUserForm";
-import EditUserForm from "./non-used-components/EditUserForm";
 import EditFormContainer from "./components/User/EditFormContainer";
 import EditDoctypeFormContainer from "./components/Doctype/EditDoctypeFormContainer";
 import AddDoctypeFormContainer from "./components/Doctype/AddDoctypeFormContainer";
 import UserDashboard from "./components/UserDashboard";
 import MainDocumentList from "./components/Document/MainDocumentList";
 
-// function ProductPage() {
-//   const appData = useContext(AppDataContext);
-//   return <div>Show a product: {appData.products.join(", ")}</div>;
-// }
-
 function App() {
-  const [dovanos, setDovanos] = useState("loading");
-  const [letters, setLetters] = useState("loading");
-
-  const url = "http://localhost:8080";
-  //const url = "http://localhost:8081/dovanos";
-
-  const refreshProducts = () => {
-    fetch(url + "/api/dovanos")
-      .then(res => {
-        if (!res.ok) throw new Error(`response status ${res.status}`);
-        return res.json();
-      })
-      .then(dovanos => {
-        setDovanos(dovanos.map(serverDovanaToClientDovana));
-      });
-  };
-
-  // const refreshLetters = () => {
-  //   fetch(url + "/api/letters")
-  //     .then(res => {
-  //       if (!res.ok) throw new Error(`response status ${res.status}`);
-  //       return res.json();
-  //     })
-  //     .then(letters => {
-  //       setLetters(letters.map(serverLetterToClientLetter));
-  //     });
-  // };
-
-  const appData = {
-    dovanos: dovanos,
-    refreshProducts: refreshProducts,
-    setDovanos: setDovanos,
-    letters: letters,
-    // refreshLetters: refreshLetters,
-    setLetters: setLetters
-  };
-
-  // useEffect(refreshProducts, []);
-  // useEffect(refreshLetters, []);
 
   return (
-    <AppDataContext.Provider value={appData}>
+    <div>
       <Header />
       <Route exact path="/" component={Login} />
 
@@ -83,7 +35,7 @@ function App() {
           <Route exact path="/user/documents/non-submited" component={MainDocumentList} />
         </Switch>
       </div>
-    </AppDataContext.Provider>
+    </div>
   );
 }
 

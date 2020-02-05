@@ -11,16 +11,13 @@ class UploadFileContainer extends Component {
     }
 
     onFileChangeHandler = (e) => {
-        // e.preventDefault();
-        // this.setState({ selectedFile: e.target.files[0] });
         const formData = new FormData();
         for (let i = 0; i < e.target.files.length; i++) {
             formData.append('file', e.target.files[i]);
         }
         axios.post("http://localhost:8081/api/documents/upload", formData)
             .then(res => {
-                console.log(res.data);
-                alert("File uploaded succesfully.")
+                alert("Įkėlimas sėkmingas.")
             })
 
     };

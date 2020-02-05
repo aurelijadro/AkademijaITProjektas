@@ -14,7 +14,6 @@ class GroupList extends Component {
                 this.setState({ groups: response.data });
             })
             .catch(error => {
-                console.log(error);
             });
     }
 

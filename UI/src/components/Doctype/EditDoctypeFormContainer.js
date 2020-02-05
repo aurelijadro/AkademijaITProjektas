@@ -22,7 +22,8 @@ class EditDoctypeFormContainer extends Component {
             .then(response => {
                 this.setState(response.data);
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+            });
     };
 
     onChange = (e) => {
@@ -33,22 +34,17 @@ class EditDoctypeFormContainer extends Component {
 
     onSubmit = event => {
         event.preventDefault();
-        console.log({
-            title: this.state.title
-        })
         axios
             .put(
                 "http://localhost:8081/api/doctypes/" + this.props.match.params.title,
                 {
                     title: this.state.title
-
                 }
             )
             .then(() => {
                 this.props.history.push("/admin/doctypes");
             })
             .catch(function (error) {
-                console.log(error);
             });
     };
 

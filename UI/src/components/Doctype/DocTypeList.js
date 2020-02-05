@@ -14,7 +14,6 @@ class DocTypeList extends Component {
                 this.setState({ doctypes: response.data });
             })
             .catch(error => {
-                console.log(error);
             });
     }
 

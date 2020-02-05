@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
 import MainDocumentComponent from './MainDocumentComponent';
-import { Link } from 'react-router-dom';
-import NavigationForUser from "../NavigationForUser";
 
 class MainDocumentListForDashboard extends Component {
     constructor() {
@@ -14,7 +12,6 @@ class MainDocumentListForDashboard extends Component {
                 this.setState({ documents: response.data });
             })
             .catch(error => {
-                console.log(error);
             });
     }
 

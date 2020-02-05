@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useMyData } from "../context";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 axios.defaults.withCredentials = true;
 const Login = withRouter(({ history, ...props }) => {
@@ -18,13 +17,10 @@ const Login = withRouter(({ history, ...props }) => {
         headers: { "Content-type": "application/x-www-form-urlencoded" }
       })
       .then(resp => {
-        // console.log(resp.data);
         const role = resp.data.role.toLowerCase();
-
         history.push("/" + role);
       })
       .catch(e => {
-        console.log(e);
       });
     event.preventDefault();
   };

@@ -87,7 +87,6 @@ class CreateUserForm extends Component {
         this.props.history.push("/admin/users")
       })
       .catch(function (error) {
-        console.log(error);
       });
   }
 

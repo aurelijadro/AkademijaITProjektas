@@ -27,7 +27,8 @@ class EditFormContainer extends Component {
                 this.setState(response.data);
                 this.setState({ password: "" })
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+            });
     };
 
     onChange = (e) => {
@@ -55,7 +56,6 @@ class EditFormContainer extends Component {
                 this.props.history.push("/admin/users");
             })
             .catch(function (error) {
-                console.log(error);
             });
     };
 
