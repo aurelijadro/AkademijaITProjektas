@@ -23,6 +23,7 @@ class EditDoctypeFormContainer extends Component {
                 this.setState(response.data);
             })
             .catch(error => {
+                alert("Tokio dokumentų tipo nėra.");
             });
     };
 
@@ -42,9 +43,11 @@ class EditDoctypeFormContainer extends Component {
                 }
             )
             .then(() => {
+                alert("Dokumentų tipo duomenys atnaujinti sėkmingai.")
                 this.props.history.push("/admin/doctypes");
             })
             .catch(function (error) {
+                alert("Dokumentų tipo duomenų išsaugoti nepavyko. Bandykite dar kartą.")
             });
     };
 

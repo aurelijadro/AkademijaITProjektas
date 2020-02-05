@@ -8,17 +8,26 @@ class DocTypeList extends Component {
     constructor() {
         super();
         this.state = { doctypes: [] };
+
+    }
+
+    componentDidMount() {
+        this.getDoctype();
+    }
+
+    getDoctype = () => {
         axios
             .get("http://localhost:8081/api/doctypes")
             .then(response => {
                 this.setState({ doctypes: response.data });
             })
             .catch(error => {
+                alert("Nėra galimybės pateikti duomenų apie dokumentų tipus.");
             });
     }
 
     render() {
-        var doctype = this.state.doctypes.map((doctype, index) => {
+        let doctype = this.state.doctypes.map((doctype, index) => {
             return (
                 <DocTypeComponent
                     key={index}
