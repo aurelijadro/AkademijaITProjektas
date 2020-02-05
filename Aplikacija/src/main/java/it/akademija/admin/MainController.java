@@ -2,6 +2,8 @@ package it.akademija.admin;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,10 +18,13 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class MainController {
 
+	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+	
 	@Secured({ "ROLE_ADMIN" })
 	@RequestMapping("/admin")
 	public ModelAndView redirectWithUsingForwardPrefixAdmin(ModelMap model) {
 		// model.addAttribute("attribute", "forwardWithForwardPrefix");
+		logger.debug("User ({}) logged as admin", model);
 		return new ModelAndView("forward:/", model);
 	}
 
@@ -27,6 +32,7 @@ public class MainController {
 	@RequestMapping("/user")
 	public ModelAndView redirectWithUsingForwardPrefixUser(ModelMap model) {
 		// model.addAttribute("attribute", "forwardWithForwardPrefix");
+		logger.debug("User ({}) logged as user");
 		return new ModelAndView("forward:/", model);
 	}
 

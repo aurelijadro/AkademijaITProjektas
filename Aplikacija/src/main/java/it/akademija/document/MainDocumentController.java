@@ -32,6 +32,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import it.akademija.doctype.DoctypeController;
 
 @RestController
 @Api(value = "document")
@@ -61,6 +62,7 @@ public class MainDocumentController {
 				.path("/files/download/")
 				.path(fileName)
 				.toUriString();
+		logger.debug("File ({}) was downloaded.", fileName);
 		return ResponseEntity.ok(fileDownloadUri);
 	}
 	
@@ -70,6 +72,7 @@ public class MainDocumentController {
 		Arrays.asList(files)
 		.stream()
 		.forEach(file -> fileDownloadUrls.add(uploadToLocalFileSystem(file).getBody()));
+		logger.debug("File ({}) was downloaded.", files);
 		return ResponseEntity.ok(fileDownloadUrls);
 	}
 	
@@ -85,9 +88,11 @@ public class MainDocumentController {
 			HttpServletResponse response) {
 		MainDocument document = mainDocService.findDocumentById(id);
 		if (document == null) {
+			logger.debug("Document (ID{}) was not found.", document.getId());
 			response.setStatus(404);
 			return null;
 		}
+		logger.debug("Document (ID{}) was found.", document.getId());
 		return mainDocService.findDocumentById(id);
 	}
 
@@ -103,15 +108,18 @@ public class MainDocumentController {
 			HttpServletResponse response) {
 		MainDocument document = mainDocService.findDocumentById(id);
 		if (document == null) {
+			logger.debug("Document (ID{}) failed to update.", document.getId());
 			response.setStatus(404);
 			return null;
 		}
+		logger.debug("Document (ID{}) was updated.", document.getId());
 		return mainDocService.updateDocument(id, newDocument);
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete document", notes = "Deletes document by id")
 	public void deleteDocument(@PathVariable Long id) {
+		logger.debug("Document was deleted.");
 		mainDocService.deleteDocument(id);
 	}
 

@@ -2,6 +2,8 @@ package it.akademija.group;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +16,8 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "group")
 @RequestMapping(value = "/api/groups")
 public class GroupController {
+	
+	
 	
 	private GroupService groupService;
 

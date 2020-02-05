@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,8 @@ import io.swagger.annotations.ApiParam;
 @Api(value = "doctype")
 @RequestMapping(value = "/api/doctypes")
 public class DoctypeController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(DoctypeController.class);
 
 	private DoctypeService doctypeService;
 
@@ -40,8 +44,10 @@ public class DoctypeController {
 		Doctype doctype = doctypeService.findDoctypeByTitle(title);
 		if (doctype == null) {
 			response.setStatus(404);
+			logger.debug("Doctype ({}) was not found.", doctype.getTitle());
 			return null;
 		}
+		logger.debug("Doctype ({}) was found.", doctype.getTitle());
 		return doctypeService.findDoctypeByTitle(title);
 	}
 	
@@ -50,9 +56,11 @@ public class DoctypeController {
 	public Doctype addNewDoctype(@RequestBody final NewDoctype newDoctype, HttpServletResponse response) {
 		if (doctypeService.findDoctypeByTitle(newDoctype.getTitle()) == null) {
 			response.setStatus(200);
+			logger.debug("Doctype ({}) was added.", newDoctype.getTitle());
 			return doctypeService.addDoctype(newDoctype);
 		}
 		response.setStatus(404);
+		logger.debug("Failed to add Doctype ($title{}).", newDoctype.getTitle());
 		return null;
 
 	}
@@ -64,8 +72,10 @@ public class DoctypeController {
 		Doctype doctype = doctypeService.findDoctypeByTitle(title);
 		if (doctype == null) {
 			response.setStatus(404);
+			logger.debug("Failed to update Doctype ({}).", newDoctype.getTitle());
 			return null;
 		}
+		logger.debug("Doctype ({}) was updated.", newDoctype.getTitle());
 		return doctypeService.updateDoctype(title, newDoctype);
 	}
 }

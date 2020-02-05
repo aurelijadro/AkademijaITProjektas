@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,8 @@ import io.swagger.annotations.ApiParam;
 @Api(value = "user")
 @RequestMapping(value = "/api/users")
 public class UserController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	private UserService userService;
 
@@ -40,9 +44,11 @@ public class UserController {
 			HttpServletResponse response) {
 		User user = userService.findByUsername(username);
 		if (user == null) {
+			logger.debug("User ({}) was not found.", user.getUsername() );
 			response.setStatus(404);
 			return null;
 		}
+		logger.debug("User (${}) was found.", user.getUsername() );
 		return userService.findByUsername(username);
 	}
 
@@ -63,9 +69,11 @@ public class UserController {
 	public User addNewUser(@RequestBody final NewUser newUser, HttpServletResponse response) {
 		if (userService.findByUsername(newUser.getUsername()) == null) {
 			response.setStatus(200);
+			logger.debug("New user ({}) was created.", newUser.getUsername() );
 			return userService.addUser(newUser);
 		}
 		response.setStatus(404);
+		logger.debug("Failed to create new user ({}).", newUser.getUsername() );
 		return null;
 
 	}
@@ -76,9 +84,11 @@ public class UserController {
 			HttpServletResponse response) {
 		User user = userService.findByUsername(username);
 		if (user == null) {
+			logger.debug("User ({}) was not found.", user.getUsername() );
 			response.setStatus(404);
 			return null;
 		}
+		logger.debug("New user ({}) was updated.", user.getUsername() );
 		return userService.updateUser(username, newUser);
 	}
 

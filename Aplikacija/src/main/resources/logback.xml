@@ -1,45 +1,79 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-
-	<property name="LOGS" value="./logs" />
-
-	<appender name="Console"
-		class="ch.qos.logback.core.ConsoleAppender">
-		<layout class="ch.qos.logback.classic.PatternLayout">
-			<Pattern>
-				%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)]
-				%yellow(%C{1.}): %msg%n%throwable
-			</Pattern>
-		</layout>
-	</appender>
-
-	<appender name="RollingFile"
+<configuration scan="true">
+	<contextName>GENTOO</contextName>
+	<!-- <appender name="FILE" class="ch.qos.logback.core.FileAppender"> <file>Gentoo.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"> <pattern>%date
+		%d{HH:mm:ss} %level [%file:%line] - %msg%n %contextName</pattern> </encoder>
+		</appender> -->
+	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOGS}/spring-boot-logger.log</file>
+		<file>Gentoo-rolling.log</file>
 		<encoder
 			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-			<Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+			<Pattern>%date <!-- %d{HH:mm:ss} -->
+				%level [%file:%line] - %msg%n %contextName</Pattern>
 		</encoder>
-
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${LOGS}/archived/spring-boot-logger-%d{yyyy-MM-dd}.%i.log
-			</fileNamePattern>
-			<timeBasedFileNamingAndTriggeringPolicy
-				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<maxFileSize>10MB</maxFileSize>
-			</timeBasedFileNamingAndTriggeringPolicy>
+			<FileNamePattern>Gentoo-rolling.%d{yyyy-MM-dd}.log
+			</FileNamePattern>
 		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+  <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+					<!-- <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern> -->
+			<Pattern>%date <!-- %d{HH:mm:ss} --> %level [%file:%line] - %msg%n %contextName</Pattern>
+		</encoder>
 	</appender>
-
-	<root level="info">
-		<appender-ref ref="Console" />
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%d{HH:mm:ss} %contextName %level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<root level="OFF">
+		<appender-ref ref="STDOUT" />
 	</root>
-
-	<logger name="ltu.dovanos.service.BookService" level="info">
-		<appender-ref ref="RollingFile" />
-	<!-- 	<appender-ref ref="Console" /> -->
+	
+	<logger name="it.akademija.doctype.DoctypeService" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="FILE" />
 	</logger>
-
-
+	
+	<logger name="it.akademija.doctype.DoctypeController" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="it.akademija.document.MainDoctypeService" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="it.akademija.group.GroupController" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="it.akademija.user.UserController" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="it.akademija.user.UserService" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="FILE" />
+	</logger>
+	
+	<logger name="it.akademija.admin.MainController" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="FILE" />
+	</logger>
+		<logger name="it.akademija.LogTest" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="FILE" />
+	</logger>
+	
+	
+	
+	
 </configuration>
