@@ -6,17 +6,25 @@ class MainDocumentListForDashboard extends Component {
     constructor() {
         super();
         this.state = { documents: [] };
+    }
+
+    componentDidMount() {
+        this.getDocuments();
+    }
+
+    getDocuments = () => {
         axios
             .get("http://localhost:8081/api/documents")
             .then(response => {
                 this.setState({ documents: response.data });
             })
             .catch(error => {
+                alert("Nėra galimybės pateikti duomenų apie dokumentus.")
             });
     }
 
     render() {
-        var document = this.state.documents.map((document, index) => {
+        let document = this.state.documents.map((document, index) => {
             return (
                 <MainDocumentComponent
                     key={index}

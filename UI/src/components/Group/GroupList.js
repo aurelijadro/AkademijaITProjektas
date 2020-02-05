@@ -7,18 +7,28 @@ import NavigationForAdmin from '../NavigationForAdmin';
 class GroupList extends Component {
     constructor() {
         super();
-        this.state = { groups: [] };
+        this.state = {
+            groups: []
+        };
+    }
+
+    componentDidMount() {
+        this.getGroups();
+    }
+
+    getGroups = () => {
         axios
             .get("http://localhost:8081/api/groups")
             .then(response => {
                 this.setState({ groups: response.data });
             })
             .catch(error => {
+                alert("Nėra galimybės pateikti duomenų apie grupes.");
             });
     }
 
     render() {
-        var group = this.state.groups.map((group, index) => {
+        let group = this.state.groups.map((group, index) => {
             return (
                 <GroupComponent
                     key={index}

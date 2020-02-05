@@ -28,6 +28,7 @@ class EditFormContainer extends Component {
                 this.setState({ password: "" })
             })
             .catch(error => {
+                alert("Nėra galimybės pateikti duomenų apie vartotoją.")
             });
     };
 
@@ -56,6 +57,7 @@ class EditFormContainer extends Component {
                 this.props.history.push("/admin/users");
             })
             .catch(function (error) {
+                alert("Toks vartotojo vardas jau egzistuoja.")
             });
     };
 

@@ -21,6 +21,7 @@ const Login = withRouter(({ history, ...props }) => {
         history.push("/" + role);
       })
       .catch(e => {
+        alert("Neteisingai suvesti duomenys. Bandykite dar kartą.")
       });
     event.preventDefault();
   };

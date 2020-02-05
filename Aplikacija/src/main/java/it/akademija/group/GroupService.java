@@ -18,7 +18,7 @@ public class GroupService {
 	}
 	
 	@Transactional
-	public List<Group> getGroups(){
+	public List<UsersGroup> getGroups(){
 		return groupRepository.findAll();
 	}
 }

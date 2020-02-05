@@ -23,9 +23,11 @@ class AddDoctypeFormContainer extends Component {
         axios
             .post("http://localhost:8081/api/doctypes", data)
             .then((response) => {
+                alert("Jūs sėkmingai sukūrėte dokumentų tipą: " + this.state.title);
                 this.props.history.push("/admin/doctypes")
             })
             .catch((error) => {
+                alert("Dokumentų tipo sukurti nepavyko.")
             })
         event.preventDefault();
     }

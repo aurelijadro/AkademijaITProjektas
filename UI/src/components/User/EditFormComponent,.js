@@ -39,7 +39,6 @@ const EditFormComponent = props => {
                                 <select name="role" value={props.role} onChange={props.onChange}>
                                     <option value="ADMIN">ADMIN</option>
                                     <option value="USER">USER</option>
-                                    <option value="MODERATOR">MODERATOR</option>
                                 </select>
                             </label>
                         </div>
