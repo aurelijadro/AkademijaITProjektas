@@ -51,6 +51,7 @@ class EditFormContainer extends Component {
                 }
             )
             .then(() => {
+                alert("Jūs sėkmingai pakeitėte vartotojo duomenis.");
                 this.props.history.push("/admin/users");
             })
             .catch(function (error) {

@@ -31,7 +31,7 @@ const EditFormComponent = props => {
                         <div className="form-group">
                             <label>Slaptažodis:</label>
                             <input type="password" className="form-control"
-                                name="password" value={props.password} onChange={props.onChange} placeholder="Slaptažodis" required />
+                                name="password" value={props.password} onChange={props.onChange} placeholder="********" required />
                         </div>
                         <div className="form-group">
                             <label>

@@ -17,29 +17,35 @@ class CreateUserForm extends Component {
       passwordError: ''
     };
   }
+
   handleNameChange = e => {
     this.setState({ name: e.target.value }, () => {
       this.validateName();
     });
   };
+
   handleSurnameChange = e => {
     this.setState({ surname: e.target.value }, () => {
       this.validateSurname();
     });
   };
+
   handleUsernameChange = e => {
     this.setState({ username: e.target.value }, () => {
       this.validateUsername();
     });
   };
+
   handlePasswordChange = e => {
     this.setState({ password: e.target.value }, () => {
       this.validatePassword();
     });
   };
+
   handleRoleChange = e => {
     this.setState({ role: e.target.value });
   };
+
   validateName = () => {
     const { name } = this.state;
     this.setState({
@@ -47,6 +53,7 @@ class CreateUserForm extends Component {
         name.length >= 3 ? null : 'Vardas turi būti sudarytas iš 3 arba daugiau simbolių'
     });
   }
+
   validateSurname = () => {
     const { surname } = this.state;
     this.setState({
@@ -54,6 +61,7 @@ class CreateUserForm extends Component {
         surname.length >= 3 ? null : 'Pavardė turi būti sudarytas iš 3 arba daugiau simbolių'
     });
   }
+
   validateUsername = () => {
     const { username } = this.state;
     this.setState({
@@ -61,6 +69,7 @@ class CreateUserForm extends Component {
         username.length >= 3 ? null : 'Vartotojo vardas turi būti sudarytas iš 3 arba daugiau simbolių'
     });
   }
+
   validatePassword = () => {
     const { password } = this.state;
     this.setState({
@@ -68,15 +77,20 @@ class CreateUserForm extends Component {
         password.length >= 8 && password.length <= 32 ? null : 'Slaptažodis turi būti sudarytas nuo 8 iki 32 simbolių'
     });
   }
+
   onSubmit = (e) => {
     e.preventDefault();
     const { name, surname, username, password, role, url } = this.state;
-    console.log({ role });
     axios.post(`${url}/api/users`, { name, surname, username, password, role })
       .then((result) => {
+        alert("Jūs sėkmingai sukūrėte naują vartotoją: + \n + Vardas: " + this.state.name + "\n + Pavardė: " + this.state.surname + "\n + Vartotojo vardas: " + this.state.username);
         this.props.history.push("/admin/users")
+      })
+      .catch(function (error) {
+        console.log(error);
       });
   }
+
   render() {
     const { name, surname, username, password, role } = this.state;
     const isEnabled = password.length >= 8 && password.length <= 32 && name.length >= 3 && surname.length >= 3 && username.length >= 3;
