@@ -37,26 +37,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
-//auth.inMemoryAuthentication().withUser("uu")
-// .password("pp").roles("USER", "CALC");
 	}
-
-//	@Bean
-//	public AuthenticationSuccessHandler gentooAuthenticationSuccessHandler() {
-//		return new GentooSimpleUrlAuthenticationSuccessHandler();
-//	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-				// be saugumo UI dalis ir swaggeris
-				.antMatchers("/", "/api/**", "/swagger-ui.html", "console").permitAll()
-				// visi /api/ saugus (dar galima .anyRequest() )
-				.antMatchers("/admin").hasRole("ADMIN").antMatchers("/user").authenticated().and().formLogin() // leidziam
-
-				// login
-				// prisijungus
-//				.successHandler(gentooAuthenticationSuccessHandler())
+		http.authorizeRequests().antMatchers("/", "/api/**", "/swagger-ui.html", "console").permitAll()
+				.antMatchers("/admin").hasRole("ADMIN").antMatchers("/user").authenticated().and().formLogin()
 				.successHandler(new AuthenticationSuccessHandler() {
 					@Override
 					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -72,20 +58,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 												SecurityContextHolder.getContext().getAuthentication().getName())
 												.getRole()
 										+ "\"}");
-//						response.getWriter().print("{\"role\": \""
-//								+ userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getRole() + "\"}");
 					}
-				})
-				// esant blogiems user/pass
-				.failureHandler(new SimpleUrlAuthenticationFailureHandler()).loginPage("/login").permitAll() // jis jau
-																												// egzistuoja
-																												// !
-				.and().logout().permitAll() // leidziam /logout
-				.and().csrf().disable() // nenaudojam tokenu
-				// toliau forbidden klaidai
-				.exceptionHandling().authenticationEntryPoint(securityEntryPoint).and().headers().frameOptions()
-				.disable(); // H2 konsolei
+				}).failureHandler(new SimpleUrlAuthenticationFailureHandler()).loginPage("/login").permitAll().and()
+				.logout().permitAll().and().csrf().disable()
 
+				.exceptionHandling().authenticationEntryPoint(securityEntryPoint).and().headers().frameOptions()
+				.disable();
 	}
 
 }
