@@ -6,21 +6,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Group {
-	
+public class UsersGroup {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	private String title;
 
-	public Group(String title) {
-		super();
+	public UsersGroup(String title) {
 		this.title = title;
 	}
 
-	public Group() {
-		super();
+	public UsersGroup() {
 	}
 
 	public Long getId() {

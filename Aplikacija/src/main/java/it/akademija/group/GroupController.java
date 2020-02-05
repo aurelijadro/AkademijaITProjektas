@@ -25,7 +25,7 @@ public class GroupController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get groups", notes = "Returns all groups")
-	public List<Group> getGroups() {
+	public List<UsersGroup> getGroups() {
 		return groupService.getGroups();
 	}
 
