@@ -50,7 +50,7 @@ class CreateUserForm extends Component {
     const { name } = this.state;
     this.setState({
       nameError:
-        name.length >= 3 ? null : 'Vardas turi būti sudarytas iš 3 arba daugiau simbolių'
+        name.length >= 2 ? null : 'Vardas turi būti sudarytas iš 2 arba daugiau simbolių'
     });
   }
 
@@ -58,7 +58,7 @@ class CreateUserForm extends Component {
     const { surname } = this.state;
     this.setState({
       surnameError:
-        surname.length >= 3 ? null : 'Pavardė turi būti sudarytas iš 3 arba daugiau simbolių'
+        surname.length >= 2 ? null : 'Pavardė turi būti sudarytas iš 2 arba daugiau simbolių'
     });
   }
 
@@ -66,7 +66,7 @@ class CreateUserForm extends Component {
     const { username } = this.state;
     this.setState({
       usernameError:
-        username.length >= 3 ? null : 'Vartotojo vardas turi būti sudarytas iš 3 arba daugiau simbolių'
+        username.length >= 2 ? null : 'Vartotojo vardas turi būti sudarytas iš 2 arba daugiau simbolių'
     });
   }
 
@@ -83,16 +83,17 @@ class CreateUserForm extends Component {
     const { name, surname, username, password, role, url } = this.state;
     axios.post(`${url}/api/users`, { name, surname, username, password, role })
       .then((result) => {
-        alert("Jūs sėkmingai sukūrėte naują vartotoją: + \n + Vardas: " + this.state.name + "\n + Pavardė: " + this.state.surname + "\n + Vartotojo vardas: " + this.state.username);
+        alert("Jūs sėkmingai sukūrėte naują vartotoją: \n Vardas: " + this.state.name + "\n Pavardė: " + this.state.surname + "\n Vartotojo vardas: " + this.state.username);
         this.props.history.push("/admin/users")
       })
-      .catch(function (error) {
+      .catch(error => {
+        alert("Toks vartotojas jau egzistuoja.");
       });
   }
 
   render() {
     const { name, surname, username, password, role } = this.state;
-    const isEnabled = password.length >= 8 && password.length <= 32 && name.length >= 3 && surname.length >= 3 && username.length >= 3;
+    const isEnabled = password.length >= 8 && password.length <= 32 && name.length >= 2 && surname.length >= 2 && username.length >= 2;
     return (
       <div className="container">
         <div className="panel panel-default">
@@ -137,7 +138,6 @@ class CreateUserForm extends Component {
                   <select name="role" value={role} onChange={this.handleRoleChange}>
                     <option value="USER">USER</option>
                     <option value="ADMIN">ADMIN</option>
-                    <option value="MODERATOR">MODERATOR</option>
                   </select>
                 </label>
               </div>

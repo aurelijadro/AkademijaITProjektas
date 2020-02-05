@@ -8,17 +8,25 @@ class UserList extends Component {
     constructor() {
         super();
         this.state = { users: [] };
+    }
+
+    componentDidMount() {
+        this.getUsers();
+    }
+
+    getUsers = () => {
         axios
             .get("http://localhost:8081/api/users")
             .then(response => {
                 this.setState({ users: response.data });
             })
             .catch(error => {
+                alert("Nėra galimybės pateikti duomenų apie vartotojus.")
             });
     }
 
     render() {
-        var user = this.state.users.map((user, index) => {
+        let user = this.state.users.map((user, index) => {
             return (
                 <UserComponent
                     key={index}
