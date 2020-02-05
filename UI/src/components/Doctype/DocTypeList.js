@@ -12,10 +12,10 @@ class DocTypeList extends Component {
     }
 
     componentDidMount() {
-        this.getDoctype();
+        this.getDoctypes();
     }
 
-    getDoctype = () => {
+    getDoctypes = () => {
         axios
             .get("http://localhost:8081/api/doctypes")
             .then(response => {

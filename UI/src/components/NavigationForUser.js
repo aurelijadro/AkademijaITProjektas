@@ -2,7 +2,7 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 
-var NavigationForUser = withRouter(({ history, ...props }) => {
+const NavigationForUser = withRouter(({ history, ...props }) => {
   return (
     <nav id="navbar" className="navbar navbar-expand-sm  navbar-light bg-dark">
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
