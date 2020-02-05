@@ -17,16 +17,17 @@ import org.springframework.web.servlet.view.RedirectView;
 public class MainController {
 
 	@Secured({ "ROLE_ADMIN" })
-	@RequestMapping("/admin")
+	@RequestMapping(value = { "/admin", "admin/**"
+//			"users/add", "/admin", "/admin/users", "/admin/users/edit/*", "/admin/groups",
+//			"/admin/doctypes", "/admin/doctypes/add", "/admin/doctypes/edit/*" 
+	})
 	public ModelAndView redirectWithUsingForwardPrefixAdmin(ModelMap model) {
-		// model.addAttribute("attribute", "forwardWithForwardPrefix");
 		return new ModelAndView("forward:/", model);
 	}
 
 	@Secured({ "ROLE_USER" })
-	@RequestMapping("/user")
+	@RequestMapping("/user/**")
 	public ModelAndView redirectWithUsingForwardPrefixUser(ModelMap model) {
-		// model.addAttribute("attribute", "forwardWithForwardPrefix");
 		return new ModelAndView("forward:/", model);
 	}
 
