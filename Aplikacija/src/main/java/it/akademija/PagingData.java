@@ -10,7 +10,7 @@ public class PagingData {
 	private int limit;
 
 	public PagingData() {
-		this.limit = 5; // <numatytasis filtras>
+		this.limit = 5;
 	}
 
 	public int getLimit() {

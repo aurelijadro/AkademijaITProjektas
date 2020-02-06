@@ -1,1 +1,14 @@
-OO
+OO2020-02-06 09:41:47,087  DEBUG [UserController.java:72] - New user (admin) was created.
+ GENTOO2020-02-06 09:41:47,173  DEBUG [UserService.java:65] - New user (admin) was added.
+ GENTOO2020-02-06 09:41:55,086  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO2020-02-06 11:08:57,192  DEBUG [UserController.java:72] - New user (admin) was created.
+ GENTOO2020-02-06 11:08:57,277  DEBUG [UserService.java:65] - New user (admin) was added.
+ GENTOO2020-02-06 11:09:06,465  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO2020-02-06 11:11:53,580  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO2020-02-06 11:29:09,118  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO2020-02-06 11:35:38,711  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO2020-02-06 11:37:37,574  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO2020-02-06 11:39:50,767  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO2020-02-06 11:45:45,126  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO2020-02-06 11:47:03,868  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO
