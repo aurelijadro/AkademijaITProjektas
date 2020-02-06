@@ -1,1 +1,3 @@
-OO
+OO2020-02-06 08:48:09,942  DEBUG [UserController.java:72] - New user (Aurimasb) was created.
+ GENTOO2020-02-06 08:48:10,053  DEBUG [UserService.java:65] - New user (Aurimasb) was added.
+ GENTOO
