@@ -48,7 +48,7 @@ public class UserController {
 			response.setStatus(404);
 			return null;
 		}
-		logger.debug("User (${}) was found.", user.getUsername() );
+		logger.debug("User ({}) was found.", user.getUsername() );
 		return userService.findByUsername(username);
 	}
 
@@ -84,7 +84,7 @@ public class UserController {
 			HttpServletResponse response) {
 		User user = userService.findByUsername(username);
 		if (user == null) {
-			logger.debug("User ({}) was not found.", user.getUsername() );
+			logger.debug("User for update ({}) was not found.", user.getUsername() );
 			response.setStatus(404);
 			return null;
 		}

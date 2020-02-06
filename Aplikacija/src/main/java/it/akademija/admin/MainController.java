@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import it.akademija.user.UserController;;
 
 @Controller
 public class MainController {
@@ -27,7 +28,7 @@ public class MainController {
 	})
 	public ModelAndView redirectWithUsingForwardPrefixAdmin(ModelMap model) {
 		// model.addAttribute("attribute", "forwardWithForwardPrefix");
-		logger.debug("User ({}) logged as admin", model);
+		logger.debug("User logged as admin");
 		return new ModelAndView("forward:/", model);
 	}
 
@@ -35,7 +36,7 @@ public class MainController {
 	@RequestMapping("/user/**")
 	public ModelAndView redirectWithUsingForwardPrefixUser(ModelMap model) {
 		// model.addAttribute("attribute", "forwardWithForwardPrefix");
-		logger.debug("User ({}) logged as user");
+		logger.debug("User logged as user");
 		return new ModelAndView("forward:/", model);
 	}
 
