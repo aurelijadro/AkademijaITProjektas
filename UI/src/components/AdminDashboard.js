@@ -17,7 +17,7 @@ class AdminDashboard extends Component {
         <div className="container my-3">
           <div className="card-deck">
             <div className="card">
-              <div class="embed-responsive embed-responsive-16by9">
+              <div className="embed-responsive embed-responsive-16by9">
                 <img
                   src={user}
                   className="card-img-top embed-responsive-item"
@@ -43,7 +43,7 @@ class AdminDashboard extends Component {
               </div>
             </div>
             <div className="card">
-              <div class="embed-responsive embed-responsive-16by9">
+              <div className="embed-responsive embed-responsive-16by9">
                 <img
                   src={group}
                   className="card-img-top  embed-responsive-item"
@@ -69,7 +69,7 @@ class AdminDashboard extends Component {
               </div>
             </div>
             <div className="card">
-              <div class="embed-responsive embed-responsive-16by9">
+              <div className="embed-responsive embed-responsive-16by9">
                 <img
                   src={doctypes}
                   className="card-img-top embed-responsive-item"

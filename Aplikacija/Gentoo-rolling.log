@@ -65,4 +65,15 @@ OO2020-02-06 08:48:09,942  DEBUG [UserController.java:72] - New user (Aurimasb) 
  GENTOO2020-02-06 14:34:15,082  DEBUG [UserService.java:31] - User (admin) was not found.
  GENTOO2020-02-06 14:34:47,646  DEBUG [UserService.java:31] - User (admin) was not found.
  GENTOO2020-02-06 15:15:12,079  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO2020-02-06 15:59:21,616  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO2020-02-06 15:59:34,973  DEBUG [UserController.java:51] - User (admin) was found.
+ GENTOO2020-02-06 16:00:24,162  DEBUG [UserController.java:51] - User (admin) was found.
+ GENTOO2020-02-06 16:00:45,283  DEBUG [UserController.java:51] - User (admin) was found.
+ GENTOO2020-02-06 16:01:03,981  DEBUG [UserController.java:51] - User (admin) was found.
+ GENTOO2020-02-06 16:01:24,011  DEBUG [UserController.java:51] - User (admin) was found.
+ GENTOO2020-02-06 16:02:13,699  DEBUG [UserController.java:51] - User (admin) was found.
+ GENTOO2020-02-06 16:02:49,458  DEBUG [UserController.java:51] - User (admin) was found.
+ GENTOO2020-02-06 16:04:26,089  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO2020-02-06 16:04:30,719  DEBUG [UserController.java:51] - User (admin) was found.
+ GENTOO2020-02-06 16:04:35,320  DEBUG [UserController.java:51] - User (admin) was found.
  GENTOO
