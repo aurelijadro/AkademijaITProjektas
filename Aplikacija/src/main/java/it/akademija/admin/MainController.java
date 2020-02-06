@@ -26,22 +26,16 @@ public class MainController {
 //			"/admin/doctypes", "/admin/doctypes/add", "/admin/doctypes/edit/*" 
 	})
 	public ModelAndView redirectWithUsingForwardPrefixAdmin(ModelMap model) {
-<<<<<<< HEAD
 		// model.addAttribute("attribute", "forwardWithForwardPrefix");
 		logger.debug("User ({}) logged as admin", model);
-=======
->>>>>>> 89e7078eb79cb0bec25664fdd921302b02bb25fb
 		return new ModelAndView("forward:/", model);
 	}
 
 	@Secured({ "ROLE_USER" })
 	@RequestMapping("/user/**")
 	public ModelAndView redirectWithUsingForwardPrefixUser(ModelMap model) {
-<<<<<<< HEAD
 		// model.addAttribute("attribute", "forwardWithForwardPrefix");
 		logger.debug("User ({}) logged as user");
-=======
->>>>>>> 89e7078eb79cb0bec25664fdd921302b02bb25fb
 		return new ModelAndView("forward:/", model);
 	}
 
