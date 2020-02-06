@@ -44,8 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/", "/api/**", "/swagger-ui.html", "console").permitAll()
-				.antMatchers("/admin").hasRole("ADMIN").antMatchers("/user").authenticated().and().formLogin()
-				.successHandler(new AuthenticationSuccessHandler() {
+				.antMatchers("/admin", "/#/admin").hasRole("ADMIN").antMatchers("/user", "/#/user", "/#")
+				.authenticated().and().formLogin().successHandler(new AuthenticationSuccessHandler() {
 					@Override
 					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 							Authentication authentication) throws IOException, ServletException {

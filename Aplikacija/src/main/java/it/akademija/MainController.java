@@ -1,4 +1,4 @@
-package it.akademija.admin;
+package it.akademija;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,12 +20,11 @@ import it.akademija.user.UserController;;
 public class MainController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
-	
+
 	@Secured({ "ROLE_ADMIN" })
-	@RequestMapping(value = { "/admin", "admin/**"
-//			"users/add", "/admin", "/admin/users", "/admin/users/edit/*", "/admin/groups",
-//			"/admin/doctypes", "/admin/doctypes/add", "/admin/doctypes/edit/*" 
-	})
+	@RequestMapping(value = { "/admin", "admin/**", "/#/admin", "/#/admin/**", "users/add", "/admin", "/admin/users",
+			"/admin/users/edit/*", "/admin/groups", "/admin/doctypes", "/admin/doctypes/add",
+			"/admin/doctypes/edit/*" })
 	public ModelAndView redirectWithUsingForwardPrefixAdmin(ModelMap model) {
 		// model.addAttribute("attribute", "forwardWithForwardPrefix");
 		logger.debug("User logged as admin");
@@ -33,7 +32,7 @@ public class MainController {
 	}
 
 	@Secured({ "ROLE_USER" })
-	@RequestMapping("/user/**")
+	@RequestMapping(value = { "/user/**", "/#/user", "/#/user/**" })
 	public ModelAndView redirectWithUsingForwardPrefixUser(ModelMap model) {
 		// model.addAttribute("attribute", "forwardWithForwardPrefix");
 		logger.debug("User logged as user");
