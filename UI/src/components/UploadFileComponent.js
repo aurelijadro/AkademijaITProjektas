@@ -1,6 +1,6 @@
 import React from 'react';
 
-var UploadFileComponent = props => {
+const UploadFileComponent = props => {
     return (
         <div className="container">
             <div className="row">

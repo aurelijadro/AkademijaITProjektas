@@ -1,1 +1,12 @@
-OO
+OO2020-02-06 11:18:15,396  DEBUG [GroupController.java:62] - New group (Atostogos) was created.
+ GENTOO2020-02-06 11:19:17,349  DEBUG [DoctypeController.java:59] - Doctype (Atostogų prašymai) was added.
+ GENTOO2020-02-06 11:19:17,358  DEBUG [DoctypeService.java:36] - New doctype (Atostogų prašymai) was added.
+ GENTOO2020-02-06 11:35:38,989  DEBUG [GroupController.java:62] - New group (Administracija) was created.
+ GENTOO2020-02-06 11:45:27,477  DEBUG [DoctypeController.java:59] - Doctype (Prašymai) was added.
+ GENTOO2020-02-06 11:45:27,480  DEBUG [DoctypeService.java:36] - New doctype (Prašymai) was added.
+ GENTOO2020-02-06 11:45:31,192  DEBUG [DoctypeController.java:50] - Doctype (Atostogų prašymai) was found.
+ GENTOO2020-02-06 11:45:40,558  DEBUG [DoctypeController.java:50] - Doctype (Atostogų prašymai) was found.
+ GENTOO2020-02-06 11:47:09,179  DEBUG [GroupController.java:62] - New group (bla bla bla) was created.
+ GENTOO2020-02-06 11:48:24,042  DEBUG [GroupController.java:53] - Group ($Administracija) was found.
+ GENTOO2020-02-06 14:35:58,947  DEBUG [GroupController.java:96] - New group (Atostogos) was updated.
+ GENTOO

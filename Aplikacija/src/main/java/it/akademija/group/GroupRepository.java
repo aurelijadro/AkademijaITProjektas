@@ -4,4 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GroupRepository extends JpaRepository<UsersGroup, Long> {
 
+	UsersGroup findUsersGroupByTitle(String title);
+
 }

@@ -6,4 +6,6 @@ public interface DoctypeRepository extends JpaRepository<Doctype, Long> {
 
 	Doctype findByTitle(String title);
 
+	Doctype findDoctypeById(Long id);
+
 }

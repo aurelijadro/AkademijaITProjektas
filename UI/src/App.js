@@ -13,7 +13,9 @@ import EditDoctypeFormContainer from "./components/Doctype/EditDoctypeFormContai
 import AddDoctypeFormContainer from "./components/Doctype/AddDoctypeFormContainer";
 import UserDashboard from "./components/UserDashboard";
 import MainDocumentList from "./components/Document/MainDocumentList";
+import AddGroupFormContainer from "./components/Group/AddGroupFormContainer";
 import { HashRouter as Router, Route, BrowserRouter } from "react-router-dom";
+import EditGroupFormContainer from "./components/Group/EditGroupFormContainer";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
                 component={EditFormContainer}
               />
               <Route exact path="/admin/groups" component={GroupList} />
+              <Route exact path="/admin/groups/add" component={AddGroupFormContainer} />
+              <Route exact path="/admin/groups/edit/:title" component={EditGroupFormContainer} />
               <Route exact path="/admin/doctypes" component={DocTypeList} />
               <Route
                 exact

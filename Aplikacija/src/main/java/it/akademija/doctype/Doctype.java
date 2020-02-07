@@ -13,6 +13,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import it.akademija.group.UsersGroup;
+
 @Entity
 public class Doctype {
 	
@@ -24,14 +26,19 @@ public class Doctype {
 	@Length(min = 1, max = 100)
 	private String title;
 	
-//	@ManyToMany
-//	@JoinTable(name="Group_Doctype", joinColumns=@JoinColumn(name="Doctype_ID"), inverseJoinColumns=@JoinColumn(name="Group_ID"))
-//	private List<Group> groups;
+	@ManyToMany
+	@JoinTable(name="UsersGroup_Doctype", joinColumns=@JoinColumn(name="Doctype_ID"), inverseJoinColumns=@JoinColumn(name="UsersGroup_ID"))
+	private List<UsersGroup> groups;
 
 	public Doctype() {
 	}
 
 	public Doctype(String title) {
+		this.title = title;
+	}
+
+	public Doctype(Long id, String title) {
+		this.id = id;
 		this.title = title;
 	}
 
@@ -51,12 +58,16 @@ public class Doctype {
 		this.title = title;
 	}
 
-//	public List<Group> getGroups() {
-//		return groups;
-//	}
-//
-//	public void setGroups(List<Group> groups) {
-//		this.groups = groups;
-//	}
+	public void addGroup(UsersGroup group) {
+		this.groups.add(group);
+	}
+
+	public List<UsersGroup> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<UsersGroup> groups) {
+		this.groups = groups;
+	}
 
 }

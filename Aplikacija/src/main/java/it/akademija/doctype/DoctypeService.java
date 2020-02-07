@@ -31,6 +31,11 @@ public class DoctypeService {
 	}
 	
 	@Transactional
+	public Doctype findDoctypeById(Long id) {
+		return doctypeRepository.findDoctypeById(id);
+	}
+	
+	@Transactional
 	public Doctype addDoctype(NewDoctype newDoctype) {
 		Doctype doctype = new Doctype(newDoctype.getTitle());
 		logger.debug("New doctype ({}) was added.", newDoctype.getTitle());

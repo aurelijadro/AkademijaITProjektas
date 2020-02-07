@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 
-const AddMainDocumentForm = props => {
+const AddGroupFormComponent = props => {
     return (
         <div className="container">
             <div className="panel panel-default">
                 <div className="panel-heading">
                     <h3 className="panel-title">
-                        Dokumento tipo kūrimas
+                        Grupių kūrimas
         </h3>
                 </div>
                 <div className="panel-body">
@@ -20,7 +20,7 @@ const AddMainDocumentForm = props => {
                         </div>
 
                         <button className="btn btn-primary" type="submit">Išsaugoti</button>
-                        <Link to="/admin/doctypes"><button className="btn btn-primary" onClick={props.onBack}>Grįžti į dokumentų tipų sąrašą</button></Link>
+                        <Link to="/admin/groups"><button className="btn btn-primary" onClick={props.onBack}>Grįžti į grupių sąrašą</button></Link>
                     </form>
                 </div>
             </div>
@@ -28,4 +28,4 @@ const AddMainDocumentForm = props => {
     );
 }
 
-export default AddMainDocumentFormComponent;
+export default AddGroupFormComponent;

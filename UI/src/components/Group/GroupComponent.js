@@ -7,7 +7,7 @@ const GroupComponent = props => {
             <th scope="row">{props.id}</th>
             <td>{props.title}</td>
             <td>
-                <Link to={"admin/groups/edit/" + props.id} className="btn btn-light">
+                <Link to={"groups/edit/" + props.title} className="btn btn-light">
                     Atnaujinti informaciją
         </Link>
             </td>

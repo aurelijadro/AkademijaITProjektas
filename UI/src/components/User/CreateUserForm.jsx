@@ -142,7 +142,7 @@ class CreateUserForm extends Component {
                 </label>
               </div>
               <button className="btn btn-primary"
-                type="submit" disabled={!isEnabled}>Pateikti</button>
+                type="submit" disabled={!isEnabled}>Išsaugoti</button>
               <button className="btn btn-primary"
                 onClick={() => this.props.history.push("/admin/users")}>Atšaukti</button>
             </form>

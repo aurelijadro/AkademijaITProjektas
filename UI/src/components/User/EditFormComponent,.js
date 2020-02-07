@@ -42,7 +42,7 @@ const EditFormComponent = props => {
                                 </select>
                             </label>
                         </div>
-                        <button className="btn btn-primary" type="submit">Išsaugoti</button>
+                        <button className="btn btn-primary" type="submit" disabled={props.formValid}>Išsaugoti</button>
                         <Link to="/admin/users"><button className="btn btn-primary" onClick={props.onBack}>Grįžti į vartotojų sąrašą</button></Link>
                     </form>
                 </div>
