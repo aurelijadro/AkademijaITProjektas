@@ -13,52 +13,44 @@ import EditDoctypeFormContainer from "./components/Doctype/EditDoctypeFormContai
 import AddDoctypeFormContainer from "./components/Doctype/AddDoctypeFormContainer";
 import UserDashboard from "./components/UserDashboard";
 import MainDocumentList from "./components/Document/MainDocumentList";
-import AddGroupFormContainer from "./components/Group/AddGroupFormContainer";
-import { HashRouter as Router, Route, BrowserRouter } from "react-router-dom";
-import EditGroupFormContainer from "./components/Group/EditGroupFormContainer";
+import { Route } from "react-router-dom";
 
 function App() {
   return (
     <div>
-      <BrowserRouter>
-        <Router>
-          <Header />
-          <Route exact path="/" component={Login} />
+      <Header />
 
-          <div className="container-fluid mx-auto">
-            <Switch>
-              <Route exact path="/admin" component={AdminDashboard} />
-              <Route exact path="/admin/users" component={UserList} />
-              <Route exact path="/admin/users/add" component={CreateUserForm} />
-              <Route
-                exact
-                path="/admin/users/edit/:username"
-                component={EditFormContainer}
-              />
-              <Route exact path="/admin/groups" component={GroupList} />
-              <Route exact path="/admin/groups/add" component={AddGroupFormContainer} />
-              <Route exact path="/admin/groups/edit/:title" component={EditGroupFormContainer} />
-              <Route exact path="/admin/doctypes" component={DocTypeList} />
-              <Route
-                exact
-                path="/admin/doctypes/add"
-                component={AddDoctypeFormContainer}
-              />
-              <Route
-                exact
-                path="/admin/doctypes/edit/:title"
-                component={EditDoctypeFormContainer}
-              />
-              <Route exact path="/user" component={UserDashboard} />
-              <Route
-                exact
-                path="/user/documents/non-submited"
-                component={MainDocumentList}
-              />
-            </Switch>
-          </div>
-        </Router>
-      </BrowserRouter>
+      <div className="container-fluid mx-auto">
+        <Switch>
+          <Route exact path="/" component={Login} />
+          <Route exact path="/admin" component={AdminDashboard} />
+          <Route exact path="/admin/users" component={UserList} />
+          <Route exact path="/admin/users/add" component={CreateUserForm} />
+          <Route
+            exact
+            path="/admin/users/edit/:username"
+            component={EditFormContainer}
+          />
+          <Route exact path="/admin/groups" component={GroupList} />
+          <Route exact path="/admin/doctypes" component={DocTypeList} />
+          <Route
+            exact
+            path="/admin/doctypes/add"
+            component={AddDoctypeFormContainer}
+          />
+          <Route
+            exact
+            path="/admin/doctypes/edit/:title"
+            component={EditDoctypeFormContainer}
+          />
+          <Route exact path="/user" component={UserDashboard} />
+          <Route
+            exact
+            path="/user/documents/non-submited"
+            component={MainDocumentList}
+          />
+        </Switch>
+      </div>
     </div>
   );
 }

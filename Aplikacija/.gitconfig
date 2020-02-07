@@ -1,0 +1,4 @@
+[merge]
+tool = kdiff3
+[mergetool "kdiff3"]
+path = /usr/bin/kdiff3
