@@ -1,6 +1,11 @@
 import React from "react";
+<<<<<<< HEAD
+import { Link } from 'react-router-dom';
+import CreateUserform from "./CreateUserForm";
+=======
 import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
+>>>>>>> 100776df699b9e8ed1f16a3ae886012b38f24276
 
 const EditFormComponent = props => {
   return (
