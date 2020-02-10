@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,11 +45,10 @@ public class UserController {
 			HttpServletResponse response) {
 		User user = userService.findByUsername(username);
 		if (user == null) {
-			logger.debug("User ({}) was not found.", user.getUsername() );
+			logger.debug("User [{}] was  not found by controller",user.getUsername());
 			response.setStatus(404);
 			return null;
 		}
-		logger.debug("User ({}) was found.", user.getUsername() );
 		return userService.findByUsername(username);
 	}
 
@@ -69,7 +69,8 @@ public class UserController {
 	public User addNewUser(@RequestBody final NewUser newUser, HttpServletResponse response) {
 		if (userService.findByUsername(newUser.getUsername()) == null) {
 			response.setStatus(200);
-			logger.debug("New user ({}) was created.", newUser.getUsername() );
+			logger.debug("Initiated by [{}]: User [{}] with role [{}]was  created #",
+					SecurityContextHolder.getContext().getAuthentication().getName(), newUser.getUsername(), newUser.getRole());
 			return userService.addUser(newUser);
 		}
 		response.setStatus(404);
@@ -84,11 +85,15 @@ public class UserController {
 			HttpServletResponse response) {
 		User user = userService.findByUsername(username);
 		if (user == null) {
-			logger.debug("User for update ({}) was not found.", user.getUsername() );
+			logger.debug("Initiated by [{}]: User [{}] was  not found from controller2 #",
+					SecurityContextHolder.getContext().getAuthentication().getName(), user.getUsername());
+			
 			response.setStatus(404);
 			return null;
 		}
-		logger.debug("New user ({}) was updated.", user.getUsername() );
+		logger.debug("Initiated by [{}]: User [{}] was  updated #",
+				SecurityContextHolder.getContext().getAuthentication().getName(), user.getUsername());
+		
 		return userService.updateUser(username, newUser);
 	}
 
