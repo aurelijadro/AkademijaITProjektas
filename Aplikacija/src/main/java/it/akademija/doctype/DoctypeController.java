@@ -53,15 +53,14 @@ public class DoctypeController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Add new doctype", notes = "Returns new doctype")
-	public Doctype addNewDoctype(@RequestBody final NewDoctype newDoctype, HttpServletResponse response) {
+	public void addNewDoctype(@RequestBody final NewDoctype newDoctype, HttpServletResponse response) {
 		if (doctypeService.findDoctypeByTitle(newDoctype.getTitle()) == null) {
 			response.setStatus(200);
 			logger.debug("Doctype ({}) was added.", newDoctype.getTitle());
-			return doctypeService.addDoctype(newDoctype);
+			doctypeService.addDoctype(newDoctype);
 		}
 		response.setStatus(404);
 		logger.debug("Failed to add Doctype ($title{}).", newDoctype.getTitle());
-		return null;
 
 	}
 

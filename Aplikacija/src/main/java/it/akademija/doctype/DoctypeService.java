@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.akademija.newGroup.GroupClass;
+
 @Service
 public class DoctypeService {
 
@@ -36,10 +38,16 @@ public class DoctypeService {
 	}
 	
 	@Transactional
-	public Doctype addDoctype(NewDoctype newDoctype) {
+	public void addDoctype(NewDoctype newDoctype) {
 		Doctype doctype = new Doctype(newDoctype.getTitle());
 		logger.debug("New doctype ({}) was added.", newDoctype.getTitle());
-		return doctypeRepository.save(doctype);
+		doctypeRepository.save(doctype);
+	}
+	
+	public void addGroupToDoctype(Doctype doctype, GroupClass group) {
+		Doctype newDoctype = doctypeRepository.findByTitle(doctype.getTitle());
+		newDoctype.addGroup(group);
+		doctypeRepository.save(newDoctype);
 	}
 	
 	@Transactional

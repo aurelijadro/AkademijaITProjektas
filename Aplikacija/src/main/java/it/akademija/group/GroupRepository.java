@@ -1,9 +1,11 @@
-package it.akademija.group;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface GroupRepository extends JpaRepository<UsersGroup, Long> {
-
-	UsersGroup findUsersGroupByTitle(String title);
-
-}
+//package it.akademija.group;
+//
+//import org.springframework.data.jpa.repository.JpaRepository;
+//
+//public interface GroupRepository extends JpaRepository<UsersGroup, Long> {
+//
+//	UsersGroup findUsersGroupByTitle(String title);
+//
+//	void save(GroupDTO groupToAdd);
+//
+//}
