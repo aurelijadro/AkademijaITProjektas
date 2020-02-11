@@ -1,12 +1,11 @@
 package it.akademija.manyToMany2;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,9 +35,9 @@ public class DoctypeEntityController {
 		return this.doctypeRepo.save(doctype);
 	}
 
-	@GetMapping() // Finds all stored lecturers in a pageable format
-	public Page<DoctypeEntity> getDoctypes(Pageable pageable) {
-		return this.doctypeRepo.findAll(pageable);
+	@GetMapping()
+	public List<DoctypeEntity> getDoctypes() {
+		return this.doctypeRepo.findAll();
 	}
 
 	@GetMapping("/{id}") // Finds a lecturer by id (the variable must be wrapped by "{}" and match the
