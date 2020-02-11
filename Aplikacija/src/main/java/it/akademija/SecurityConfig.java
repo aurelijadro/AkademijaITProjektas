@@ -1,6 +1,7 @@
 package it.akademija;
 
 import java.io.IOException;
+import java.security.Principal;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -27,14 +30,13 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 
 import it.akademija.user.UserService;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
-	
+
 	@Autowired
 	private SecurityEntryPoint securityEntryPoint;
 	@Autowired
@@ -67,17 +69,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 												.getRole()
 										+ "\"}");
 						logger.debug("User [{}] logged to the system]",
-								SecurityContextHolder.getContext().getAuthentication().getName() );
+								SecurityContextHolder.getContext().getAuthentication().getName());
 					}
 				}).failureHandler(new SimpleUrlAuthenticationFailureHandler()).loginPage("/login").permitAll().and()
 				.logout().logoutUrl("/logout").deleteCookies("JSESSIONID")
-				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(
-						HttpStatus.OK) ).permitAll().and()
-				.csrf().disable()
+
+				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK) 
+				
+
+				).permitAll().and().csrf().disable()
 
 				.exceptionHandling().authenticationEntryPoint(securityEntryPoint).and().headers().frameOptions()
 				.disable();
-		
+
 	}
 
 }
