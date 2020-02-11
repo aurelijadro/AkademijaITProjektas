@@ -85,7 +85,7 @@ const EditFormComponent = props => {
               <button className="btn btn-dark" type="submit">
                 Išsaugoti
               </button>
-              <Link to="/admin/users">
+              <Link to="/Gentoo/admin/users">
                 <button className="btn btn-dark mx-2" onClick={props.onBack}>
                   Grįžti į vartotojų sąrašą
                 </button>

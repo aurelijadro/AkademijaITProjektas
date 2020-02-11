@@ -13,15 +13,15 @@ const Login = withRouter(({ history, ...props }) => {
     userData.append("username", username);
     userData.append("password", password);
     axios
-      .post("http://localhost:8081/login", userData, {
+      .post("http://localhost:8081/Gentoo/login", userData, {
         headers: { "Content-type": "application/x-www-form-urlencoded" }
       })
       .then(resp => {
         const role = resp.data.role.toLowerCase();
-        history.push("/" + role);
+        history.push("/Gentoo/" + role);
       })
       .catch(e => {
-        alert("Neteisingai suvesti duomenys. Bandykite dar kartą.")
+        alert("Neteisingai suvesti duomenys. Bandykite dar kartą.");
       });
     event.preventDefault();
   };

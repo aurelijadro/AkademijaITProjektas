@@ -16,7 +16,7 @@ class UserList extends Component {
 
   getUsers = () => {
     axios
-      .get("http://localhost:8081/api/users")
+      .get("http://localhost:8081/Gentoo/api/users")
       .then(response => {
         this.setState({ users: response.data });
       })
@@ -47,7 +47,7 @@ class UserList extends Component {
           </div>
         </div>
         <div className="container">
-          <Link to="/admin/users/add">
+          <Link to="/Gentoo/admin/users/add">
             <button
               type="button"
               className="btn btn-dark my-4"
