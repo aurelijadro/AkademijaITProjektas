@@ -26,9 +26,12 @@ public class UserService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = findByUsername(username);
-		if (user == null)
-			throw new UsernameNotFoundException(username + " not found.");
-		logger.debug("User ({}) was not found.", user.getUsername() );
+		if (user == null) {	
+		logger.debug("User [{})] was not found.", user.getUsername());
+			throw new UsernameNotFoundException(username + " not found.");	
+		}
+			
+		
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
 				AuthorityUtils.createAuthorityList(new String[] { "ROLE_" + user.getRole() }));
 	}
@@ -62,7 +65,7 @@ public class UserService implements UserDetailsService {
 
 		User user = new User(newUser.getName(), newUser.getSurname(), newUser.getUsername(),
 				(encoder.encode(newUser.getPassword())), newUser.getRole());
-		logger.debug("New user ({}) was added.", user.getUsername() );
+	
 		return userRepository.save(user);
 
 	}
@@ -75,7 +78,7 @@ public class UserService implements UserDetailsService {
 		existingUser.setUsername(newUser.getUsername());
 		existingUser.setPassword(encoder.encode(newUser.getPassword()));
 		existingUser.setRole(newUser.getRole());
-		logger.debug("User ({}) was updated.", existingUser.getUsername() );
+		
 		return existingUser;
 	}
 

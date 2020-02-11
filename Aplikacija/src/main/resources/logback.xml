@@ -4,9 +4,12 @@
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"> <pattern>%date
 		%d{HH:mm:ss} %level [%file:%line] - %msg%n %contextName</pattern> </encoder>
 		</appender> -->
+		
+		<property name="HOME_LOG" value="./logs/Gentoo.log" />
+		
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>Gentoo-rolling.log</file>
+		<file><!-- ${catalina.base}/tmp/ -->${HOME_LOG}</file>
 		<encoder
 			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%date <!-- %d{HH:mm:ss} -->
@@ -14,7 +17,7 @@
 		</encoder>
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>Gentoo-rolling.%d{yyyy-MM-dd}.log
+			<FileNamePattern>/logs/archived/Gentoo.%d{yyyy-MM-dd}.log
 			</FileNamePattern>
 		</rollingPolicy>
 		<triggeringPolicy
@@ -64,7 +67,7 @@
 		<appender-ref ref="FILE" />
 	</logger>
 	
-	<logger name="it.akademija.admin.MainController" level="DEBUG"
+	<logger name="it.akademija.SecurityConfig" level="DEBUG"
 		additivity="true">
 		<appender-ref ref="FILE" />
 	</logger>
