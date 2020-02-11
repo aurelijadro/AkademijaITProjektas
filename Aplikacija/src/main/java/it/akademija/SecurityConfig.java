@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,10 +27,14 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 
 import it.akademija.user.UserService;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+	
 	@Autowired
 	private SecurityEntryPoint securityEntryPoint;
 	@Autowired
@@ -60,14 +66,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 												SecurityContextHolder.getContext().getAuthentication().getName())
 												.getRole()
 										+ "\"}");
+						logger.debug("User [{}] logged to the system]",
+								SecurityContextHolder.getContext().getAuthentication().getName() );
 					}
 				}).failureHandler(new SimpleUrlAuthenticationFailureHandler()).loginPage("/login").permitAll().and()
 				.logout().logoutUrl("/logout").deleteCookies("JSESSIONID")
-				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)).permitAll().and()
+				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(
+						HttpStatus.OK) ).permitAll().and()
 				.csrf().disable()
 
 				.exceptionHandling().authenticationEntryPoint(securityEntryPoint).and().headers().frameOptions()
 				.disable();
+		
 	}
 
 }

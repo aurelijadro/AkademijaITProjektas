@@ -19,15 +19,13 @@ import it.akademija.user.UserController;;
 @Controller
 public class MainController {
 
-	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
-
+	
 	@Secured({ "ROLE_ADMIN" })
 	@RequestMapping(value = { "/admin", "admin/**", "/#/admin", "/#/admin/**", "users/add", "/admin", "/admin/users",
 			"/admin/users/edit/*", "/admin/groups", "/admin/doctypes", "/admin/doctypes/add",
 			"/admin/doctypes/edit/*" })
 	public ModelAndView redirectWithUsingForwardPrefixAdmin(ModelMap model) {
 		// model.addAttribute("attribute", "forwardWithForwardPrefix");
-		logger.debug("User logged as admin");
 		return new ModelAndView("forward:/", model);
 	}
 
@@ -35,7 +33,6 @@ public class MainController {
 	@RequestMapping(value = { "/user/**", "/#/user", "/#/user/**" })
 	public ModelAndView redirectWithUsingForwardPrefixUser(ModelMap model) {
 		// model.addAttribute("attribute", "forwardWithForwardPrefix");
-		logger.debug("User logged as user");
 		return new ModelAndView("forward:/", model);
 	}
 
