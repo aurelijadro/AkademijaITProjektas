@@ -28,4 +28,4 @@ const AddMainDocumentForm = props => {
     );
 }
 
-export default AddDoctypeFormComponent;
+export default AddMainDocumentFormComponent;

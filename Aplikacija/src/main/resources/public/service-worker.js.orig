@@ -15,10 +15,10 @@ importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox
 
 importScripts(
 <<<<<<< HEAD
-  "./precache-manifest.42c3be8afa1c0d288a5c5222efcb4191.js"
+  "./precache-manifest.96dcd5175cd4ea52e35dc0c93fa1f3fa.js"
 =======
-  "./precache-manifest.765cc29d02c4c1df25a0ed4877aaa4d2.js"
->>>>>>> 1d235ebbd3b4786ce74659428f89444ac1109890
+  "./Gentoo/precache-manifest.1f5b28acbf0b952dde6cc285a348efce.js"
+>>>>>>> a61f436d2f666b8c08ab0915191688282df04b06
 );
 
 self.addEventListener('message', (event) => {
@@ -37,7 +37,7 @@ workbox.core.clientsClaim();
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("./index.html"), {
+workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("./Gentoo/index.html"), {
   
   blacklist: [/^\/_/,/\/[^\/?]+\.[^\/]+$/],
 });

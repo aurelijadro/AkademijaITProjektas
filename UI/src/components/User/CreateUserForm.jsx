@@ -11,7 +11,7 @@ class CreateUserForm extends Component {
       username: "",
       password: "",
       role: "USER",
-      url: "http://localhost:8081",
+      url: "http://localhost:8081/Gentoo",
       nameError: "",
       surnameError: "",
       usernameError: "",
@@ -101,7 +101,7 @@ class CreateUserForm extends Component {
             "\n Vartotojo vardas: " +
             this.state.username
         );
-        this.props.history.push("/admin/users");
+        this.props.history.push("/Gentoo/admin/users");
       })
       .catch(error => {
         alert("Toks vartotojas jau egzistuoja.");
@@ -119,7 +119,7 @@ class CreateUserForm extends Component {
     return (
       <div>
         <NavigationForAdmin></NavigationForAdmin>
-        <div className="container">
+        <div className="container my-4">
           <div className="panel panel-default">
             <div className="panel-heading">
               <h3 className="panel-title">Vartotojo paskyros kūrimas</h3>
@@ -210,15 +210,15 @@ class CreateUserForm extends Component {
                   </label>
                 </div>
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-dark"
                   type="submit"
                   disabled={!isEnabled}
                 >
                   Pateikti
                 </button>
                 <button
-                  className="btn btn-primary"
-                  onClick={() => this.props.history.push("/admin/users")}
+                  className="btn mx-3 btn-dark"
+                  onClick={() => this.props.history.push("/Gentoo/admin/users")}
                 >
                   Atšaukti
                 </button>

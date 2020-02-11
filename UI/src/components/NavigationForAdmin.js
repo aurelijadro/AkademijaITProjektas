@@ -8,22 +8,22 @@ const NavigationForAdmin = withRouter(({ history, ...props }) => {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
-            <Link to="/admin" className="nav-link">
+            <Link to="/Gentoo/admin" className="nav-link">
               Pagrindinis
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/admin/users/add" className="nav-link">
+            <Link to="/Gentoo/admin/users/add" className="nav-link">
               Naujas vartotojas
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/admin/groups/add" className="nav-link">
+            <Link to="/Gentoo/admin/groups/add" className="nav-link">
               Nauja grupė
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/admin/doctypes/add" className="nav-link">
+            <Link to="/Gentoo/admin/doctypes/add" className="nav-link">
               Naujas dokumentų tipas
             </Link>
           </li>
@@ -32,8 +32,8 @@ const NavigationForAdmin = withRouter(({ history, ...props }) => {
           type="button"
           className="btn btn-light"
           onClick={() => {
-            axios.post("http://localhost:8081/logout").then(resp => {
-              history.push("/");
+            axios.post("http://localhost:8081/Gentoo/logout").then(resp => {
+              history.push("/Gentoo/");
             });
           }}
         >

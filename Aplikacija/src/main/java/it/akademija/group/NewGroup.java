@@ -1,12 +1,15 @@
 package it.akademija.group;
 
 public class NewGroup {
-	
+
 	private String title;
 
 	public NewGroup(String title) {
-		super();
 		this.title = title;
+	}
+
+	public NewGroup() {
+		super();
 	}
 
 	public String getTitle() {
