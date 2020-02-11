@@ -32,7 +32,7 @@ class AdminDashboard extends Component {
                 </p>
               </div>
               <div className="card-footer">
-                <Link to={`/admin/users`}>
+                <Link to={`/Gentoo/admin/users`}>
                   <button
                     type="button"
                     className="btn btn-secondary btn-lg btn-block"
@@ -58,7 +58,7 @@ class AdminDashboard extends Component {
                 </p>
               </div>
               <div className="card-footer">
-                <Link to={`/admin/groups`}>
+                <Link to={`/Gentoo/admin/groups`}>
                   <button
                     type="button"
                     className="btn btn-secondary btn-lg btn-block"
@@ -84,7 +84,7 @@ class AdminDashboard extends Component {
                 </p>
               </div>
               <div className="card-footer">
-                <Link to={`/admin/doctypes`}>
+                <Link to={`/Gentoo/admin/doctypes`}>
                   <button
                     type="button"
                     className="btn btn-secondary btn-lg btn-block"

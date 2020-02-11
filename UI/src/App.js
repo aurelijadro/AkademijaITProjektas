@@ -22,31 +22,35 @@ function App() {
 
       <div className="container-fluid mx-auto">
         <Switch>
-          <Route exact path="/" component={Login} />
-          <Route exact path="/admin" component={AdminDashboard} />
-          <Route exact path="/admin/users" component={UserList} />
-          <Route exact path="/admin/users/add" component={CreateUserForm} />
+          <Route exact path="/Gentoo/" component={Login} />
+          <Route exact path="/Gentoo/admin" component={AdminDashboard} />
+          <Route exact path="/Gentoo/admin/users" component={UserList} />
           <Route
             exact
-            path="/admin/users/edit/:username"
+            path="/Gentoo/admin/users/add"
+            component={CreateUserForm}
+          />
+          <Route
+            exact
+            path="/Gentoo/admin/users/edit/:username"
             component={EditFormContainer}
           />
-          <Route exact path="/admin/groups" component={GroupList} />
-          <Route exact path="/admin/doctypes" component={DocTypeList} />
+          <Route exact path="/Gentoo/admin/groups" component={GroupList} />
+          <Route exact path="/Gentoo/admin/doctypes" component={DocTypeList} />
           <Route
             exact
-            path="/admin/doctypes/add"
+            path="/Gentoo/admin/doctypes/add"
             component={AddDoctypeFormContainer}
           />
           <Route
             exact
-            path="/admin/doctypes/edit/:title"
+            path="/Gentoo/admin/doctypes/edit/:title"
             component={EditDoctypeFormContainer}
           />
-          <Route exact path="/user" component={UserDashboard} />
+          <Route exact path="/Gentoo/user" component={UserDashboard} />
           <Route
             exact
-            path="/user/documents/non-submited"
+            path="/Gentoo/user/documents/non-submited"
             component={MainDocumentList}
           />
         </Switch>
