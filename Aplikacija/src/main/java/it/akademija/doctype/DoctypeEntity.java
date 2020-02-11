@@ -1,4 +1,4 @@
-package it.akademija.manyToMany2;
+package it.akademija.doctype;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +20,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import it.akademija.manyToMany.GroupEntity;
+import it.akademija.group.GroupEntity;
 
 @Entity
 @Table(name = "doctypes")

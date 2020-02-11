@@ -1,4 +1,4 @@
-package it.akademija.manyToMany2;
+package it.akademija.doctype;
 
 import java.util.List;
 import java.util.Set;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.akademija.manyToMany.GroupEntity;
-import it.akademija.manyToMany.GroupEntityRepo;
+import it.akademija.group.GroupEntity;
+import it.akademija.group.GroupEntityRepo;
 
 @RestController
 @RequestMapping("api/doctypes")

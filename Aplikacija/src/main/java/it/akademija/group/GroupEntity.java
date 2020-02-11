@@ -1,4 +1,4 @@
-package it.akademija.manyToMany;
+package it.akademija.group;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +18,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import it.akademija.manyToMany2.DoctypeEntity;
+import it.akademija.doctype.DoctypeEntity;
 
 @Entity
 @Table(name = "groups")
@@ -40,6 +40,11 @@ public class GroupEntity {
 	}
 
 	public GroupEntity(String title) {
+		this.title = title;
+	}
+
+	public GroupEntity(Long id, String title) {
+		this.id = id;
 		this.title = title;
 	}
 

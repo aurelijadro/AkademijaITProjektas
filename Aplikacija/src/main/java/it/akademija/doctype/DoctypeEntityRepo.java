@@ -1,4 +1,4 @@
-package it.akademija.manyToMany2;
+package it.akademija.doctype;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
