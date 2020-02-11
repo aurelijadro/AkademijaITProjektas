@@ -11,7 +11,7 @@ class CreateUserForm extends Component {
       username: "",
       password: "",
       role: "USER",
-      url: "http://localhost:8081/Gentoo/",
+      url: "http://localhost:8081/Gentoo",
       nameError: "",
       surnameError: "",
       usernameError: "",

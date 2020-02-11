@@ -23,7 +23,7 @@ const NavigationForAdmin = withRouter(({ history, ...props }) => {
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/admin/doctypes/add" className="nav-link">
+            <Link to="/Gentoo/admin/doctypes/add" className="nav-link">
               Naujas dokumentų tipas
             </Link>
           </li>

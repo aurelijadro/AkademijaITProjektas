@@ -56,7 +56,7 @@ class UserList extends Component {
               Pridėti naują vartotoją
             </button>
           </Link>
-          <Link to="/admin">
+          <Link to="/Gentoo/admin">
             <button
               type="button"
               className="btn mx-2 btn-dark"
