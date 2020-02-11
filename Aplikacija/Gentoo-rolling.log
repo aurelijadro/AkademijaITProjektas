@@ -114,4 +114,7 @@ OO2020-02-06 08:48:09,942  DEBUG [UserController.java:72] - New user (Aurimasb) 
  GENTOO2020-02-07 09:17:55,054  DEBUG [UserService.java:31] - User (user) was not found.
  GENTOO2020-02-07 09:17:59,915  DEBUG [UserService.java:31] - User (user) was not found.
  GENTOO2020-02-07 09:24:50,474  DEBUG [UserService.java:31] - User (admin) was not found.
+ GENTOO2020-02-10 11:27:29,298  DEBUG [DoctypeController.java:59] - Doctype (Komandiruociu kasnors) was added.
+ GENTOO2020-02-10 11:27:29,300  DEBUG [DoctypeService.java:43] - New doctype (Komandiruociu kasnors) was added.
+ GENTOO2020-02-10 11:27:29,379  DEBUG [DoctypeController.java:63] - Failed to add Doctype ($titleKomandiruociu kasnors).
  GENTOO

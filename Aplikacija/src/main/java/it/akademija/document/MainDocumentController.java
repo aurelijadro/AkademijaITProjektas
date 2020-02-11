@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -27,18 +26,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import it.akademija.doctype.DoctypeController;
+//import it.akademija.doctype.DoctypeController;
 
 @RestController
 @Api(value = "document")
 @RequestMapping(value = "/api/documents")
 public class MainDocumentController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(MainDocumentController.class);
 
 	private MainDocumentService mainDocService;
@@ -47,7 +44,7 @@ public class MainDocumentController {
 	public MainDocumentController(MainDocumentService mainDocService) {
 		this.mainDocService = mainDocService;
 	}
-	
+
 	@PostMapping(value = "/upload")
 	public ResponseEntity uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) {
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -58,24 +55,20 @@ public class MainDocumentController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/files/download/")
-				.path(fileName)
-				.toUriString();
+		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/files/download/")
+				.path(fileName).toUriString();
 		logger.debug("File ({}) was downloaded.", fileName);
 		return ResponseEntity.ok(fileDownloadUri);
 	}
-	
+
 	@PostMapping(value = "/multi-upload")
 	public ResponseEntity multiUpload(@RequestParam("files") MultipartFile[] files) {
 		List<Object> fileDownloadUrls = new ArrayList<>();
-		Arrays.asList(files)
-		.stream()
-		.forEach(file -> fileDownloadUrls.add(uploadToLocalFileSystem(file).getBody()));
+		Arrays.asList(files).stream().forEach(file -> fileDownloadUrls.add(uploadToLocalFileSystem(file).getBody()));
 		logger.debug("File ({}) was downloaded.", files);
 		return ResponseEntity.ok(fileDownloadUrls);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get documents", notes = "Returns all documents")
 	public List<MainDocument> getDocuments() {
