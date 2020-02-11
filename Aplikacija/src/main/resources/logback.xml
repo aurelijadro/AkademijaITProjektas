@@ -9,7 +9,7 @@
 		
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${HOME_LOG}</file>
+		<file><!-- ${catalina.base}/tmp/ -->${HOME_LOG}</file>
 		<encoder
 			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%date <!-- %d{HH:mm:ss} -->
@@ -17,7 +17,7 @@
 		</encoder>
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>Gentoo.%d{yyyy-MM-dd}.log
+			<FileNamePattern>/logs/archived/Gentoo.%d{yyyy-MM-dd}.log
 			</FileNamePattern>
 		</rollingPolicy>
 		<triggeringPolicy
