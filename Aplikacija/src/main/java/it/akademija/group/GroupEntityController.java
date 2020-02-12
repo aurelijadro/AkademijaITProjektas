@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,14 +81,35 @@ public class GroupEntityController {
 	@PostMapping("/{id}/doctypes")
 	public void addDoctypeByTitleToGroup(@PathVariable Long id, String title, HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupById(id);
-
-		DoctypeEntity doctype = doctypeRepo.findDoctypeByTitle(title);
-		if (doctype == null) {
+		if (group == null) {
 			response.setStatus(404);
 			return;
 		} else {
-			groupService.addDoctypeToGroup(id, title);
+			DoctypeEntity doctype = doctypeRepo.findDoctypeByTitle(title);
+			if (doctype == null) {
+				response.setStatus(404);
+				return;
+			} else {
+				groupService.addDoctypeToGroup(group, doctype);
+			}
 		}
 	}
 
+	@DeleteMapping("/{id}/doctypes")
+	public void deleteDoctypeByTitleFromGroup(@PathVariable Long id, String title, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupById(id);
+		if (group == null) {
+			response.setStatus(404);
+			return;
+		} else {
+			DoctypeEntity doctype = doctypeRepo.findDoctypeByTitle(title);
+			if (doctype == null) {
+				response.setStatus(404);
+				return;
+			} else {
+				groupService.deleteDoctypeFromGroup(doctype);
+			}
+		}
+
+	}
 }

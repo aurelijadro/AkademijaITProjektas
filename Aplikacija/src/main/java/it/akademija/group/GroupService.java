@@ -47,11 +47,15 @@ public class GroupService {
 		return existingGroup;
 	}
 
-	public void addDoctypeToGroup(Long id, String title) {
-		GroupEntity group = findGroupById(id);
-		DoctypeEntity doctype = doctypeRepo.findDoctypeByTitle(title);
+	@Transactional
+	public void addDoctypeToGroup(GroupEntity group, DoctypeEntity doctype) {
 		group.addDoctype(doctype);
 		groupRepo.save(group);
+	}
+
+	@Transactional
+	public void deleteDoctypeFromGroup(DoctypeEntity doctype) {
+		doctypeRepo.delete(doctype);
 	}
 
 }
