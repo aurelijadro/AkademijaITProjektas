@@ -89,12 +89,23 @@ public class GroupEntity {
 		}
 	}
 
+	public Set<User> getUsers() {
+		return users;
+	}
+
 	public void addUser(User user) {
 		if (users.contains(user)) {
 			return;
 		} else {
 			this.users.add(user);
 			user.addGroup(this);
+		}
+	}
+
+	public void removeUser(User user) {
+		if (users.contains(user)) {
+			this.users.remove(user);
+			user.removeGroup(this);
 		}
 	}
 
