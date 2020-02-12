@@ -5,7 +5,6 @@ public class NewDoctype {
 	private String title;
 
 	public NewDoctype(String title) {
-		super();
 		this.title = title;
 	}
 

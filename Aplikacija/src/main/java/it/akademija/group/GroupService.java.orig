@@ -60,13 +60,14 @@ public class GroupService {
 	}
 
 	@Transactional
+<<<<<<< HEAD
 	public void addUserToGroup(GroupEntity group, User user) {
 		group.addUser(user);
 		groupRepo.save(group);
-	}
-		@Transactional
+=======
 	public void deleteGroup(GroupEntity group) {
 		groupRepo.delete(group);
+>>>>>>> 5ff526af25986a38d227b04a9c088716136c4560
 	}
 
 }

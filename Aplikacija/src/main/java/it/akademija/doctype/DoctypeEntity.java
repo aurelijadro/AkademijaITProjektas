@@ -43,6 +43,11 @@ public class DoctypeEntity {
 	public DoctypeEntity() {
 	}
 
+	public DoctypeEntity(Long id, String title) {
+		this.id = id;
+		this.title = title;
+	}
+
 	public DoctypeEntity(String title) {
 		this.title = title;
 	}
