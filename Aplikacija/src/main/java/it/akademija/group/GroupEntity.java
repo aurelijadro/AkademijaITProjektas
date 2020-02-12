@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -19,6 +21,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import it.akademija.doctype.DoctypeEntity;
+import it.akademija.user.User;
 
 @Entity
 @Table(name = "groups")
@@ -35,6 +38,11 @@ public class GroupEntity {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private Set<DoctypeEntity> doctypes = new HashSet<>();
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST }, mappedBy = "groups")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private Set<User> users = new HashSet<>();
 
 	public GroupEntity() {
 	}
