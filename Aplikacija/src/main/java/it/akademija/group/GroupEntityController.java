@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.akademija.doctype.DoctypeEntity;
 import it.akademija.doctype.DoctypeEntityRepo;
+import it.akademija.user.User;
+import it.akademija.user.UserRepository;
 
 @RestController
 @RequestMapping("api/groups")
@@ -27,6 +29,9 @@ public class GroupEntityController {
 
 	@Autowired
 	private DoctypeEntityRepo doctypeRepo;
+
+	@Autowired
+	private UserRepository userRepo;
 
 	@PostMapping()
 	public GroupEntity createGroup(@RequestBody NewGroup newGroup, HttpServletResponse response) {
@@ -46,7 +51,7 @@ public class GroupEntityController {
 			return null;
 		}
 		response.setStatus(200);
-		return groupService.findGroupByTitle(title);
+		return group;
 	}
 
 	@GetMapping()
@@ -63,7 +68,7 @@ public class GroupEntityController {
 			return null;
 		}
 		response.setStatus(200);
-		return this.groupService.updateGroupInfo(title, group);
+		return someGroup;
 	}
 
 	@DeleteMapping("/{title}")
@@ -125,5 +130,53 @@ public class GroupEntityController {
 			}
 		}
 
+	}
+
+	@GetMapping("/{title}/users")
+	public Set<User> getUsersInGroupByGroupTitle(@PathVariable String title, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupByTitle(title);
+		if (group == null) {
+			response.setStatus(404);
+			return null;
+		} else {
+			return group.getUsers();
+		}
+	}
+
+	@PostMapping("/{title}/users/{username}")
+	public void addUserByUsernameToGroup(@PathVariable String title, String username, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupByTitle(title);
+		if (group == null) {
+			response.setStatus(404);
+			return;
+		} else {
+			User user = userRepo.findByUsername(username);
+			if (user == null) {
+				response.setStatus(404);
+				return;
+			} else {
+				response.setStatus(200);
+				groupService.addUserToGroup(group, user);
+			}
+		}
+	}
+
+	@DeleteMapping("/{title}/users/{username}")
+	public void deleteUserByUsernameFromGroup(@PathVariable String title, String username,
+			HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupByTitle(title);
+		if (group == null) {
+			response.setStatus(404);
+			return;
+		} else {
+			User user = userRepo.findByUsername(username);
+			if (user == null) {
+				response.setStatus(404);
+				return;
+			} else {
+				response.setStatus(200);
+				groupService.removeUserFromGroup(group, user);
+			}
+		}
 	}
 }

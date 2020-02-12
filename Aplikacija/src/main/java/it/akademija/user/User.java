@@ -127,8 +127,16 @@ public class User {
 		this.role = UserRole.valueOf(role);
 	}
 
+	public Set<GroupEntity> getGroups() {
+		return this.groups;
+	}
+
 	public void addGroup(GroupEntity group) {
 		this.groups.add(group);
+	}
+
+	public void removeGroup(GroupEntity group) {
+		this.groups.remove(group);
 	}
 
 }
