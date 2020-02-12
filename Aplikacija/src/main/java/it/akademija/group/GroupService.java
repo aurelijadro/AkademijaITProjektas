@@ -40,9 +40,9 @@ public class GroupService {
 	}
 
 	@Transactional
-	public GroupEntity updateGroupInfo(String title, NewGroup group) {
+	public GroupEntity updateGroupInfo(String title, NewGroup newGroup) {
 		GroupEntity existingGroup = findGroupByTitle(title);
-		existingGroup.setTitle(group.getTitle());
+		existingGroup.setTitle(newGroup.getTitle());
 
 		return existingGroup;
 	}
@@ -56,6 +56,11 @@ public class GroupService {
 	@Transactional
 	public void deleteDoctypeFromGroup(DoctypeEntity doctype) {
 		doctypeRepo.delete(doctype);
+	}
+
+	@Transactional
+	public void deleteGroup(GroupEntity group) {
+		groupRepo.delete(group);
 	}
 
 }
