@@ -109,11 +109,11 @@ public class MainDocumentController {
 		return mainDocService.updateDocument(id, newDocument);
 	}
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-	@ApiOperation(value = "Delete document", notes = "Deletes document by id")
-	public void deleteDocument(@PathVariable Long id) {
-		logger.debug("Document was deleted.");
-		mainDocService.deleteDocument(id);
-	}
+//	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+//	@ApiOperation(value = "Delete document", notes = "Deletes document by id")
+//	public void deleteDocument(@PathVariable Long id) {
+//		logger.debug("Document was deleted.");
+//		mainDocService.deleteDocument(id);
+//	}
 
 }

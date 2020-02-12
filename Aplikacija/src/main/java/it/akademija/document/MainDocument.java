@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import it.akademija.doctype.DoctypeEntity;
 import it.akademija.user.User;
 
 @Entity
@@ -26,10 +27,14 @@ public class MainDocument {
 	private String title;
 
 	private String summary;
-	
-	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH})
+
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.DETACH })
 	@JoinColumn(name = "user_id")
 	private User user;
+
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.DETACH })
+	@JoinColumn(name = "doctype_id")
+	private DoctypeEntity doctypes;
 
 	@OneToMany(mappedBy = "mainDocument", cascade = CascadeType.ALL)
 	private List<FileForDocument> files = new ArrayList<>();
@@ -41,12 +46,11 @@ public class MainDocument {
 		this.title = title;
 		this.summary = summary;
 	}
-	
+
 	public void addFile(FileForDocument file) {
 		this.files.add(file);
 		file.setDocument(this);
 	}
-	
 
 	public Long getId() {
 		return id;

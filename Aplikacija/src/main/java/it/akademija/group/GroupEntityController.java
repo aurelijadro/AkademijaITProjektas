@@ -88,7 +88,7 @@ public class GroupEntityController {
 		return group.getDoctypes();
 	}
 
-	@PostMapping("/{title}/doctypes/{doctypeTitle")
+	@PostMapping("/{title}/doctypes/{doctypeTitle}") // gali neveikti.
 	public void addDoctypeByTitleToGroup(@PathVariable String title, String doctypeTitle,
 			HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupByTitle(title);
@@ -107,7 +107,7 @@ public class GroupEntityController {
 		}
 	}
 
-	@DeleteMapping("/{title}/doctypes/{doctypeTitle}")
+	@DeleteMapping("/{title}/doctypes/{doctypeTitle}") // pasitikrinti.
 	public void deleteDoctypeByTitleFromGroup(@PathVariable String title, String doctypeTitle,
 			HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupByTitle(title);

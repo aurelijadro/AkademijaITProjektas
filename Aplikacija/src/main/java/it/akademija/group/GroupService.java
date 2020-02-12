@@ -64,7 +64,8 @@ public class GroupService {
 		group.addUser(user);
 		groupRepo.save(group);
 	}
-		@Transactional
+
+	@Transactional
 	public void deleteGroup(GroupEntity group) {
 		groupRepo.delete(group);
 	}
