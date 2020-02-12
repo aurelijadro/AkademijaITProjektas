@@ -127,4 +127,8 @@ public class User {
 		this.role = UserRole.valueOf(role);
 	}
 
+	public void addGroup(GroupEntity group) {
+		this.groups.add(group);
+	}
+
 }

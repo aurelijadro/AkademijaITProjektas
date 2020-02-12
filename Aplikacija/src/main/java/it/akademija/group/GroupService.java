@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.akademija.doctype.DoctypeEntity;
 import it.akademija.doctype.DoctypeEntityRepo;
+import it.akademija.user.User;
 
 @Service
 public class GroupService {
@@ -56,6 +57,12 @@ public class GroupService {
 	@Transactional
 	public void deleteDoctypeFromGroup(DoctypeEntity doctype) {
 		doctypeRepo.delete(doctype);
+	}
+
+	@Transactional
+	public void addUserToGroup(GroupEntity group, User user) {
+		group.addUser(user);
+		groupRepo.save(group);
 	}
 
 }
