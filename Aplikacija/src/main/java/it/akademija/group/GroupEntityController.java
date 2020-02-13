@@ -5,7 +5,10 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +26,8 @@ import it.akademija.user.UserRepository;
 @RestController
 @RequestMapping("api/groups")
 public class GroupEntityController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(GroupEntityController.class);
 
 	@Autowired
 	private GroupService groupService;
@@ -37,6 +42,8 @@ public class GroupEntityController {
 	public GroupEntity createGroup(@RequestBody NewGroup newGroup, HttpServletResponse response) {
 		if (groupService.findGroupByTitle(newGroup.getTitle()) == null) {
 			response.setStatus(200);
+			logger.debug("Initiated by [{}]: New group [{}] was  created",
+					SecurityContextHolder.getContext().getAuthentication().getName(), newGroup.getTitle());
 			return groupService.createNewGroup(newGroup);
 		}
 		response.setStatus(404);
@@ -68,6 +75,8 @@ public class GroupEntityController {
 			return null;
 		}
 		response.setStatus(200);
+		logger.debug("Initiated by [{}]: Group [{}] was  updated",
+				SecurityContextHolder.getContext().getAuthentication().getName(), someGroup.getTitle());
 		return someGroup;
 	}
 
@@ -79,6 +88,8 @@ public class GroupEntityController {
 			return;
 		}
 		response.setStatus(200);
+		logger.debug("Initiated by [{}]: Group [{}] was  deleted",
+				SecurityContextHolder.getContext().getAuthentication().getName(), group.getTitle());
 		groupService.deleteGroup(group);
 	}
 
@@ -107,6 +118,8 @@ public class GroupEntityController {
 				return;
 			} else {
 				response.setStatus(200);
+				logger.debug("Initiated by [{}]: Doctype [{}] was added to the group [{}]",
+						SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getTitle(), group.getTitle());
 				groupService.addDoctypeToGroup(group, doctype);
 			}
 		}
@@ -126,6 +139,8 @@ public class GroupEntityController {
 				return;
 			} else {
 				response.setStatus(200);
+				logger.debug("Initiated by [{}]: Doctype [{}] was deleted from the group [{}]",
+						SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getTitle(), group.getTitle());
 				groupService.deleteDoctypeFromGroup(doctype);
 			}
 		}
@@ -156,6 +171,8 @@ public class GroupEntityController {
 				return;
 			} else {
 				response.setStatus(200);
+				logger.debug("Initiated by [{}]: User [{}] was added to the group [{}]",
+						SecurityContextHolder.getContext().getAuthentication().getName(), username, group.getTitle());
 				groupService.addUserToGroup(group, user);
 			}
 		}
@@ -175,6 +192,8 @@ public class GroupEntityController {
 				return;
 			} else {
 				response.setStatus(200);
+				logger.debug("Initiated by [{}]: User [{}] was deleted from the group [{}]",
+						SecurityContextHolder.getContext().getAuthentication().getName(), username, group.getTitle());
 				groupService.removeUserFromGroup(group, user);
 			}
 		}

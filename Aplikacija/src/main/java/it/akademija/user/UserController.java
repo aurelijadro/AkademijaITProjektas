@@ -85,13 +85,13 @@ public class UserController {
 			HttpServletResponse response) {
 		User user = userService.findByUsername(username);
 		if (user == null) {
-			logger.debug("Initiated by [{}]: User [{}] was  not found from controller2 #",
+			logger.debug("Initiated by [{}]: User [{}] was  not found",
 					SecurityContextHolder.getContext().getAuthentication().getName(), username);
 			
 			response.setStatus(404);
 			return null;
 		}
-		logger.debug("Initiated by [{}]: User [{}] was  updated #",
+		logger.debug("Initiated by [{}]: User [{}] was  updated",
 				SecurityContextHolder.getContext().getAuthentication().getName(), username);
 		
 		return userService.updateUser(username, newUser);

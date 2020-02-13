@@ -77,7 +77,23 @@
 		<appender-ref ref="FILE" />
 	</logger>
 	
+	<logger name="it.akademija.doctype.DoctypeEntityController" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="FILE" />
+	</logger>
 	
+	<logger name="it.akademija.doctype.DoctypeService" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="it.akademija.document.MainDocumentController" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="FILE" />
+	</logger>
 	
+		<logger name="it.akademija.group.GroupEntityController" level="DEBUG"
+		additivity="true">
+		<appender-ref ref="FILE" />
+	</logger>
 	
 </configuration>

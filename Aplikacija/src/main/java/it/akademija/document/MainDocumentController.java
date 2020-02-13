@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,6 +93,9 @@ public class MainDocumentController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Add new document", notes = "Returns new document")
 	public MainDocument addNewDocument(@RequestBody final NewMainDocument newDocument, HttpServletResponse response) {
+		logger.debug("Initiated by [{}]: Document [{}] was  added.",
+				SecurityContextHolder.getContext().getAuthentication().getName(), newDocument.getTitle());
+		
 		return mainDocService.addDocument(newDocument);
 	}
 
@@ -101,11 +105,13 @@ public class MainDocumentController {
 			HttpServletResponse response) {
 		MainDocument document = mainDocService.findDocumentById(id);
 		if (document == null) {
-			logger.debug("Document (ID{}) failed to update.", document.getId());
+			logger.debug("Document (ID{}) failed to update.", id);
 			response.setStatus(404);
 			return null;
 		}
-		logger.debug("Document (ID{}) was updated.", document.getId());
+		logger.debug("Initiated by [{}]: Document [{}] was  updated.",
+				SecurityContextHolder.getContext().getAuthentication().getName(), document.getId());
+		
 		return mainDocService.updateDocument(id, newDocument);
 	}
 
