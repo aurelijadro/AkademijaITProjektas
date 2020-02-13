@@ -5,11 +5,12 @@
 		%d{HH:mm:ss} %level [%file:%line] - %msg%n %contextName</pattern> </encoder>
 		</appender> -->
 		
-		<property name="HOME_LOG" value="./logs/Gentoo.log" />
+		<property name="HOME_LOG" value="/tmp/logs" />
+		<property name="CONTEXT_NAME" value="Gentoo.log"/>
 		
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file><!-- ${catalina.base}/tmp/ -->${HOME_LOG}</file>
+		<file>${HOME_LOG}/${CONTEXT_NAME}</file>
 		<encoder
 			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%date <!-- %d{HH:mm:ss} -->

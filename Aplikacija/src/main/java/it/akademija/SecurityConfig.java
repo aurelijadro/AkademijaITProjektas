@@ -23,11 +23,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.GroupManager;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+
 
 import it.akademija.user.UserService;
 
@@ -71,12 +71,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 										+ "\"}");
 						logger.debug("User [{}] logged to the system]",
 								SecurityContextHolder.getContext().getAuthentication().getName());
+
 					}
 				}).failureHandler(new SimpleUrlAuthenticationFailureHandler()).loginPage("/login").permitAll().and()
 				.logout().logoutUrl("/logout").deleteCookies("JSESSIONID")
 
-				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK) 
-				
+				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK) {
+
+					@Override
+					public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+							Authentication authentication) throws IOException {
+
+						logger.debug("User logged out]");
+
+						super.onLogoutSuccess(request, response, authentication);
+					}
+
+				}
 
 				).permitAll().and().csrf().disable()
 

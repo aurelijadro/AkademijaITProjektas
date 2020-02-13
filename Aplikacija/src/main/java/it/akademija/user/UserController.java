@@ -45,7 +45,7 @@ public class UserController {
 			HttpServletResponse response) {
 		User user = userService.findByUsername(username);
 		if (user == null) {
-			logger.debug("User [{}] was  not found by controller",user.getUsername());
+			logger.debug("User [{}] was  not found by controller",username);
 			response.setStatus(404);
 			return null;
 		}
@@ -86,13 +86,13 @@ public class UserController {
 		User user = userService.findByUsername(username);
 		if (user == null) {
 			logger.debug("Initiated by [{}]: User [{}] was  not found from controller2 #",
-					SecurityContextHolder.getContext().getAuthentication().getName(), user.getUsername());
+					SecurityContextHolder.getContext().getAuthentication().getName(), username);
 			
 			response.setStatus(404);
 			return null;
 		}
 		logger.debug("Initiated by [{}]: User [{}] was  updated #",
-				SecurityContextHolder.getContext().getAuthentication().getName(), user.getUsername());
+				SecurityContextHolder.getContext().getAuthentication().getName(), username);
 		
 		return userService.updateUser(username, newUser);
 	}
