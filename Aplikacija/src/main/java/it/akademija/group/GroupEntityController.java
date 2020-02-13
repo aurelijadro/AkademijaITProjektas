@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.akademija.doctype.DoctypeEntity;
 import it.akademija.doctype.DoctypeEntityRepo;
+import it.akademija.user.User;
+import it.akademija.user.UserRepository;
 
 @RestController
 @RequestMapping("api/groups")
@@ -28,11 +30,14 @@ public class GroupEntityController {
 	@Autowired
 	private DoctypeEntityRepo doctypeRepo;
 
+	@Autowired
+	private UserRepository userRepo;
+
 	@PostMapping()
 	public GroupEntity createGroup(@RequestBody NewGroup newGroup, HttpServletResponse response) {
 		if (groupService.findGroupByTitle(newGroup.getTitle()) == null) {
 			response.setStatus(200);
-			return this.groupService.createNewGroup(newGroup);
+			return groupService.createNewGroup(newGroup);
 		}
 		response.setStatus(404);
 		return null;
@@ -45,12 +50,13 @@ public class GroupEntityController {
 			response.setStatus(404);
 			return null;
 		}
-		return this.groupService.findGroupByTitle(title);
+		response.setStatus(200);
+		return group;
 	}
 
 	@GetMapping()
 	public List<GroupEntity> getGroups() {
-		return this.groupService.getAllGroups();
+		return groupService.getAllGroups();
 	}
 
 	@PutMapping("/{title}")
@@ -61,55 +67,116 @@ public class GroupEntityController {
 			response.setStatus(404);
 			return null;
 		}
-		return this.groupService.updateGroupInfo(title, group);
+		response.setStatus(200);
+		return someGroup;
 	}
 
-//	@DeleteMapping("/{id}")
-//	public ResponseEntity deleteGroup(@PathVariable Long id) {
-//		return this.groupRepo.findById(id).map((toDelete) -> {
-//			this.groupRepo.delete(toDelete);
-//			return ResponseEntity.ok("Group id " + id + " deleted");
-//		}).orElseThrow(() -> new ResourceNotFoundException("Group", id));
-//	}
+	@DeleteMapping("/{title}")
+	public void deleteGroup(@PathVariable String title, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupByTitle(title);
+		if (group == null) {
+			response.setStatus(404);
+			return;
+		}
+		response.setStatus(200);
+		groupService.deleteGroup(group);
+	}
 
 	@GetMapping("/{title}/doctypes")
-	public Set<DoctypeEntity> getDoctypesByGroupTitle(@PathVariable String title) {
+	public Set<DoctypeEntity> getDoctypesByGroupTitle(@PathVariable String title, HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupByTitle(title);
+		if (group == null) {
+			response.setStatus(404);
+			return null;
+		}
+		response.setStatus(200);
 		return group.getDoctypes();
 	}
 
-	@PostMapping("/{id}/doctypes")
-	public void addDoctypeByTitleToGroup(@PathVariable Long id, String title, HttpServletResponse response) {
-		GroupEntity group = groupService.findGroupById(id);
+	@PostMapping("/{title}/doctypes/{doctypeTitle}") // gali neveikti.
+	public void addDoctypeByTitleToGroup(@PathVariable String title, String doctypeTitle,
+			HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupByTitle(title);
 		if (group == null) {
 			response.setStatus(404);
 			return;
 		} else {
-			DoctypeEntity doctype = doctypeRepo.findDoctypeByTitle(title);
+			DoctypeEntity doctype = doctypeRepo.findDoctypeByTitle(doctypeTitle);
 			if (doctype == null) {
 				response.setStatus(404);
 				return;
 			} else {
+				response.setStatus(200);
 				groupService.addDoctypeToGroup(group, doctype);
 			}
 		}
 	}
 
-	@DeleteMapping("/{id}/doctypes")
-	public void deleteDoctypeByTitleFromGroup(@PathVariable Long id, String title, HttpServletResponse response) {
-		GroupEntity group = groupService.findGroupById(id);
+	@DeleteMapping("/{title}/doctypes/{doctypeTitle}") // pasitikrinti.
+	public void deleteDoctypeByTitleFromGroup(@PathVariable String title, String doctypeTitle,
+			HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupByTitle(title);
 		if (group == null) {
 			response.setStatus(404);
 			return;
 		} else {
-			DoctypeEntity doctype = doctypeRepo.findDoctypeByTitle(title);
+			DoctypeEntity doctype = doctypeRepo.findDoctypeByTitle(doctypeTitle);
 			if (doctype == null) {
 				response.setStatus(404);
 				return;
 			} else {
+				response.setStatus(200);
 				groupService.deleteDoctypeFromGroup(doctype);
 			}
 		}
 
+	}
+
+	@GetMapping("/{title}/users")
+	public Set<User> getUsersInGroupByGroupTitle(@PathVariable String title, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupByTitle(title);
+		if (group == null) {
+			response.setStatus(404);
+			return null;
+		} else {
+			return group.getUsers();
+		}
+	}
+
+	@PostMapping("/{title}/users/{username}")
+	public void addUserByUsernameToGroup(@PathVariable String title, String username, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupByTitle(title);
+		if (group == null) {
+			response.setStatus(404);
+			return;
+		} else {
+			User user = userRepo.findByUsername(username);
+			if (user == null) {
+				response.setStatus(404);
+				return;
+			} else {
+				response.setStatus(200);
+				groupService.addUserToGroup(group, user);
+			}
+		}
+	}
+
+	@DeleteMapping("/{title}/users/{username}")
+	public void deleteUserByUsernameFromGroup(@PathVariable String title, String username,
+			HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupByTitle(title);
+		if (group == null) {
+			response.setStatus(404);
+			return;
+		} else {
+			User user = userRepo.findByUsername(username);
+			if (user == null) {
+				response.setStatus(404);
+				return;
+			} else {
+				response.setStatus(200);
+				groupService.removeUserFromGroup(group, user);
+			}
+		}
 	}
 }

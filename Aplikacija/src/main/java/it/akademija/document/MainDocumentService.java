@@ -8,20 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-//import it.akademija.doctype.DoctypeService;
+import it.akademija.doctype.DoctypeEntity;
 
 @Service
 public class MainDocumentService {
 
 	private static final Logger logger = LoggerFactory.getLogger(MainDocumentService.class);
 
-	MainDocumentRepository mainDocRepository;
-
 	@Autowired
-	public MainDocumentService(MainDocumentRepository mainDocRepository) {
-		super();
-		this.mainDocRepository = mainDocRepository;
-	}
+	MainDocumentRepository mainDocRepository;
 
 	@Transactional
 	public List<MainDocument> getMainDocuments() {
@@ -35,9 +30,7 @@ public class MainDocumentService {
 
 	@Transactional
 	public MainDocument addDocument(NewMainDocument newMainDocument) {
-		MainDocument document = new MainDocument(newMainDocument.getTitle(), newMainDocument.getSummary()
-//				, newMainDocument.getUrl()
-		);
+		MainDocument document = new MainDocument(newMainDocument.getTitle(), newMainDocument.getSummary());
 		logger.debug("New document (ID{}) was added.", document.getId());
 		return mainDocRepository.save(document);
 	}
@@ -47,15 +40,19 @@ public class MainDocumentService {
 		MainDocument existingDocument = findDocumentById(id);
 		existingDocument.setTitle(newDocument.getTitle());
 		existingDocument.setSummary(newDocument.getSummary());
-//		existingDocument.setUrl(newDocument.getUrl());
 		logger.debug("Document (ID{}) was updated.", existingDocument.getId());
 		return existingDocument;
 	}
 
 	@Transactional
-	public void deleteDocument(Long id) {
-		MainDocument existingDocument = findDocumentById(id);
-		mainDocRepository.delete(existingDocument);
-		logger.debug("Document (ID{}) was deleted.", existingDocument.getId());
+	public void deleteDocument(MainDocument document) {
+		mainDocRepository.delete(document);
+		logger.debug("Document (ID{}) was deleted.", document);
+	}
+
+	@Transactional
+	public String addDoctypeTitleToDocument(DoctypeEntity doctype) {
+		String doctypeTitle = doctype.getTitle();
+		return doctypeTitle;
 	}
 }

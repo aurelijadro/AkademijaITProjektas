@@ -1,6 +1,8 @@
 package it.akademija.doctype;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
@@ -20,6 +23,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import it.akademija.document.MainDocument;
 import it.akademija.group.GroupEntity;
 
 @Entity
@@ -40,7 +44,15 @@ public class DoctypeEntity {
 	@JsonIgnore
 	private Set<GroupEntity> groups = new HashSet<>();
 
+	@OneToMany(mappedBy = "doctypes")
+	private List<MainDocument> mainDocuments = new ArrayList<>();
+
 	public DoctypeEntity() {
+	}
+
+	public DoctypeEntity(Long id, String title) {
+		this.id = id;
+		this.title = title;
 	}
 
 	public DoctypeEntity(String title) {

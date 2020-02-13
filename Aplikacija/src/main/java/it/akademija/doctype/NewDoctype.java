@@ -4,8 +4,10 @@ public class NewDoctype {
 
 	private String title;
 
+	public NewDoctype() {
+	}
+
 	public NewDoctype(String title) {
-		super();
 		this.title = title;
 	}
 

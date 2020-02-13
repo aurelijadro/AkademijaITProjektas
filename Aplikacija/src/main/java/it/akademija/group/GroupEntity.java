@@ -10,8 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -86,6 +84,26 @@ public class GroupEntity {
 		} else {
 			this.doctypes.add(doctype);
 			doctype.addGroup(this);
+		}
+	}
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void addUser(User user) {
+		if (users.contains(user)) {
+			return;
+		} else {
+			this.users.add(user);
+			user.addGroup(this);
+		}
+	}
+
+	public void removeUser(User user) {
+		if (users.contains(user)) {
+			this.users.remove(user);
+			user.removeGroup(this);
 		}
 	}
 
