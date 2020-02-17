@@ -76,8 +76,16 @@ public class MainDocument {
 		this.summary = summary;
 	}
 
-	public String getDoctypeTitle() {
-		return doctypes.getTitle();
+	public DoctypeEntity getDoctypes() {
+		return doctypes;
+	}
+
+	public void setDoctypes(DoctypeEntity doctypes) {
+		this.doctypes = doctypes;
+	}
+
+	public void addDoctype(DoctypeEntity doctype) {
+		this.doctypes = doctype;
 	}
 
 }

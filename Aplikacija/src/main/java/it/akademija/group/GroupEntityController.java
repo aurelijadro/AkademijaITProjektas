@@ -68,7 +68,7 @@ public class GroupEntityController {
 			return null;
 		}
 		response.setStatus(200);
-		return someGroup;
+		return groupService.updateGroupInfo(title, group);
 	}
 
 	@DeleteMapping("/{title}")

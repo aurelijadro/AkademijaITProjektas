@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.akademija.doctype.DoctypeEntity;
+
 @Service
 public class MainDocumentService {
 
@@ -48,9 +50,15 @@ public class MainDocumentService {
 		logger.debug("Document (ID{}) was deleted.", document);
 	}
 
-	public void addDoctypeTitleToDocument(String title, Long id) {
-		MainDocument existingDocument = mainDocRepository.findMainDocumentById(id);
-		existingDocument.getDoctypeTitle();
+	@Transactional
+	public void addDoctypeToDocument(MainDocument document, DoctypeEntity doctype) {
+		document.addDoctype(doctype);
+		mainDocRepository.save(document);
+	}
+
+	public void updateDoctypeInDocument(MainDocument document, DoctypeEntity newDoctype) {
+		document.setDoctypes(newDoctype);
+		mainDocRepository.save(document);
 	}
 
 }

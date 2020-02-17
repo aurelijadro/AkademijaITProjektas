@@ -45,9 +45,9 @@ public class DoctypeEntityController {
 		return doctypeService.getAllDoctypes();
 	}
 
-	@GetMapping("/{title}")
-	public DoctypeEntity getDoctypeByTitle(@PathVariable String title, HttpServletResponse response) {
-		DoctypeEntity doctype = doctypeService.findDoctypeByTitle(title);
+	@GetMapping("/{id}")
+	public DoctypeEntity getDoctypeByTitle(@PathVariable Long id, HttpServletResponse response) {
+		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
 		if (doctype == null) {
 			response.setStatus(404);
 			return null;
@@ -56,10 +56,10 @@ public class DoctypeEntityController {
 		return doctype;
 	}
 
-	@PutMapping("/{title}")
-	public DoctypeEntity updateDoctype(@Valid @PathVariable String title, @RequestBody NewDoctype newDoctype,
+	@PutMapping("/{id}")
+	public DoctypeEntity updateDoctype(@Valid @PathVariable Long id, @RequestBody NewDoctype newDoctype,
 			HttpServletResponse response) {
-		DoctypeEntity doctype = doctypeService.updateDoctypeInfo(title, newDoctype);
+		DoctypeEntity doctype = doctypeService.updateDoctypeInfo(id, newDoctype);
 		if (doctype == null) {
 			response.setStatus(404);
 			return null;
@@ -68,9 +68,9 @@ public class DoctypeEntityController {
 		return doctype;
 	}
 
-	@DeleteMapping("/{title}")
-	public void deleteDoctype(@PathVariable String title, HttpServletResponse response) {
-		DoctypeEntity doctype = doctypeService.findDoctypeByTitle(title);
+	@DeleteMapping("/{id}")
+	public void deleteDoctype(@PathVariable Long id, HttpServletResponse response) {
+		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
 		if (doctype == null) {
 			response.setStatus(404);
 			return;
@@ -79,9 +79,9 @@ public class DoctypeEntityController {
 		doctypeService.deleteDoctype(doctype);
 	}
 
-	@GetMapping("/{title}/groups")
-	public Set<GroupEntity> getGroupsByDoctypeTitle(@PathVariable String title, HttpServletResponse response) {
-		DoctypeEntity doctype = doctypeService.findDoctypeByTitle(title);
+	@GetMapping("/{id}/groups")
+	public Set<GroupEntity> getGroupsByDoctypeId(@PathVariable Long id, HttpServletResponse response) {
+		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
 		if (doctype == null) {
 			response.setStatus(404);
 			return null;
@@ -90,9 +90,9 @@ public class DoctypeEntityController {
 		return doctype.getGroups();
 	}
 
-	@PostMapping("/{title}/documents/{documentId}")
-	public void addDocumentByIdToDoctype(@PathVariable String title, Long documentId, HttpServletResponse response) {
-		DoctypeEntity doctype = doctypeService.findDoctypeByTitle(title);
+	@PostMapping("/{doctypeId}/documents/{documentId}")
+	public void addDocumentByIdToDoctype(@PathVariable Long doctypeId, Long documentId, HttpServletResponse response) {
+		DoctypeEntity doctype = doctypeService.findDoctypeById(doctypeId);
 		if (doctype == null) {
 			response.setStatus(404);
 			return;

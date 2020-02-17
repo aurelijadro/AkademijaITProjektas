@@ -24,6 +24,11 @@ public class DoctypeService {
 	}
 
 	@Transactional
+	public DoctypeEntity findDoctypeById(Long id) {
+		return doctypeRepo.findDoctypeById(id);
+	}
+
+	@Transactional
 	public List<DoctypeEntity> getAllDoctypes() {
 		return doctypeRepo.findAll();
 	}
@@ -35,8 +40,8 @@ public class DoctypeService {
 	}
 
 	@Transactional
-	public DoctypeEntity updateDoctypeInfo(String title, NewDoctype newDoctype) {
-		DoctypeEntity existingDoctype = findDoctypeByTitle(title);
+	public DoctypeEntity updateDoctypeInfo(Long id, NewDoctype newDoctype) {
+		DoctypeEntity existingDoctype = findDoctypeById(id);
 		existingDoctype.setTitle(newDoctype.getTitle());
 		return existingDoctype;
 	}
