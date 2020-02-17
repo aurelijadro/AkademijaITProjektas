@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.akademija.document.MainDocument;
 import it.akademija.group.GroupEntityRepo;
 
 @Service
@@ -43,6 +44,12 @@ public class DoctypeService {
 	@Transactional
 	public void deleteDoctype(DoctypeEntity doctype) {
 		doctypeRepo.delete(doctype);
+	}
+
+	@Transactional
+	public void addDoctypeToDocuments(DoctypeEntity doctype, MainDocument document) {
+		doctype.addDocument(document);
+		doctypeRepo.save(doctype);
 	}
 
 }

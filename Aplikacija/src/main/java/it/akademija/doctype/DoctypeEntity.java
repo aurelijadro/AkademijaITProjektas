@@ -87,4 +87,8 @@ public class DoctypeEntity {
 		this.groups.add(group);
 	}
 
+	public void addDocument(MainDocument document) {
+		this.mainDocuments.add(document);
+	}
+
 }

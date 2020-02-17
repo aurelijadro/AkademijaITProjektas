@@ -29,6 +29,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import it.akademija.doctype.DoctypeService;
 //import it.akademija.doctype.DoctypeController;
 
 @RestController
@@ -38,12 +39,11 @@ public class MainDocumentController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MainDocumentController.class);
 
+	@Autowired
 	private MainDocumentService mainDocService;
 
 	@Autowired
-	public MainDocumentController(MainDocumentService mainDocService) {
-		this.mainDocService = mainDocService;
-	}
+	private DoctypeService doctypeService;
 
 	@PostMapping(value = "/upload")
 	public ResponseEntity uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) {

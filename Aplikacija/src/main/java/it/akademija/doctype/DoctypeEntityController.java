@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.akademija.document.MainDocument;
+import it.akademija.document.MainDocumentService;
 import it.akademija.group.GroupEntity;
 
 @RestController
@@ -24,6 +26,9 @@ public class DoctypeEntityController {
 
 	@Autowired
 	private DoctypeService doctypeService;
+
+	@Autowired
+	private MainDocumentService documentService;
 
 	@PostMapping()
 	public DoctypeEntity createDoctype(@RequestBody NewDoctype doctype, HttpServletResponse response) {
@@ -83,6 +88,23 @@ public class DoctypeEntityController {
 		}
 		response.setStatus(200);
 		return doctype.getGroups();
+	}
+
+	@PostMapping("/{title}/documents/{documentId}")
+	public void addDocumentByIdToDoctype(@PathVariable String title, Long documentId, HttpServletResponse response) {
+		DoctypeEntity doctype = doctypeService.findDoctypeByTitle(title);
+		if (doctype == null) {
+			response.setStatus(404);
+			return;
+		} else {
+			MainDocument document = documentService.findDocumentById(documentId);
+			if (document == null) {
+				response.setStatus(404);
+				return;
+			} else {
+				doctypeService.addDoctypeToDocuments(doctype, document);
+			}
+		}
 	}
 
 }

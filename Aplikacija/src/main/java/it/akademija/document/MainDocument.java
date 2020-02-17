@@ -76,4 +76,8 @@ public class MainDocument {
 		this.summary = summary;
 	}
 
+	public String getDoctypeTitle() {
+		return doctypes.getTitle();
+	}
+
 }
