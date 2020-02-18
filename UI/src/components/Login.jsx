@@ -7,7 +7,7 @@ axios.defaults.withCredentials = true;
 const Login = withRouter(({ history, ...props }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { currentUsername } = useMyData();
+  const { currentUsername, updateUserInformation } = useMyData();
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -19,6 +19,7 @@ const Login = withRouter(({ history, ...props }) => {
         headers: { "Content-type": "application/x-www-form-urlencoded" }
       })
       .then(resp => {
+        updateUserInformation();
         const role = resp.data.role.toLowerCase();
         history.push("/Gentoo/" + role);
       })
