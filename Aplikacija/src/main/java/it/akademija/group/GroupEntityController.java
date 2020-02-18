@@ -208,8 +208,10 @@ public class GroupEntityController {
 			response.setStatus(404);
 			return null;
 		} else {
-			System.out.println(user);
-			return groupService.getGroupsUserDoesntBelongTo(user);
+			response.setStatus(200);
+			Set<GroupEntity> notUserGroups = groupService.getGroupsUserDoesntBelongTo(user);
+			logger.debug(notUserGroups.toString());
+			return notUserGroups;
 		}
 	}
 }

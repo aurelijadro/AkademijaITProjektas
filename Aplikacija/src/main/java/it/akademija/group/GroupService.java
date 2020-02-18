@@ -1,5 +1,6 @@
 package it.akademija.group;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -80,9 +81,12 @@ public class GroupService {
 	@Transactional
 	public Set<GroupEntity> getGroupsUserDoesntBelongTo(User user) {
 		Set<GroupEntity> userGroups = user.getGroups();
-		Set<GroupEntity> allGroups = (Set<GroupEntity>) groupRepo.findAll();
+
+		Set<GroupEntity> allGroups = new HashSet<GroupEntity>();
+		allGroups.addAll(groupRepo.findAll());
+
+		// Set<GroupEntity> allGroups = (Set<GroupEntity>) groupRepo.findAll();
 		allGroups.removeAll(userGroups);
-		System.out.println(allGroups);
 		return allGroups;
 	}
 
