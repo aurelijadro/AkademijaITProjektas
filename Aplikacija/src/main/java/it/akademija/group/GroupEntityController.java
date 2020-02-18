@@ -22,11 +22,12 @@ import it.akademija.doctype.DoctypeEntity;
 import it.akademija.doctype.DoctypeEntityRepo;
 import it.akademija.user.User;
 import it.akademija.user.UserRepository;
+import it.akademija.group.GroupService;
 
 @RestController
 @RequestMapping("api/groups")
 public class GroupEntityController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(GroupEntityController.class);
 
 	@Autowired
@@ -119,7 +120,8 @@ public class GroupEntityController {
 			} else {
 				response.setStatus(200);
 				logger.debug("Initiated by [{}]: Doctype [{}] was added to the group [{}]",
-						SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getTitle(), group.getTitle());
+						SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getTitle(),
+						group.getTitle());
 				groupService.addDoctypeToGroup(group, doctype);
 			}
 		}
@@ -140,7 +142,8 @@ public class GroupEntityController {
 			} else {
 				response.setStatus(200);
 				logger.debug("Initiated by [{}]: Doctype [{}] was deleted from the group [{}]",
-						SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getTitle(), group.getTitle());
+						SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getTitle(),
+						group.getTitle());
 				groupService.deleteDoctypeFromGroup(doctype);
 			}
 		}
@@ -179,11 +182,12 @@ public class GroupEntityController {
 	}
 
 	@DeleteMapping("/{title}/users/{username}")
-	public void deleteUserByUsernameFromGroup(@PathVariable String title, String username,
+	public void deleteUserByUsernameFromGroup(@PathVariable String title, @PathVariable String username,
 			HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupByTitle(title);
+		System.out.println(title + " " + username + " " + group);
 		if (group == null) {
-			response.setStatus(404);
+			response.setStatus(403);
 			return;
 		} else {
 			User user = userRepo.findByUsername(username);
@@ -196,6 +200,18 @@ public class GroupEntityController {
 						SecurityContextHolder.getContext().getAuthentication().getName(), username, group.getTitle());
 				groupService.removeUserFromGroup(group, user);
 			}
+		}
+	}
+
+	@GetMapping("/userdoenstbelong/{username}")
+	public Set<GroupEntity> getGroupsUserDoesntBelongTo(@PathVariable String username, HttpServletResponse response) {
+		User user = userRepo.findByUsername(username);
+		if (user == null) {
+			response.setStatus(404);
+			return null;
+		} else {
+			System.out.println(user);
+			return groupService.getGroupsUserDoesntBelongTo(user);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Login from "./components/Login";
 import "./App.css";
 import { Switch } from "react-router";
@@ -19,11 +19,23 @@ import { AppDataContext } from "./context";
 import Axios from "axios";
 
 function App() {
-  const [loggedUser, setLoggedUser] = useState(null);
+  const [currentUsername, setCurrentUsername] = useState("loading");
+
+  useEffect(function() {
+    function updateUserInformation() {
+      Axios.get("http://localhost:8081/Gentoo/api/loggedUsername").then(
+        resp => {
+          setCurrentUsername(resp.data);
+        }
+      );
+    }
+    updateUserInformation();
+    const timer = setInterval(updateUserInformation, 60000);
+    return () => clearInterval(timer);
+  }, []);
 
   const appData = {
-    loggedUser: loggedUser,
-    setLoggedUser: setLoggedUser
+    currentUsername: currentUsername
   };
 
   return (

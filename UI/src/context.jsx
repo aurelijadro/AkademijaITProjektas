@@ -1,8 +1,7 @@
 import React from "react";
 
 export const AppDataContext = React.createContext({
-  loggedUser: {},
-  setLoggedUSer: () => {}
+  currentUsername: ""
 });
 
 export function useMyData() {

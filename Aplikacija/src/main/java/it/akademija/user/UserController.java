@@ -1,6 +1,7 @@
 package it.akademija.user;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,12 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import it.akademija.group.GroupEntity;
 
 @RestController
 @Api(value = "user")
 @RequestMapping(value = "/api/users")
 public class UserController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	private UserService userService;
@@ -45,11 +47,26 @@ public class UserController {
 			HttpServletResponse response) {
 		User user = userService.findByUsername(username);
 		if (user == null) {
-			logger.debug("User [{}] was  not found by controller",username);
+			logger.debug("User [{}] was  not found by controller", username);
 			response.setStatus(404);
 			return null;
 		}
 		return userService.findByUsername(username);
+	}
+
+	@RequestMapping(path = "/{username}/groups", method = RequestMethod.GET)
+	@ApiOperation(value = "Get groups of user by username", notes = "Returns all groups that user belongs to")
+	public Set<GroupEntity> getUsersGroupsByUsername(
+			@ApiParam(value = "username", required = true) @PathVariable String username,
+			HttpServletResponse response) {
+		User user = userService.findByUsername(username);
+		if (user == null) {
+			response.setStatus(404);
+			return null;
+		} else {
+			response.setStatus(200);
+			return user.getGroups();
+		}
 	}
 
 //	@RequestMapping(path = "/byId/{id}", method = RequestMethod.GET)
@@ -70,11 +87,12 @@ public class UserController {
 		if (userService.findByUsername(newUser.getUsername()) == null) {
 			response.setStatus(200);
 			logger.debug("Initiated by [{}]: User [{}] with role [{}]was  created #",
-					SecurityContextHolder.getContext().getAuthentication().getName(), newUser.getUsername(), newUser.getRole());
+					SecurityContextHolder.getContext().getAuthentication().getName(), newUser.getUsername(),
+					newUser.getRole());
 			return userService.addUser(newUser);
 		}
 		response.setStatus(404);
-		logger.debug("Failed to create new user ({}).", newUser.getUsername() );
+		logger.debug("Failed to create new user ({}).", newUser.getUsername());
 		return null;
 
 	}
@@ -87,13 +105,13 @@ public class UserController {
 		if (user == null) {
 			logger.debug("Initiated by [{}]: User [{}] was  not found",
 					SecurityContextHolder.getContext().getAuthentication().getName(), username);
-			
+
 			response.setStatus(404);
 			return null;
 		}
 		logger.debug("Initiated by [{}]: User [{}] was  updated",
 				SecurityContextHolder.getContext().getAuthentication().getName(), username);
-		
+
 		return userService.updateUser(username, newUser);
 	}
 

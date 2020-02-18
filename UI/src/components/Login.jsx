@@ -1,25 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
-import { useMyData } from "../context";
 
 axios.defaults.withCredentials = true;
 const Login = withRouter(({ history, ...props }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { loggedUser, setLoggedUser } = useMyData();
-
-  const saveUser = () => {
-    console.log("saveUser username", username);
-    axios
-      .get("http://localhost:8081/Gentoo/api/users/" + username)
-      .then(resp => {
-        setLoggedUser(resp.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -31,7 +17,6 @@ const Login = withRouter(({ history, ...props }) => {
         headers: { "Content-type": "application/x-www-form-urlencoded" }
       })
       .then(resp => {
-        saveUser();
         const role = resp.data.role.toLowerCase();
         history.push("/Gentoo/" + role);
       })

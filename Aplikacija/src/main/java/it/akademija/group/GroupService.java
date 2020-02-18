@@ -1,6 +1,7 @@
 package it.akademija.group;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,6 +75,15 @@ public class GroupService {
 	@Transactional
 	public void deleteGroup(GroupEntity group) {
 		groupRepo.delete(group);
+	}
+
+	@Transactional
+	public Set<GroupEntity> getGroupsUserDoesntBelongTo(User user) {
+		Set<GroupEntity> userGroups = user.getGroups();
+		Set<GroupEntity> allGroups = (Set<GroupEntity>) groupRepo.findAll();
+		allGroups.removeAll(userGroups);
+		System.out.println(allGroups);
+		return allGroups;
 	}
 
 }
