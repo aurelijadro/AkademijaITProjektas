@@ -20,7 +20,7 @@ const AddMainDocumentForm = props => {
                         </div>
 
                         <button className="btn btn-primary" type="submit">Išsaugoti</button>
-                        <Link to="/admin/doctypes"><button className="btn btn-primary" onClick={props.onBack}>Grįžti į dokumentų tipų sąrašą</button></Link>
+                        <Link to="/Gentoo/admin/doctypes"><button className="btn btn-primary" onClick={props.onBack}>Grįžti į dokumentų tipų sąrašą</button></Link>
                     </form>
                 </div>
             </div>

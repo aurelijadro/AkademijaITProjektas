@@ -6,7 +6,10 @@ import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +26,8 @@ import it.akademija.group.GroupEntity;
 @RestController
 @RequestMapping("api/doctypes")
 public class DoctypeEntityController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(DoctypeEntityController.class);
 
 	@Autowired
 	private DoctypeService doctypeService;
@@ -34,6 +39,8 @@ public class DoctypeEntityController {
 	public DoctypeEntity createDoctype(@RequestBody NewDoctype doctype, HttpServletResponse response) {
 		if (doctypeService.findDoctypeByTitle(doctype.getTitle()) == null) {
 			response.setStatus(200);
+			logger.debug("Initiated by [{}]: New doctype with ID [{}] was  created",
+					SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getTitle());
 			return doctypeService.createNewDoctype(doctype);
 		}
 		response.setStatus(404);
@@ -65,6 +72,8 @@ public class DoctypeEntityController {
 			return null;
 		}
 		response.setStatus(200);
+		logger.debug("Initiated by [{}]: Doctype with ID [{}] was  updated",
+				SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getId());
 		return doctype;
 	}
 
@@ -76,6 +85,8 @@ public class DoctypeEntityController {
 			return;
 		}
 		response.setStatus(200);
+		logger.debug("Initiated by [{}]: Doctype with ID [{}] was  deleted",
+				SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getId());
 		doctypeService.deleteDoctype(doctype);
 	}
 

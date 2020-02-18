@@ -15,6 +15,12 @@ const UserComponent = props => {
         >
           Atnaujinti informaciją
         </Link>
+        <Link
+          to={"/Gentoo/admin/users/manageusergroups/" + props.username}
+          className="btn btn-light mx-2"
+        >
+          Valdyti grupes
+        </Link>
       </td>
     </tr>
   );
