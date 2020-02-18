@@ -88,7 +88,8 @@ const UserGroupsManager = props => {
         .delete(
           `http://localhost:8081/Gentoo/api/groups/${group.title}/users/${currentUsername}`
         )
-        .then(updateUserGroups, updateNonUserGroups);
+        .then(updateUserGroups)
+        .then(updateNonUserGroups);
     }
     return (
       <div className="row my-1" key={group.id}>
@@ -108,7 +109,8 @@ const UserGroupsManager = props => {
           `http://localhost:8081/Gentoo/api/groups/${group.title}/users/${currentUsername}`
         )
 
-        .then(updateUserGroups, updateNonUserGroups);
+        .then(updateUserGroups)
+        .then(updateNonUserGroups);
     }
     return (
       <div className="row my-1" key={group.id}>
