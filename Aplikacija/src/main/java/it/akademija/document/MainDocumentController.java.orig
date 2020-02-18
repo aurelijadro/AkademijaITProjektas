@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,10 +46,10 @@ public class MainDocumentController {
 	@Autowired
 	private DoctypeService doctypeService;
 
-	@RequestMapping(path = "/{username}/documents", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get documents", notes = "Returns all documents")
-	public List<MainDocument> getDocuments(@PathVariable String username) {
-		return mainDocService.getMainDocuments(username);
+	public List<MainDocument> getDocuments() {
+		return mainDocService.getMainDocuments();
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -65,11 +66,17 @@ public class MainDocumentController {
 		return document;
 	}
 
-	@RequestMapping(path = "/{username}", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST) // ar tikrinam, kad nera tokio paties pavadinimo ar pan?
 	@ApiOperation(value = "Add new document", notes = "Returns new document")
-	public MainDocument createDocument(@PathVariable String username, @RequestBody final NewMainDocument newDocument,
-			HttpServletResponse response) {
-		return mainDocService.addDocument(newDocument, username);
+<<<<<<< HEAD
+	public MainDocument createDocument(@RequestBody final NewMainDocument newDocument, HttpServletResponse response) {
+=======
+	public MainDocument addNewDocument(@RequestBody final NewMainDocument newDocument, HttpServletResponse response) {
+		logger.debug("Initiated by [{}]: Document [{}] was  added.",
+				SecurityContextHolder.getContext().getAuthentication().getName(), newDocument.getTitle());
+		
+>>>>>>> c155fd204e15ecebfb69a1b25917c1e188cc4afa
+		return mainDocService.addDocument(newDocument);
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
@@ -82,14 +89,20 @@ public class MainDocumentController {
 			response.setStatus(404);
 			return null;
 		}
+<<<<<<< HEAD
 		logger.debug("Document (ID{}) was updated.", document.getId());
 		response.setStatus(200);
+=======
+		logger.debug("Initiated by [{}]: Document [{}] was  updated.",
+				SecurityContextHolder.getContext().getAuthentication().getName(), document.getId());
+		
+>>>>>>> c155fd204e15ecebfb69a1b25917c1e188cc4afa
 		return mainDocService.updateDocument(id, newDocument);
 	}
 
-	@RequestMapping(path = "{username}/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete document", notes = "Deletes document by id")
-	public void deleteDocument(@PathVariable Long id, String username, HttpServletResponse response) {
+	public void deleteDocument(@PathVariable Long id, HttpServletResponse response) {
 		MainDocument document = mainDocService.findDocumentById(id);
 		if (document == null) {
 			response.setStatus(404);
@@ -97,7 +110,7 @@ public class MainDocumentController {
 		}
 		logger.debug("Document was deleted.");
 		response.setStatus(200);
-		mainDocService.deleteDocument(id, username);
+		mainDocService.deleteDocument(document);
 	}
 
 	@RequestMapping(path = "/{id}/doctypes/{existingDoctypeId}", method = RequestMethod.POST)

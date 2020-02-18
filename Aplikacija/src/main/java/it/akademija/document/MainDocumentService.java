@@ -1,6 +1,7 @@
 package it.akademija.document;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.akademija.doctype.DoctypeEntity;
+import it.akademija.user.User;
+import it.akademija.user.UserRepository;
 
 @Service
 public class MainDocumentService {
@@ -18,9 +21,16 @@ public class MainDocumentService {
 	@Autowired
 	MainDocumentRepository mainDocRepository;
 
+	@Autowired
+	UserRepository userRepo;
+
 	@Transactional
-	public List<MainDocument> getMainDocuments() {
-		return mainDocRepository.findAll();
+	public List<MainDocument> getMainDocuments(String username) {
+		User user = userRepo.findByUsername(username);
+
+		return user.getDocuments().stream()
+				.map((document) -> new MainDocument(document.getId(), document.getTitle(), document.getSummary()))
+				.collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -29,9 +39,12 @@ public class MainDocumentService {
 	}
 
 	@Transactional
-	public MainDocument addDocument(NewMainDocument newMainDocument) {
+	public MainDocument addDocument(NewMainDocument newMainDocument, String username) {
+		User user = userRepo.findByUsername(username);
 		MainDocument document = new MainDocument(newMainDocument.getTitle(), newMainDocument.getSummary());
 		logger.debug("New document (ID{}) was added.", document.getId());
+		user.addDocument(document);
+		document.setUser(user);
 		return mainDocRepository.save(document);
 	}
 
@@ -45,14 +58,23 @@ public class MainDocumentService {
 	}
 
 	@Transactional
-	public void deleteDocument(MainDocument document) {
+	public void deleteDocument(Long id, String username) {
+		User user = userRepo.findByUsername(username);
+		MainDocument document = findDocumentById(id);
 		mainDocRepository.delete(document);
+		userRepo.save(user);
 		logger.debug("Document (ID{}) was deleted.", document);
 	}
 
 	@Transactional
-	public String addDoctypeTitleToDocument(DoctypeEntity doctype) {
-		String doctypeTitle = doctype.getTitle();
-		return doctypeTitle;
+	public void addDoctypeToDocument(MainDocument document, DoctypeEntity doctype) {
+		document.addDoctype(doctype);
+		mainDocRepository.save(document);
 	}
+
+	public void updateDoctypeInDocument(MainDocument document, DoctypeEntity newDoctype) {
+		document.setDoctypes(newDoctype);
+		mainDocRepository.save(document);
+	}
+
 }

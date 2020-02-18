@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.akademija.document.MainDocument;
+import it.akademija.document.MainDocumentService;
 import it.akademija.group.GroupEntity;
 
 @RestController
@@ -29,6 +31,9 @@ public class DoctypeEntityController {
 
 	@Autowired
 	private DoctypeService doctypeService;
+
+	@Autowired
+	private MainDocumentService documentService;
 
 	@PostMapping()
 	public DoctypeEntity createDoctype(@RequestBody NewDoctype doctype, HttpServletResponse response) {
@@ -47,9 +52,9 @@ public class DoctypeEntityController {
 		return doctypeService.getAllDoctypes();
 	}
 
-	@GetMapping("/{title}")
-	public DoctypeEntity getDoctypeByTitle(@PathVariable String title, HttpServletResponse response) {
-		DoctypeEntity doctype = doctypeService.findDoctypeByTitle(title);
+	@GetMapping("/{id}")
+	public DoctypeEntity getDoctypeByTitle(@PathVariable Long id, HttpServletResponse response) {
+		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
 		if (doctype == null) {
 			response.setStatus(404);
 			return null;
@@ -58,10 +63,10 @@ public class DoctypeEntityController {
 		return doctype;
 	}
 
-	@PutMapping("/{title}")
-	public DoctypeEntity updateDoctype(@Valid @PathVariable String title, @RequestBody NewDoctype newDoctype,
+	@PutMapping("/{id}")
+	public DoctypeEntity updateDoctype(@Valid @PathVariable Long id, @RequestBody NewDoctype newDoctype,
 			HttpServletResponse response) {
-		DoctypeEntity doctype = doctypeService.updateDoctypeInfo(title, newDoctype);
+		DoctypeEntity doctype = doctypeService.updateDoctypeInfo(id, newDoctype);
 		if (doctype == null) {
 			response.setStatus(404);
 			return null;
@@ -72,9 +77,9 @@ public class DoctypeEntityController {
 		return doctype;
 	}
 
-	@DeleteMapping("/{title}")
-	public void deleteDoctype(@PathVariable String title, HttpServletResponse response) {
-		DoctypeEntity doctype = doctypeService.findDoctypeByTitle(title);
+	@DeleteMapping("/{id}")
+	public void deleteDoctype(@PathVariable Long id, HttpServletResponse response) {
+		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
 		if (doctype == null) {
 			response.setStatus(404);
 			return;
@@ -85,15 +90,32 @@ public class DoctypeEntityController {
 		doctypeService.deleteDoctype(doctype);
 	}
 
-	@GetMapping("/{title}/groups")
-	public Set<GroupEntity> getGroupsByDoctypeTitle(@PathVariable String title, HttpServletResponse response) {
-		DoctypeEntity doctype = doctypeService.findDoctypeByTitle(title);
+	@GetMapping("/{id}/groups")
+	public Set<GroupEntity> getGroupsByDoctypeId(@PathVariable Long id, HttpServletResponse response) {
+		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
 		if (doctype == null) {
 			response.setStatus(404);
 			return null;
 		}
 		response.setStatus(200);
 		return doctype.getGroups();
+	}
+
+	@PostMapping("/{doctypeId}/documents/{documentId}")
+	public void addDocumentByIdToDoctype(@PathVariable Long doctypeId, Long documentId, HttpServletResponse response) {
+		DoctypeEntity doctype = doctypeService.findDoctypeById(doctypeId);
+		if (doctype == null) {
+			response.setStatus(404);
+			return;
+		} else {
+			MainDocument document = documentService.findDocumentById(documentId);
+			if (document == null) {
+				response.setStatus(404);
+				return;
+			} else {
+				doctypeService.addDoctypeToDocuments(doctype, document);
+			}
+		}
 	}
 
 }

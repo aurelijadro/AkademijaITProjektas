@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.akademija.document.MainDocument;
 import it.akademija.group.GroupEntityRepo;
 
 
@@ -31,6 +32,11 @@ public class DoctypeService {
 	}
 
 	@Transactional
+	public DoctypeEntity findDoctypeById(Long id) {
+		return doctypeRepo.findDoctypeById(id);
+	}
+
+	@Transactional
 	public List<DoctypeEntity> getAllDoctypes() {
 		return doctypeRepo.findAll();
 	}
@@ -44,8 +50,8 @@ public class DoctypeService {
 	}
 
 	@Transactional
-	public DoctypeEntity updateDoctypeInfo(String title, NewDoctype newDoctype) {
-		DoctypeEntity existingDoctype = findDoctypeByTitle(title);
+	public DoctypeEntity updateDoctypeInfo(Long id, NewDoctype newDoctype) {
+		DoctypeEntity existingDoctype = findDoctypeById(id);
 		existingDoctype.setTitle(newDoctype.getTitle());
 		
 		return existingDoctype;
@@ -55,6 +61,12 @@ public class DoctypeService {
 	public void deleteDoctype(DoctypeEntity doctype) {
 		doctypeRepo.delete(doctype);
 		
+	}
+
+	@Transactional
+	public void addDoctypeToDocuments(DoctypeEntity doctype, MainDocument document) {
+		doctype.addDocument(document);
+		doctypeRepo.save(doctype);
 	}
 
 }

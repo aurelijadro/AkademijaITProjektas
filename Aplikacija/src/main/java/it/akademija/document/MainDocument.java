@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import it.akademija.doctype.DoctypeEntity;
 import it.akademija.user.User;
 
@@ -30,6 +32,7 @@ public class MainDocument {
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.DETACH })
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User user;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.DETACH })
@@ -43,6 +46,12 @@ public class MainDocument {
 	}
 
 	public MainDocument(String title, String summary) {
+		this.title = title;
+		this.summary = summary;
+	}
+
+	public MainDocument(Long id, String title, String summary) {
+		this.id = id;
 		this.title = title;
 		this.summary = summary;
 	}
@@ -74,6 +83,30 @@ public class MainDocument {
 
 	public void setSummary(String summary) {
 		this.summary = summary;
+	}
+
+	public DoctypeEntity getDoctypes() {
+		return doctypes;
+	}
+
+	public void setDoctypes(DoctypeEntity doctypes) {
+		this.doctypes = doctypes;
+	}
+
+	public void addDoctype(DoctypeEntity doctype) {
+		this.doctypes = doctype;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void removeUser(User user) {
+		user.removeDocument(this);
 	}
 
 }

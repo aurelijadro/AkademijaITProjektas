@@ -87,4 +87,13 @@ public class DoctypeEntity {
 		this.groups.add(group);
 	}
 
+	public void addDocument(MainDocument document) {
+		if (mainDocuments.contains(document)) {
+			return;
+		} else {
+			this.mainDocuments.add(document);
+			document.addDoctype(this);
+		}
+	}
+
 }
