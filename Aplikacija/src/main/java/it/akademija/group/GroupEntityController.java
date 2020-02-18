@@ -160,7 +160,8 @@ public class GroupEntityController {
 	}
 
 	@PostMapping("/{title}/users/{username}")
-	public void addUserByUsernameToGroup(@PathVariable String title, String username, HttpServletResponse response) {
+	public void addUserByUsernameToGroup(@PathVariable String title, @PathVariable String username,
+			HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupByTitle(title);
 		if (group == null) {
 			response.setStatus(404);
