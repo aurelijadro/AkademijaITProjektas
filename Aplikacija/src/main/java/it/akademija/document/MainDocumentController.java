@@ -45,10 +45,10 @@ public class MainDocumentController {
 	@Autowired
 	private DoctypeService doctypeService;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(path = "/{username}/documents", method = RequestMethod.GET)
 	@ApiOperation(value = "Get documents", notes = "Returns all documents")
-	public List<MainDocument> getDocuments() {
-		return mainDocService.getMainDocuments();
+	public List<MainDocument> getDocuments(@PathVariable String username) {
+		return mainDocService.getMainDocuments(username);
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -65,10 +65,11 @@ public class MainDocumentController {
 		return document;
 	}
 
-	@RequestMapping(method = RequestMethod.POST) // ar tikrinam, kad nera tokio paties pavadinimo ar pan?
+	@RequestMapping(path = "/{username}", method = RequestMethod.POST)
 	@ApiOperation(value = "Add new document", notes = "Returns new document")
-	public MainDocument createDocument(@RequestBody final NewMainDocument newDocument, HttpServletResponse response) {
-		return mainDocService.addDocument(newDocument);
+	public MainDocument createDocument(@PathVariable String username, @RequestBody final NewMainDocument newDocument,
+			HttpServletResponse response) {
+		return mainDocService.addDocument(newDocument, username);
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
@@ -86,9 +87,9 @@ public class MainDocumentController {
 		return mainDocService.updateDocument(id, newDocument);
 	}
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(path = "{username}/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete document", notes = "Deletes document by id")
-	public void deleteDocument(@PathVariable Long id, HttpServletResponse response) {
+	public void deleteDocument(@PathVariable Long id, String username, HttpServletResponse response) {
 		MainDocument document = mainDocService.findDocumentById(id);
 		if (document == null) {
 			response.setStatus(404);
@@ -96,7 +97,7 @@ public class MainDocumentController {
 		}
 		logger.debug("Document was deleted.");
 		response.setStatus(200);
-		mainDocService.deleteDocument(document);
+		mainDocService.deleteDocument(id, username);
 	}
 
 	@RequestMapping(path = "/{id}/doctypes/{existingDoctypeId}", method = RequestMethod.POST)

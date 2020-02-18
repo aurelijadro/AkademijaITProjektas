@@ -16,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
@@ -137,6 +136,22 @@ public class User {
 
 	public void removeGroup(GroupEntity group) {
 		this.groups.remove(group);
+	}
+
+	public void addDocument(MainDocument document) {
+		this.documents.add(document);
+	}
+
+	public void removeDocument(MainDocument document) {
+		this.documents.remove(document);
+	}
+
+	public List<MainDocument> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(List<MainDocument> documents) {
+		this.documents = documents;
 	}
 
 }
