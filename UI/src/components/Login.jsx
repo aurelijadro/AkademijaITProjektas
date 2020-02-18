@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
+import { useMyData } from "../context";
 
 axios.defaults.withCredentials = true;
 const Login = withRouter(({ history, ...props }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { currentUsername } = useMyData();
 
   const handleSubmit = event => {
     event.preventDefault();

@@ -21,21 +21,21 @@ import Axios from "axios";
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
 
+  function updateUserInformation() {
+    Axios.get("http://localhost:8081/Gentoo/api/loggedUsername").then(resp => {
+      setCurrentUsername(resp.data);
+    });
+  }
+
   useEffect(function() {
-    function updateUserInformation() {
-      Axios.get("http://localhost:8081/Gentoo/api/loggedUsername").then(
-        resp => {
-          setCurrentUsername(resp.data);
-        }
-      );
-    }
     updateUserInformation();
     const timer = setInterval(updateUserInformation, 60000);
     return () => clearInterval(timer);
   }, []);
 
   const appData = {
-    currentUsername: currentUsername
+    currentUsername: currentUsername,
+    updateUserInformation: updateUserInformation
   };
 
   return (
