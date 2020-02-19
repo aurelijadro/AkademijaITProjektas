@@ -47,20 +47,20 @@ class EditFormContainer extends Component {
     switch (name) {
       case "name":
         errors.name =
-          value.length <= 2
+          value.length <= 3
             ? "Vardas turi būti ne trumpesnis nei 2 simbolių."
             : "";
         break;
       case "surname":
-        errors.surname = value.length <= 2 ? "Bla bla bla" : "";
+        errors.surname = value.length <= 3 ? "Bla bla bla" : "";
         break;
       case "username":
         errors.username =
-          value.length <= 2 ? "Username must be 2 characters long!" : "";
+          value.length <= 4 ? "Username must be 2 characters long!" : "";
         break;
       case "password":
         errors.password =
-          value.length <= 8 && value.length >= 32
+          value.length <= 4 && value.length >= 32
             ? "Password from 8 to 32"
             : "";
         break;

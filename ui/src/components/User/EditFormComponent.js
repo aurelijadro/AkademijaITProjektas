@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
 
+
+
 const EditFormComponent = props => {
   return (
     <div>
@@ -22,7 +24,8 @@ const EditFormComponent = props => {
                   pattern=".{2,}"
                   name="name"
                   value={props.name}
-                  onChange={props.onChange}
+                  onChange={props.handleNameChange}
+                  onBlur={props.validateName}
                   placeholder="Vardas"
                   required
                 />
