@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "a9650732e2b04b2df67802b0ed56ef30",
+    "revision": "6ddfc1fe4fd049433109fb610f3bbd40",
     "url": "./Gentoo/index.html"
   },
   {
-    "revision": "3b9fde095b796e543f20",
+    "revision": "fae59c0f46a53dba6912",
     "url": "./Gentoo/static/css/2.0624914a.chunk.css"
   },
   {
-    "revision": "87cda61d373c0f61902b",
+    "revision": "8b3e6cd345a75c8f56f8",
     "url": "./Gentoo/static/css/main.bf645f0c.chunk.css"
   },
   {
-    "revision": "3b9fde095b796e543f20",
-    "url": "./Gentoo/static/js/2.a523f6ff.chunk.js"
+    "revision": "fae59c0f46a53dba6912",
+    "url": "./Gentoo/static/js/2.bd35aaf5.chunk.js"
   },
   {
-    "revision": "87cda61d373c0f61902b",
-    "url": "./Gentoo/static/js/main.99382ce9.chunk.js"
+    "revision": "8b3e6cd345a75c8f56f8",
+    "url": "./Gentoo/static/js/main.73780feb.chunk.js"
   },
   {
     "revision": "2678f9bb60d6db5e8ac1",

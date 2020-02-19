@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "./Gentoo/static/css/main.bf645f0c.chunk.css",
-    "main.js": "./Gentoo/static/js/main.99382ce9.chunk.js",
-    "main.js.map": "./Gentoo/static/js/main.99382ce9.chunk.js.map",
+    "main.js": "./Gentoo/static/js/main.73780feb.chunk.js",
+    "main.js.map": "./Gentoo/static/js/main.73780feb.chunk.js.map",
     "runtime-main.js": "./Gentoo/static/js/runtime-main.a890263d.js",
     "runtime-main.js.map": "./Gentoo/static/js/runtime-main.a890263d.js.map",
     "static/css/2.0624914a.chunk.css": "./Gentoo/static/css/2.0624914a.chunk.css",
-    "static/js/2.a523f6ff.chunk.js": "./Gentoo/static/js/2.a523f6ff.chunk.js",
-    "static/js/2.a523f6ff.chunk.js.map": "./Gentoo/static/js/2.a523f6ff.chunk.js.map",
+    "static/js/2.bd35aaf5.chunk.js": "./Gentoo/static/js/2.bd35aaf5.chunk.js",
+    "static/js/2.bd35aaf5.chunk.js.map": "./Gentoo/static/js/2.bd35aaf5.chunk.js.map",
     "index.html": "./Gentoo/index.html",
-    "precache-manifest.29b0cc75f99d50b3d4aa033ecfc4cd82.js": "./Gentoo/precache-manifest.29b0cc75f99d50b3d4aa033ecfc4cd82.js",
+    "precache-manifest.140571ca557cf09f85b50c2f6168618b.js": "./Gentoo/precache-manifest.140571ca557cf09f85b50c2f6168618b.js",
     "service-worker.js": "./Gentoo/service-worker.js",
     "static/css/2.0624914a.chunk.css.map": "./Gentoo/static/css/2.0624914a.chunk.css.map",
     "static/css/main.bf645f0c.chunk.css.map": "./Gentoo/static/css/main.bf645f0c.chunk.css.map",
@@ -18,8 +18,8 @@
   "entrypoints": [
     "static/js/runtime-main.a890263d.js",
     "static/css/2.0624914a.chunk.css",
-    "static/js/2.a523f6ff.chunk.js",
+    "static/js/2.bd35aaf5.chunk.js",
     "static/css/main.bf645f0c.chunk.css",
-    "static/js/main.99382ce9.chunk.js"
+    "static/js/main.73780feb.chunk.js"
   ]
 }

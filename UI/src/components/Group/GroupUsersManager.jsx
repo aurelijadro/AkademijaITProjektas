@@ -22,7 +22,7 @@ const GroupUsersManager = props => {
       .get(
         `http://localhost:8081/Gentoo/api/groups/${selectedGroup}/usersnotingroup`
       )
-      .then(resp => setGroupUsers(resp.data))
+      .then(resp => setNonGroupUsers(resp.data))
       .catch(e => console.log(e));
   };
 
@@ -115,7 +115,6 @@ const GroupUsersManager = props => {
         <div className="row my-2">
           <div className="col-3 font-weight-bold">#</div>
           <div className="col-6 font-weight-bold">
-            {" "}
             Vartotojo vardas ir pavardė
           </div>
           <div className="col-3 font-weight-bold"></div>
