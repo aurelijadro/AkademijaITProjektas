@@ -17,6 +17,7 @@ import { Route } from "react-router-dom";
 import UserGroupsManager from "./components/User/UserGroupsManager";
 import { AppDataContext } from "./context";
 import Axios from "axios";
+import GroupUsersManager from "./components/Group/GroupUsersManager";
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
@@ -84,6 +85,11 @@ function App() {
               exact
               path="/Gentoo/admin/users/manageusergroups/:username"
               component={UserGroupsManager}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/users/managegroupusers/:grouptitle"
+              component={GroupUsersManager}
             />
           </Switch>
         </div>

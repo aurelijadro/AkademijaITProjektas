@@ -29,7 +29,14 @@ class GroupList extends Component {
 
   render() {
     let group = this.state.groups.map((group, index) => {
-      return <GroupComponent key={index} id={group.id} title={group.title} />;
+      return (
+        <GroupComponent
+          key={group.id}
+          id={group.id}
+          title={group.title}
+          index={index}
+        />
+      );
     });
     return (
       <div>
@@ -40,33 +47,36 @@ class GroupList extends Component {
             </div>
           </div>
         </div>
-        <Link to="/Gentoo/admin/groups/add">
-          <button
-            type="button"
-            className="btn btn-light"
-            onClick={this.props.onAddNew}
-          >
-            Pridėti naują grupę
-          </button>
-        </Link>
-        <Link to="/Gentoo/admin">
-          <button
-            type="button"
-            className="btn btn-light"
-            onClick={this.props.onBack}
-          >
-            Grįžti į pradinį langą
-          </button>
-        </Link>
-        <table className=" text-center table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Grupės pavadinimas</th>
-            </tr>
-          </thead>
-          <tbody>{group}</tbody>
-        </table>
+        <div className="container">
+          <Link to="/Gentoo/admin/groups/add">
+            <button
+              type="button"
+              className="btn btn-dark my-4"
+              onClick={this.props.onAddNew}
+            >
+              Pridėti naują grupę
+            </button>
+          </Link>
+          <Link to="/Gentoo/admin">
+            <button
+              type="button"
+              className="btn mx-2 btn-dark"
+              onClick={this.props.onBack}
+            >
+              Grįžti į pradinį langą
+            </button>
+          </Link>
+          <table className=" text-center table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Grupės pavadinimas</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>{group}</tbody>
+          </table>
+        </div>
       </div>
     );
   }

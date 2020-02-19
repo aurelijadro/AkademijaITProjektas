@@ -124,17 +124,17 @@ const UserGroupsManager = props => {
       <div className="container">
         <h4>{heading}</h4>
         <div className="row my-2">
-          <div className="col-3">#</div>
-          <div className="col-6">Grupės pavadinimas</div>
-          <div className="col-3"></div>
+          <div className="col-3 font-weight-bold">#</div>
+          <div className="col-6 font-weight-bold">Grupės pavadinimas</div>
+          <div className="col-3 font-weight-bold"></div>
         </div>
         <div>{userGroupList}</div>
         <hr></hr>
         <h4>{heading2}</h4>
         <div className="row my-2">
-          <div className="col-3">#</div>
-          <div className="col-6">Grupės pavadinimas</div>
-          <div className="col-3"></div>
+          <div className="col-3 font-weight-bold">#</div>
+          <div className="col-6 font-weight-bold">Grupės pavadinimas</div>
+          <div className="col-3 font-weight-bold"></div>
         </div>
         <div>{nonUserGroupList}</div>
       </div>

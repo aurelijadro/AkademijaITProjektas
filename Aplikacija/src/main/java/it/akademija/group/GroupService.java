@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import it.akademija.doctype.DoctypeEntity;
 import it.akademija.doctype.DoctypeEntityRepo;
 import it.akademija.user.User;
+import it.akademija.user.UserRepository;
 
 @Service
 public class GroupService {
@@ -20,6 +21,9 @@ public class GroupService {
 
 	@Autowired
 	DoctypeEntityRepo doctypeRepo;
+
+	@Autowired
+	UserRepository userRepo;
 
 	@Transactional
 	public List<GroupEntity> getAllGroups() {
@@ -85,9 +89,18 @@ public class GroupService {
 		Set<GroupEntity> allGroups = new HashSet<GroupEntity>();
 		allGroups.addAll(groupRepo.findAll());
 
-		// Set<GroupEntity> allGroups = (Set<GroupEntity>) groupRepo.findAll();
 		allGroups.removeAll(userGroups);
 		return allGroups;
+	}
+
+	@Transactional
+	public Set<User> getUsersNotInGroup(GroupEntity group) {
+		Set<User> GroupUsers = group.getUsers();
+
+		Set<User> allUsers = new HashSet<User>();
+		allUsers.addAll(userRepo.findAll());
+		allUsers.removeAll(GroupUsers);
+		return allUsers;
 	}
 
 }

@@ -39,6 +39,9 @@ public class GroupEntityController {
 	@Autowired
 	private UserRepository userRepo;
 
+	@Autowired
+	private GroupEntityRepo groupRepo;
+
 	@PostMapping()
 	public GroupEntity createGroup(@RequestBody NewGroup newGroup, HttpServletResponse response) {
 		if (groupService.findGroupByTitle(newGroup.getTitle()) == null) {
@@ -156,6 +159,19 @@ public class GroupEntityController {
 			return null;
 		} else {
 			return group.getUsers();
+		}
+	}
+
+	@GetMapping("/{title}/usersnotingroup")
+	public Set<User> getUsersNotInGroup(@PathVariable String title, HttpServletResponse response) {
+		GroupEntity group = groupRepo.findGroupEntityByTitle(title);
+		if (group == null) {
+			response.setStatus(404);
+			return null;
+		} else {
+			response.setStatus(200);
+			Set<User> notGroupUsers = groupService.getUsersNotInGroup(group);
+			return notGroupUsers;
 		}
 	}
 
