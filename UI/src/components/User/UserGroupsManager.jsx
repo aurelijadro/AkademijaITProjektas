@@ -9,18 +9,19 @@ const UserGroupsManager = props => {
   const [userGroups, setUserGroups] = useState([]);
   const [nonUserGroups, setNonUserGroups] = useState([]);
 
+  const selectedUser = props.match.params.username;
+
   useEffect(
     function() {
       function updateUser() {
-        console.log("curr username: ", currentUsername);
         axios
-          .get("http://localhost:8081/Gentoo/api/users/" + currentUsername)
+          .get("http://localhost:8081/Gentoo/api/users/" + selectedUser)
           .then(resp => setUser(resp.data))
           .catch(e => console.log(e));
       }
       updateUser();
     },
-    [currentUsername]
+    [selectedUser]
   );
 
   useEffect(
@@ -28,16 +29,14 @@ const UserGroupsManager = props => {
       function getUserGroups() {
         axios
           .get(
-            "http://localhost:8081/Gentoo/api/users/" +
-              currentUsername +
-              "/groups"
+            "http://localhost:8081/Gentoo/api/users/" + selectedUser + "/groups"
           )
           .then(resp => setUserGroups(resp.data))
           .catch(e => console.log(e));
       }
       getUserGroups();
     },
-    [currentUsername]
+    [selectedUser]
   );
 
   useEffect(
@@ -45,30 +44,26 @@ const UserGroupsManager = props => {
       function getNonUserGroups() {
         axios
           .get(
-            `http://localhost:8081/Gentoo/api/groups/userdoenstbelong/${currentUsername}`
+            `http://localhost:8081/Gentoo/api/groups/userdoenstbelong/${selectedUser}`
           )
           .then(resp => setNonUserGroups(resp.data))
           .catch(e => console.log(e));
       }
       getNonUserGroups();
     },
-    [currentUsername]
+    [selectedUser]
   );
 
-  //console.log("user: ", user);
-  console.log("current user name", currentUsername);
   if (currentUsername === "loading" || user === null)
     return <div>Loading...</div>;
 
-  const heading = user.name + " " + user.surname + " priklauso šioms grupėms:";
-  const heading2 =
-    user.name + " " + user.surname + " gali būti priskirta šioms grupėms:";
+  const fullName = user.name + " " + user.surname;
+  const heading = fullName + " priklauso šioms grupėms:";
+  const heading2 = fullName + " gali būti priskirta šioms grupėms:";
 
   const updateUserGroups = () => {
     axios
-      .get(
-        "http://localhost:8081/Gentoo/api/users/" + currentUsername + "/groups"
-      )
+      .get("http://localhost:8081/Gentoo/api/users/" + selectedUser + "/groups")
       .then(resp => setUserGroups(resp.data))
       .catch(e => console.log(e));
   };
@@ -76,17 +71,17 @@ const UserGroupsManager = props => {
   const updateNonUserGroups = () => {
     axios
       .get(
-        `http://localhost:8081/Gentoo/api/groups/userdoenstbelong/${currentUsername}`
+        `http://localhost:8081/Gentoo/api/groups/userdoenstbelong/${selectedUser}`
       )
       .then(resp => setNonUserGroups(resp.data))
       .catch(e => console.log(e));
   };
-  console.log("user groups: ", userGroups);
+
   const userGroupList = userGroups.map((group, index) => {
     function removeUserGroup() {
       axios
         .delete(
-          `http://localhost:8081/Gentoo/api/groups/${group.title}/users/${currentUsername}`
+          `http://localhost:8081/Gentoo/api/groups/${group.title}/users/${selectedUser}`
         )
         .then(updateUserGroups)
         .then(updateNonUserGroups);
@@ -106,7 +101,7 @@ const UserGroupsManager = props => {
     function addUserToGroup() {
       axios
         .post(
-          `http://localhost:8081/Gentoo/api/groups/${group.title}/users/${currentUsername}`
+          `http://localhost:8081/Gentoo/api/groups/${group.title}/users/${selectedUser}`
         )
 
         .then(updateUserGroups)
