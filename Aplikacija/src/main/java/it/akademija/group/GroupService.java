@@ -61,8 +61,9 @@ public class GroupService {
 	}
 
 	@Transactional
-	public void deleteDoctypeFromGroup(DoctypeEntity doctype) {
-		doctypeRepo.delete(doctype);
+	public void removeDoctypeFromGroup(DoctypeEntity doctype, GroupEntity group) {
+		group.removeDoctype(doctype);
+		groupRepo.save(group);
 	}
 
 	@Transactional
