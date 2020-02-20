@@ -9,7 +9,7 @@ const UserGroupsManager = props => {
   const [userGroups, setUserGroups] = useState([]);
   const [nonUserGroups, setNonUserGroups] = useState([]);
 
-  const selectedUser = props.match.params.username;
+  const selectedUser = props.match.params.userid;
 
   useEffect(
     function() {

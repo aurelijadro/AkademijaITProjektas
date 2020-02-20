@@ -106,6 +106,19 @@ public class GroupEntityController {
 		return group.getDoctypes();
 	}
 
+	@GetMapping("/{title}/notdoctypes")
+	public Set<DoctypeEntity> getDoctypesNotInGroupByGroupTitle(@PathVariable String title,
+			HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupByTitle(title);
+		if (group == null) {
+			response.setStatus(404);
+			return null;
+		}
+		response.setStatus(200);
+		Set<DoctypeEntity> notGroupDoctypes = groupService.getDoctypesGroupDoesntManage(group);
+		return notGroupDoctypes;
+	}
+
 	@PostMapping("/{title}/doctypes/{doctypeTitle}")
 	public void addDoctypeByTitleToGroup(@PathVariable String title, String doctypeTitle,
 			HttpServletResponse response) {

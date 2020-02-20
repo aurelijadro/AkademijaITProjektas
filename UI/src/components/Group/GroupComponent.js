@@ -7,17 +7,20 @@ const GroupComponent = props => {
       <th scope="row">{props.index + 1}</th>
       <td>{props.title}</td>
       <td>
-        <Link
-          to={"/Gentoo/groups/edit/" + props.title}
-          className="btn btn-light"
-        >
+        <Link to={"/Gentoo/groups/edit/" + props.id} className="btn btn-light">
           Atnaujinti informaciją
         </Link>
         <Link
-          to={`/Gentoo/admin/users/managegroupusers/${props.title}`}
+          to={`/Gentoo/admin/managegroupusers/${props.id}`}
           className="btn btn-light mx-2"
         >
           Valdyti grupės narius
+        </Link>
+        <Link
+          to={`/Gentoo/admin/managegroupdocs/${props.id}`}
+          className="btn btn-light mx-2"
+        >
+          Valdyti grupės dokumentų tipus
         </Link>
       </td>
     </tr>

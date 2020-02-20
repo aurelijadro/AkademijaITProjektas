@@ -23,7 +23,6 @@ class EditFormContainer extends Component {
     this.getUser();
   }
 
-
   getUser = () => {
     axios
       .get(
@@ -39,7 +38,6 @@ class EditFormContainer extends Component {
       });
   };
 
-  
   onBack = event => {
     event.preventDefault();
     this.props.history.push(`/Gentoo/admin/users`);
@@ -116,8 +114,7 @@ class EditFormContainer extends Component {
     event.preventDefault();
     axios
       .put(
-        "http://localhost:8081/Gentoo/api/users/" +
-          this.props.match.params.username,
+        "http://localhost:8081/Gentoo/api/users/" + this.props.match.params.id,
         {
           name: this.state.name,
           surname: this.state.surname,
@@ -260,16 +257,11 @@ class EditFormContainer extends Component {
 
 export default EditFormContainer;
 
-
-
 //   // onChange = event => {
 //   //   event.preventDefault();
 //     // const { name, value } = event.target;
 //     // let errors = this.state.errors;
 
-
-
 //     // this.setState({ errors, [name]: value }, () => {
 //     //   console.log(errors);
 //     // });
-

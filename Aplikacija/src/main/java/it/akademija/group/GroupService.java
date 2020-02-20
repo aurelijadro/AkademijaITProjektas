@@ -103,4 +103,13 @@ public class GroupService {
 		return allUsers;
 	}
 
+	@Transactional
+	public Set<DoctypeEntity> getDoctypesGroupDoesntManage(GroupEntity group) {
+		Set<DoctypeEntity> GroupDoctypes = group.getDoctypes();
+		Set<DoctypeEntity> allDoctypes = new HashSet<DoctypeEntity>();
+		allDoctypes.addAll(doctypeRepo.findAll());
+		allDoctypes.removeAll(GroupDoctypes);
+		return allDoctypes;
+	}
+
 }

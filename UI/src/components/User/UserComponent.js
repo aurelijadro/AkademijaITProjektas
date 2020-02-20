@@ -10,13 +10,13 @@ const UserComponent = props => {
       <td>{props.surname}</td>
       <td>
         <Link
-          to={"/Gentoo/admin/users/edit/" + props.username}
+          to={"/Gentoo/admin/users/edit/" + props.id}
           className="btn btn-light"
         >
           Atnaujinti informaciją
         </Link>
         <Link
-          to={"/Gentoo/admin/users/manageusergroups/" + props.username}
+          to={"/Gentoo/admin/users/manageusergroups/" + props.id}
           className="btn btn-light mx-2"
         >
           Valdyti grupes
