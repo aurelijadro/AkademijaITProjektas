@@ -108,7 +108,7 @@ const GroupUsersManager = props => {
     <div>
       <NavigationForAdmin />
       <div className="container">
-        <h4>Grupei {selectedGroup} priklauso šie vartotojai:</h4>
+        <h4>Grupei {selectedGroup.title} priklauso šie vartotojai:</h4>
         <div className="row my-2">
           <div className="col-3 font-weight-bold">#</div>
           <div className="col-6 font-weight-bold">
