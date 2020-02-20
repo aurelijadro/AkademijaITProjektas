@@ -47,8 +47,8 @@ public class GroupService {
 	}
 
 	@Transactional
-	public GroupEntity updateGroupInfo(String title, NewGroup newGroup) {
-		GroupEntity existingGroup = findGroupByTitle(title);
+	public GroupEntity updateGroupInfo(Long id, NewGroup newGroup) {
+		GroupEntity existingGroup = findGroupById(id);
 		existingGroup.setTitle(newGroup.getTitle());
 
 		return existingGroup;

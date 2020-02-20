@@ -22,7 +22,6 @@ import it.akademija.doctype.DoctypeEntity;
 import it.akademija.doctype.DoctypeEntityRepo;
 import it.akademija.user.User;
 import it.akademija.user.UserRepository;
-import it.akademija.group.GroupService;
 
 @RestController
 @RequestMapping("api/groups")
@@ -54,9 +53,9 @@ public class GroupEntityController {
 		return null;
 	}
 
-	@GetMapping("/{title}")
-	public GroupEntity getGroupByTitle(@PathVariable String title, HttpServletResponse response) {
-		GroupEntity group = groupService.findGroupByTitle(title);
+	@GetMapping("/{id}")
+	public GroupEntity getGroupById(@PathVariable Long id, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupById(id);
 		if (group == null) {
 			response.setStatus(404);
 			return null;
@@ -70,21 +69,20 @@ public class GroupEntityController {
 		return groupService.getAllGroups();
 	}
 
-	@PutMapping("/{title}")
-	public GroupEntity updateGroup(@PathVariable String title, @RequestBody NewGroup group,
-			HttpServletResponse response) {
-		GroupEntity someGroup = groupService.findGroupByTitle(title);
+	@PutMapping("/{id}")
+	public GroupEntity updateGroup(@PathVariable Long id, @RequestBody NewGroup group, HttpServletResponse response) {
+		GroupEntity someGroup = groupService.findGroupById(id);
 		if (someGroup == null) {
 			response.setStatus(404);
 			return null;
 		}
 		response.setStatus(200);
-		return groupService.updateGroupInfo(title, group);
+		return groupService.updateGroupInfo(id, group);
 	}
 
-	@DeleteMapping("/{title}")
-	public void deleteGroup(@PathVariable String title, HttpServletResponse response) {
-		GroupEntity group = groupService.findGroupByTitle(title);
+	@DeleteMapping("/{id}")
+	public void deleteGroup(@PathVariable Long id, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupById(id);
 		if (group == null) {
 			response.setStatus(404);
 			return;
@@ -95,9 +93,9 @@ public class GroupEntityController {
 		groupService.deleteGroup(group);
 	}
 
-	@GetMapping("/{title}/doctypes")
-	public Set<DoctypeEntity> getDoctypesByGroupTitle(@PathVariable String title, HttpServletResponse response) {
-		GroupEntity group = groupService.findGroupByTitle(title);
+	@GetMapping("/{id}/doctypes")
+	public Set<DoctypeEntity> getDoctypesByGroupId(@PathVariable Long id, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupById(id);
 		if (group == null) {
 			response.setStatus(404);
 			return null;
@@ -106,15 +104,14 @@ public class GroupEntityController {
 		return group.getDoctypes();
 	}
 
-	@PostMapping("/{title}/doctypes/{doctypeTitle}")
-	public void addDoctypeByTitleToGroup(@PathVariable String title, String doctypeTitle,
-			HttpServletResponse response) {
-		GroupEntity group = groupService.findGroupByTitle(title);
+	@PostMapping("/{groupId}/doctypes/{doctypeId}")
+	public void addDoctypeByIdToGroup(@PathVariable Long groupId, Long doctypeId, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupById(groupId);
 		if (group == null) {
 			response.setStatus(404);
 			return;
 		} else {
-			DoctypeEntity doctype = doctypeRepo.findDoctypeByTitle(doctypeTitle);
+			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
 			if (doctype == null) {
 				response.setStatus(404);
 				return;
@@ -128,15 +125,15 @@ public class GroupEntityController {
 		}
 	}
 
-	@DeleteMapping("/{title}/doctypes/{doctypeTitle}")
-	public void deleteDoctypeByTitleFromGroup(@PathVariable String title, String doctypeTitle,
+	@DeleteMapping("/{groupId}/doctypes/{doctypeId}")
+	public void deleteDoctypeByTitleFromGroup(@PathVariable Long groupId, Long doctypeId,
 			HttpServletResponse response) {
-		GroupEntity group = groupService.findGroupByTitle(title);
+		GroupEntity group = groupService.findGroupById(groupId);
 		if (group == null) {
 			response.setStatus(404);
 			return;
 		} else {
-			DoctypeEntity doctype = doctypeRepo.findDoctypeByTitle(doctypeTitle);
+			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
 			if (doctype == null) {
 				response.setStatus(404);
 				return;
@@ -151,9 +148,9 @@ public class GroupEntityController {
 
 	}
 
-	@GetMapping("/{title}/users")
-	public Set<User> getUsersInGroupByGroupTitle(@PathVariable String title, HttpServletResponse response) {
-		GroupEntity group = groupService.findGroupByTitle(title);
+	@GetMapping("/{id}/users")
+	public Set<User> getUsersInGroupByGroupId(@PathVariable Long id, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupById(id);
 		if (group == null) {
 			response.setStatus(404);
 			return null;
@@ -162,9 +159,9 @@ public class GroupEntityController {
 		}
 	}
 
-	@GetMapping("/{title}/usersnotingroup")
-	public Set<User> getUsersNotInGroup(@PathVariable String title, HttpServletResponse response) {
-		GroupEntity group = groupRepo.findGroupEntityByTitle(title);
+	@GetMapping("/{id}/usersnotingroup")
+	public Set<User> getUsersNotInGroup(@PathVariable Long id, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupById(id);
 		if (group == null) {
 			response.setStatus(404);
 			return null;
@@ -175,52 +172,51 @@ public class GroupEntityController {
 		}
 	}
 
-	@PostMapping("/{title}/users/{username}")
-	public void addUserByUsernameToGroup(@PathVariable String title, @PathVariable String username,
+	@PostMapping("/{groupId}/users/{userId}")
+	public void addUserByUsernameToGroup(@PathVariable Long groupId, @PathVariable Long userId,
 			HttpServletResponse response) {
-		GroupEntity group = groupService.findGroupByTitle(title);
+		GroupEntity group = groupService.findGroupById(groupId);
 		if (group == null) {
 			response.setStatus(404);
 			return;
 		} else {
-			User user = userRepo.findByUsername(username);
+			User user = userRepo.findUserById(userId);
 			if (user == null) {
 				response.setStatus(404);
 				return;
 			} else {
 				response.setStatus(200);
 				logger.debug("Initiated by [{}]: User [{}] was added to the group [{}]",
-						SecurityContextHolder.getContext().getAuthentication().getName(), username, group.getTitle());
+						SecurityContextHolder.getContext().getAuthentication().getName(), userId, group.getTitle());
 				groupService.addUserToGroup(group, user);
 			}
 		}
 	}
 
-	@DeleteMapping("/{title}/users/{username}")
-	public void deleteUserByUsernameFromGroup(@PathVariable String title, @PathVariable String username,
+	@DeleteMapping("/{groupId}/users/{userId}")
+	public void deleteUserByUserIdFromGroup(@PathVariable Long groupId, @PathVariable Long userId,
 			HttpServletResponse response) {
-		GroupEntity group = groupService.findGroupByTitle(title);
-		System.out.println(title + " " + username + " " + group);
+		GroupEntity group = groupService.findGroupById(groupId);
 		if (group == null) {
 			response.setStatus(403);
 			return;
 		} else {
-			User user = userRepo.findByUsername(username);
+			User user = userRepo.findUserById(userId);
 			if (user == null) {
 				response.setStatus(404);
 				return;
 			} else {
 				response.setStatus(200);
 				logger.debug("Initiated by [{}]: User [{}] was deleted from the group [{}]",
-						SecurityContextHolder.getContext().getAuthentication().getName(), username, group.getTitle());
+						SecurityContextHolder.getContext().getAuthentication().getName(), userId, group.getTitle());
 				groupService.removeUserFromGroup(group, user);
 			}
 		}
 	}
 
-	@GetMapping("/userdoenstbelong/{username}")
-	public Set<GroupEntity> getGroupsUserDoesntBelongTo(@PathVariable String username, HttpServletResponse response) {
-		User user = userRepo.findByUsername(username);
+	@GetMapping("/userdoenstbelong/{userId}")
+	public Set<GroupEntity> getGroupsUserDoesntBelongTo(@PathVariable Long userId, HttpServletResponse response) {
+		User user = userRepo.findUserById(userId);
 		if (user == null) {
 			response.setStatus(404);
 			return null;
