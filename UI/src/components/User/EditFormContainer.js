@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import axios from "axios";
 import NavigationForAdmin from "../NavigationForAdmin";
+import { AppDataContext } from "../../context";
 
 class EditFormContainer extends Component {
-  constructor() {
-    super();
+  static contextType = AppDataContext;
+  constructor(props) {
+    super(props);
     this.state = {
       name: "",
       surname: "",
       username: "",
       password: "",
       role: "USER",
-      url: "http://localhost:8081/Gentoo",
       nameError: "",
       surnameError: "",
       usernameError: "",
@@ -24,11 +25,9 @@ class EditFormContainer extends Component {
   }
 
   getUser = () => {
+    console.log(this.context);
     axios
-      .get(
-        "http://localhost:8081/Gentoo/api/users/" +
-          this.props.match.params.userid
-      )
+      .get(`${this.context.apiUrl}users/${this.props.match.params.userid}`)
       .then(response => {
         this.setState(response.data);
         this.setState({ password: "" });
@@ -113,16 +112,13 @@ class EditFormContainer extends Component {
   onSubmit = event => {
     event.preventDefault();
     axios
-      .put(
-        "http://localhost:8081/Gentoo/api/users/" + this.props.match.params.id,
-        {
-          name: this.state.name,
-          surname: this.state.surname,
-          username: this.state.username,
-          password: this.state.password,
-          role: this.state.role
-        }
-      )
+      .put(`${this.context.apiUrl}users/${this.props.match.params.userid}`, {
+        name: this.state.name,
+        surname: this.state.surname,
+        username: this.state.username,
+        password: this.state.password,
+        role: this.state.role
+      })
       .then(() => {
         alert("Jūs sėkmingai pakeitėte vartotojo duomenis.");
         this.props.history.push("/Gentoo/admin/users");

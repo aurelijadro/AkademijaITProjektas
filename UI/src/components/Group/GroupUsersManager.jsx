@@ -4,7 +4,7 @@ import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
 
 const GroupUsersManager = props => {
-  const { currentUsername } = useMyData();
+  const { currentUsername, apiUrl } = useMyData();
   const [groupUsers, setGroupUsers] = useState([]);
   const [nonGroupUsers, setNonGroupUsers] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState("Loading");
@@ -13,14 +13,14 @@ const GroupUsersManager = props => {
 
   const updateGroupUsers = () => {
     axios
-      .get(`http://localhost:8081/Gentoo/api/groups/${groupId}/users`)
+      .get(`${apiUrl}groups/${groupId}/users`)
       .then(resp => setGroupUsers(resp.data))
       .catch(e => console.log(e));
   };
 
   const updateNonGroupUsers = () => {
     axios
-      .get(`http://localhost:8081/Gentoo/api/groups/${groupId}/usersnotingroup`)
+      .get(`${apiUrl}groups/${groupId}/usersnotingroup`)
       .then(resp => setNonGroupUsers(resp.data))
       .catch(e => console.log(e));
   };
@@ -29,35 +29,33 @@ const GroupUsersManager = props => {
     function() {
       function getGroupInfo() {
         axios
-          .get(`http://localhost:8081/Gentoo/api/groups/${groupId}`)
+          .get(`${apiUrl}groups/${groupId}`)
           .then(resp => setSelectedGroup(resp.data))
           .catch(e => console.log(e));
       }
       getGroupInfo();
       function getGroupUsers() {
         axios
-          .get(`http://localhost:8081/Gentoo/api/groups/${groupId}/users`)
+          .get(`${apiUrl}${groupId}/users`)
           .then(resp => setGroupUsers(resp.data))
           .catch(e => console.log(e));
       }
       getGroupUsers();
     },
-    [groupId]
+    [groupId, apiUrl]
   );
 
   useEffect(
     function() {
       function getNonGroupUsers() {
         axios
-          .get(
-            `http://localhost:8081/Gentoo/api/groups/${groupId}/usersnotingroup`
-          )
+          .get(`${apiUrl}groups/${groupId}/usersnotingroup`)
           .then(resp => setNonGroupUsers(resp.data))
           .catch(e => console.log(e));
       }
       getNonGroupUsers();
     },
-    [groupId]
+    [groupId, apiUrl]
   );
 
   if (currentUsername === "loading" || selectedGroup === "Loading")
@@ -66,9 +64,7 @@ const GroupUsersManager = props => {
   const groupUsersList = groupUsers.map((user, index) => {
     function removeGroupUser() {
       axios
-        .delete(
-          `http://localhost:8081/Gentoo/api/groups/${groupId}/users/${user.id}`
-        )
+        .delete(`${apiUrl}groups/${groupId}/users/${user.id}`)
         .then(updateGroupUsers)
         .then(updateNonGroupUsers);
     }
@@ -86,9 +82,7 @@ const GroupUsersManager = props => {
   const nonGroupUsersList = nonGroupUsers.map((user, index) => {
     function addGroupUser() {
       axios
-        .post(
-          `http://localhost:8081/Gentoo/api/groups/${groupId}/users/${user.id}`
-        )
+        .post(`${apiUrl}groups/${groupId}/users/${user.id}`)
 
         .then(updateGroupUsers)
         .then(updateNonGroupUsers);

@@ -128,7 +128,7 @@ public class GroupEntityController {
 			HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupById(groupId);
 		if (group == null) {
-			response.setStatus(404);
+			response.setStatus(403);
 			return;
 		} else {
 			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);

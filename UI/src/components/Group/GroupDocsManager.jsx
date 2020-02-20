@@ -65,7 +65,9 @@ const GroupDocsManager = props => {
   const groupDoctypesList = groupDoctypes.map((doctype, index) => {
     function removeGroupDoctype() {
       axios
-        .delete(`/api/groups/${groupId}/doctypes/${doctype.id}`)
+        .delete(
+          `http://localhost:8081/Gentoo/api/groups/${groupId}/doctypes/${doctype.id}`
+        )
         .then(updateGroupDoctypes)
         .then(updateNonGroupDoctypes);
     }
