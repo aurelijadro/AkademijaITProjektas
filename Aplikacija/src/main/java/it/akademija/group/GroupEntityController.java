@@ -38,9 +38,6 @@ public class GroupEntityController {
 	@Autowired
 	private UserRepository userRepo;
 
-	@Autowired
-	private GroupEntityRepo groupRepo;
-
 	@PostMapping()
 	public GroupEntity createGroup(@RequestBody NewGroup newGroup, HttpServletResponse response) {
 		if (groupService.findGroupByTitle(newGroup.getTitle()) == null) {
@@ -127,7 +124,7 @@ public class GroupEntityController {
 	}
 
 	@DeleteMapping("/{groupId}/doctypes/{doctypeId}")
-	public void deleteDoctypeByTitleFromGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
+	public void deleteDoctypeByIdFromGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
 			HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupById(groupId);
 		if (group == null) {
@@ -174,7 +171,7 @@ public class GroupEntityController {
 	}
 
 	@PostMapping("/{groupId}/users/{userId}")
-	public void addUserByUsernameToGroup(@PathVariable Long groupId, @PathVariable Long userId,
+	public void addUserByUserIdToGroup(@PathVariable Long groupId, @PathVariable Long userId,
 			HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupById(groupId);
 		if (group == null) {

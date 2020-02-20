@@ -68,12 +68,7 @@ public class MainDocumentService {
 
 	@Transactional
 	public void addDoctypeToDocument(MainDocument document, DoctypeEntity doctype) {
-		document.addDoctype(doctype);
-		mainDocRepository.save(document);
-	}
-
-	public void updateDoctypeInDocument(MainDocument document, DoctypeEntity newDoctype) {
-		document.setDoctypes(newDoctype);
+		document.setDoctypes(doctype);
 		mainDocRepository.save(document);
 	}
 

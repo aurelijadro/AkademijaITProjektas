@@ -96,7 +96,7 @@ public class DoctypeEntity {
 			return;
 		} else {
 			this.mainDocuments.add(document);
-			document.addDoctype(this);
+			document.setDoctypes(this);
 		}
 	}
 

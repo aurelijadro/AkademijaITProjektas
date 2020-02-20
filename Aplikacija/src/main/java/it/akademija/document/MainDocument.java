@@ -56,11 +56,6 @@ public class MainDocument {
 		this.summary = summary;
 	}
 
-//	public void addFile(FileForDocument file) {
-//		this.files.add(file);
-//		file.setDocument(this);
-//	}
-
 	public Long getId() {
 		return id;
 	}
@@ -91,10 +86,6 @@ public class MainDocument {
 
 	public void setDoctypes(DoctypeEntity doctypes) {
 		this.doctypes = doctypes;
-	}
-
-	public void addDoctype(DoctypeEntity doctype) {
-		this.doctypes = doctype;
 	}
 
 	public User getUser() {

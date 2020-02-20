@@ -17,7 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import it.akademija.doctype.DoctypeEntity;
-import it.akademija.doctype.DoctypeService;
+import it.akademija.doctype.DoctypeEntityRepo;
 
 @RestController
 @Api(value = "document")
@@ -30,7 +30,7 @@ public class MainDocumentController {
 	private MainDocumentService mainDocService;
 
 	@Autowired
-	private DoctypeService doctypeService;
+	private DoctypeEntityRepo doctypeRepo;
 
 	@RequestMapping(path = "/{id}/documents", method = RequestMethod.GET)
 	@ApiOperation(value = "Get documents", notes = "Returns all documents")
@@ -96,7 +96,7 @@ public class MainDocumentController {
 			response.setStatus(404);
 			return;
 		} else {
-			DoctypeEntity doctype = doctypeService.findDoctypeById(documentId);
+			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
 			if (doctype == null) {
 				response.setStatus(404);
 				return;
@@ -106,49 +106,5 @@ public class MainDocumentController {
 			}
 		}
 	}
-
-	@RequestMapping(path = "/{documentId}/doctypes/{doctypeId}", method = RequestMethod.PUT)
-	@ApiOperation(value = "Update doctype for document", notes = "Updates doctype by id for document")
-	public void updateDoctypeTitleInDocument(@PathVariable Long documentId, @PathVariable Long doctypeId,
-			HttpServletResponse response) {
-		MainDocument document = mainDocService.findDocumentById(documentId);
-		if (document == null) {
-			response.setStatus(404);
-			return;
-		} else {
-			DoctypeEntity newDoctype = doctypeService.findDoctypeById(doctypeId);
-			if (newDoctype == null) {
-				response.setStatus(404);
-				return;
-			} else {
-				response.setStatus(200);
-				mainDocService.updateDoctypeInDocument(document, newDoctype);
-			}
-		}
-	}
-
-//	@PostMapping(value = "/upload")
-//	public ResponseEntity uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) {
-//		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//		String fileBasePath = Paths.get(".").toAbsolutePath().toString();
-//		Path path = Paths.get(fileBasePath + fileName);
-//		try {
-//			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/files/download/")
-//				.path(fileName).toUriString();
-//		logger.debug("File ({}) was downloaded.", fileName);
-//		return ResponseEntity.ok(fileDownloadUri);
-//	}
-//
-//	@PostMapping(value = "/multi-upload")
-//	public ResponseEntity multiUpload(@RequestParam("files") MultipartFile[] files) {
-//		List<Object> fileDownloadUrls = new ArrayList<>();
-//		Arrays.asList(files).stream().forEach(file -> fileDownloadUrls.add(uploadToLocalFileSystem(file).getBody()));
-//		logger.debug("File ({}) was downloaded.", files);
-//		return ResponseEntity.ok(fileDownloadUrls);
-//	}
 
 }
