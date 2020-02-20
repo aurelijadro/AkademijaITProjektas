@@ -27,13 +27,8 @@ public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-	private UserService userService;
-
 	@Autowired
-	public UserController(UserService userService) {
-		super();
-		this.userService = userService;
-	}
+	private UserService userService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get users", notes = "Returns all users")
@@ -41,25 +36,24 @@ public class UserController {
 		return userService.getUsers();
 	}
 
-	@RequestMapping(path = "/{username}", method = RequestMethod.GET)
-	@ApiOperation(value = "Find user by username", notes = "Returns user by username")
-	public User getUserByUsername(@ApiParam(value = "user username", required = true) @PathVariable String username,
+	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
+	@ApiOperation(value = "Find user by id", notes = "Returns user by id")
+	public User getUserById(@ApiParam(value = "user id", required = true) @PathVariable Long id,
 			HttpServletResponse response) {
-		User user = userService.findByUsername(username);
+		User user = userService.findById(id);
 		if (user == null) {
-			logger.debug("User [{}] was  not found by controller", username);
+			logger.debug("User [{}] was  not found by controller", id);
 			response.setStatus(404);
 			return null;
 		}
-		return userService.findByUsername(username);
+		return user;
 	}
 
-	@RequestMapping(path = "/{username}/groups", method = RequestMethod.GET)
-	@ApiOperation(value = "Get groups of user by username", notes = "Returns all groups that user belongs to")
-	public Set<GroupEntity> getUsersGroupsByUsername(
-			@ApiParam(value = "username", required = true) @PathVariable String username,
+	@RequestMapping(path = "/{id}/groups", method = RequestMethod.GET)
+	@ApiOperation(value = "Get groups of user by user id", notes = "Returns all groups that user belongs to")
+	public Set<GroupEntity> getUsersGroupsByUserId(@ApiParam(value = "user id", required = true) @PathVariable Long id,
 			HttpServletResponse response) {
-		User user = userService.findByUsername(username);
+		User user = userService.findById(id);
 		if (user == null) {
 			response.setStatus(404);
 			return null;
@@ -68,18 +62,6 @@ public class UserController {
 			return user.getGroups();
 		}
 	}
-
-//	@RequestMapping(path = "/byId/{id}", method = RequestMethod.GET)
-//	@ApiOperation(value = "Get user by ID", notes = "Returns a single user by ID")
-//	public User getUserById(@ApiParam(value = "user id", required = true) @Valid @PathVariable String id,
-//			HttpServletResponse response) {
-//		if (userService.findById(Long.parseLong(id)).isPresent()) {
-//			return userService.findById(Long.parseLong(id)).get();
-//		} else {
-//			response.setStatus(404);
-//			return null;
-//		}
-//	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Add new user", notes = "Returns new user")
@@ -97,22 +79,21 @@ public class UserController {
 
 	}
 
-	@RequestMapping(path = "/{username}", method = RequestMethod.PUT)
+	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Update existing user info", notes = "Returns user with new info")
-	public User updateUser(@PathVariable String username, @RequestBody final NewUser newUser,
-			HttpServletResponse response) {
-		User user = userService.findByUsername(username);
+	public User updateUser(@PathVariable Long id, @RequestBody final NewUser newUser, HttpServletResponse response) {
+		User user = userService.findById(id);
 		if (user == null) {
 			logger.debug("Initiated by [{}]: User [{}] was  not found",
-					SecurityContextHolder.getContext().getAuthentication().getName(), username);
+					SecurityContextHolder.getContext().getAuthentication().getName(), id);
 
 			response.setStatus(404);
 			return null;
 		}
 		logger.debug("Initiated by [{}]: User [{}] was  updated",
-				SecurityContextHolder.getContext().getAuthentication().getName(), username);
+				SecurityContextHolder.getContext().getAuthentication().getName(), id);
 
-		return userService.updateUser(username, newUser);
+		return userService.updateUser(id, newUser);
 	}
 
 }

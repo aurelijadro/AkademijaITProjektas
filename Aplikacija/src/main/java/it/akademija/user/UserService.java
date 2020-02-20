@@ -1,7 +1,6 @@
 package it.akademija.user;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,18 +19,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService implements UserDetailsService {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = findByUsername(username);
-		if (user == null) {	
-		logger.debug("User [{})] was not found.", user.getUsername());
-			throw new UsernameNotFoundException(username + " not found.");	
+		if (user == null) {
+			logger.debug("User [{})] was not found.", user.getUsername());
+			throw new UsernameNotFoundException(username + " not found.");
 		}
-			
-		
+
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
 				AuthorityUtils.createAuthorityList(new String[] { "ROLE_" + user.getRole() }));
 	}
@@ -56,8 +54,8 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public Optional<User> findById(Long id) {
-		return userRepository.findById(id);
+	public User findById(Long id) {
+		return userRepository.findUserById(id);
 	}
 
 	@Transactional
@@ -65,20 +63,20 @@ public class UserService implements UserDetailsService {
 
 		User user = new User(newUser.getName(), newUser.getSurname(), newUser.getUsername(),
 				(encoder.encode(newUser.getPassword())), newUser.getRole());
-	
+
 		return userRepository.save(user);
 
 	}
 
 	@Transactional
-	public User updateUser(String username, NewUser newUser) {
-		User existingUser = findByUsername(username);
+	public User updateUser(Long id, NewUser newUser) {
+		User existingUser = findById(id);
 		existingUser.setName(newUser.getName());
 		existingUser.setSurname(newUser.getSurname());
 		existingUser.setUsername(newUser.getUsername());
 		existingUser.setPassword(encoder.encode(newUser.getPassword()));
 		existingUser.setRole(newUser.getRole());
-		
+
 		return existingUser;
 	}
 
