@@ -143,7 +143,7 @@ public class GroupEntityController {
 				logger.debug("Initiated by [{}]: Doctype [{}] was deleted from the group [{}]",
 						SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getTitle(),
 						group.getTitle());
-				groupService.deleteDoctypeFromGroup(doctype);
+				groupService.removeDoctypeFromGroup(doctype, group);
 			}
 		}
 
