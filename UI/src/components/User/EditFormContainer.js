@@ -114,7 +114,8 @@ class EditFormContainer extends Component {
     event.preventDefault();
     axios
       .put(
-        "http://localhost:8081/Gentoo/api/users/" + this.props.match.params.id,
+        "http://localhost:8081/Gentoo/api/users/" +
+          this.props.match.params.userid,
         {
           name: this.state.name,
           surname: this.state.surname,

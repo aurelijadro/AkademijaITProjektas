@@ -8,7 +8,7 @@ const DocTypeComponent = props => {
       <td>{props.title}</td>
       <td>
         <Link
-          to={"/Gentoo/doctypes/edit/" + props.title}
+          to={"/Gentoo/doctypes/edit/" + props.id}
           className="btn btn-light"
         >
           Atnaujinti informaciją
