@@ -227,4 +227,16 @@ public class GroupEntityController {
 			return notUserGroups;
 		}
 	}
+
+	@GetMapping("/{id}/notdoctypes")
+	public Set<DoctypeEntity> getDoctypesNotInGroupByGroupId(@PathVariable Long id, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupById(id);
+		if (group == null) {
+			response.setStatus(404);
+			return null;
+		}
+		response.setStatus(200);
+		Set<DoctypeEntity> notGroupDoctypes = groupService.getDoctypesGroupDoesntManage(group);
+		return notGroupDoctypes;
+	}
 }
