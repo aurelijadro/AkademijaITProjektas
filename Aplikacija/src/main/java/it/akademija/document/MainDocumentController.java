@@ -76,7 +76,7 @@ public class MainDocumentController {
 
 	@RequestMapping(path = "{userId}/{documentId}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete document", notes = "Deletes document by id")
-	public void deleteDocument(@PathVariable Long documentId, Long userId, HttpServletResponse response) {
+	public void deleteDocument(@PathVariable Long documentId, @PathVariable Long userId, HttpServletResponse response) {
 		MainDocument document = mainDocService.findDocumentById(documentId);
 		if (document == null) {
 			response.setStatus(404);
@@ -89,7 +89,8 @@ public class MainDocumentController {
 
 	@RequestMapping(path = "/{documentId}/doctypes/{doctypeId}", method = RequestMethod.POST)
 	@ApiOperation(value = "Adds doctype to document", notes = "Adds doctype by id to document by its id")
-	public void addDoctypeByIdToDocument(@PathVariable Long documentId, Long doctypeId, HttpServletResponse response) {
+	public void addDoctypeByIdToDocument(@PathVariable Long documentId, @PathVariable Long doctypeId,
+			HttpServletResponse response) {
 		MainDocument document = mainDocService.findDocumentById(documentId);
 		if (document == null) {
 			response.setStatus(404);
@@ -108,7 +109,7 @@ public class MainDocumentController {
 
 	@RequestMapping(path = "/{documentId}/doctypes/{doctypeId}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Update doctype for document", notes = "Updates doctype by id for document")
-	public void updateDoctypeTitleInDocument(@PathVariable Long documentId, Long doctypeId,
+	public void updateDoctypeTitleInDocument(@PathVariable Long documentId, @PathVariable Long doctypeId,
 			HttpServletResponse response) {
 		MainDocument document = mainDocService.findDocumentById(documentId);
 		if (document == null) {
