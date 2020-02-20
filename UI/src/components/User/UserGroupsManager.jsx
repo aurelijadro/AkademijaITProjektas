@@ -81,7 +81,7 @@ const UserGroupsManager = props => {
     function removeUserGroup() {
       axios
         .delete(
-          `http://localhost:8081/Gentoo/api/groups/${group.title}/users/${selectedUser}`
+          `http://localhost:8081/Gentoo/api/groups/${group.id}/users/${selectedUser}`
         )
         .then(updateUserGroups)
         .then(updateNonUserGroups);
@@ -101,7 +101,7 @@ const UserGroupsManager = props => {
     function addUserToGroup() {
       axios
         .post(
-          `http://localhost:8081/Gentoo/api/groups/${group.title}/users/${selectedUser}`
+          `http://localhost:8081/Gentoo/api/groups/${group.id}/users/${selectedUser}`
         )
 
         .then(updateUserGroups)

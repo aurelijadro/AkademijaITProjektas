@@ -27,7 +27,7 @@ class EditFormContainer extends Component {
     axios
       .get(
         "http://localhost:8081/Gentoo/api/users/" +
-          this.props.match.params.username
+          this.props.match.params.userid
       )
       .then(response => {
         this.setState(response.data);
