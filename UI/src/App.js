@@ -22,9 +22,10 @@ import GroupDocsManager from "./components/Group/GroupDocsManager";
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
+  const apiUrl = "http://localhost:8081/Gentoo/api/";
 
   function updateUserInformation() {
-    Axios.get("http://localhost:8081/Gentoo/api/loggedUsername").then(resp => {
+    Axios.get(`${apiUrl}loggedUsername`).then(resp => {
       setCurrentUsername(resp.data);
     });
   }
@@ -37,7 +38,8 @@ function App() {
 
   const appData = {
     currentUsername: currentUsername,
-    updateUserInformation: updateUserInformation
+    updateUserInformation: updateUserInformation,
+    apiUrl: apiUrl
   };
 
   return (
