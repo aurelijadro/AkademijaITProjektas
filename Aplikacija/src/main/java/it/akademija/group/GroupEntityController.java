@@ -105,7 +105,8 @@ public class GroupEntityController {
 	}
 
 	@PostMapping("/{groupId}/doctypes/{doctypeId}")
-	public void addDoctypeByIdToGroup(@PathVariable Long groupId, Long doctypeId, HttpServletResponse response) {
+	public void addDoctypeByIdToGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
+			HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupById(groupId);
 		if (group == null) {
 			response.setStatus(404);
@@ -126,7 +127,7 @@ public class GroupEntityController {
 	}
 
 	@DeleteMapping("/{groupId}/doctypes/{doctypeId}")
-	public void deleteDoctypeByTitleFromGroup(@PathVariable Long groupId, Long doctypeId,
+	public void deleteDoctypeByTitleFromGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
 			HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupById(groupId);
 		if (group == null) {

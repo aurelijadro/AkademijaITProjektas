@@ -7,6 +7,7 @@
 //import java.nio.file.StandardCopyOption;
 //
 //import org.springframework.stereotype.Service;
+//import org.springframework.transaction.annotation.Transactional;
 //import org.springframework.util.StringUtils;
 //import org.springframework.web.multipart.MultipartFile;
 //
@@ -24,6 +25,7 @@
 //		this.fileStorageLocation = Files.createDirectories(Paths.get("/tmp/Uploads/"));
 //	}
 //
+//	@Transactional
 //	public String storeUploadedFile(MultipartFile file, String username, Long documentId) throws IOException {
 ////		User user = userRepo.findByUsername(username);
 ////		MainDocument document = mainDocRepo.findMainDocumentById(documentId);
