@@ -3,17 +3,6 @@ import axios from "axios";
 import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
 
-function useServerData(path, setterFunction) {
-  useEffect(
-    function() {
-      axios
-        .get("http://localhost:8081/Gentoo/api" + path)
-        .then(resp => setterFunction(resp.data));
-    },
-    [path, setterFunction]
-  );
-}
-
 const UserGroupsManager = props => {
   const { currentUsername } = useMyData();
   const [user, setUser] = useState("loading");
@@ -22,9 +11,26 @@ const UserGroupsManager = props => {
 
   const selectedUser = props.match.params.userid;
 
-  useServerData("/users/" + selectedUser, setUser);
-  useServerData("/users/" + selectedUser + "/groups", setUserGroups);
-  useServerData("/groups/userdoenstbelong/" + selectedUser, setNonUserGroups);
+  useEffect(
+    function() {
+      axios
+        .get("http://localhost:8081/Gentoo/api/users/" + selectedUser)
+        .then(resp => setUser(resp.data));
+    },
+    [selectedUser]
+  );
+
+  const updateCachedData = () => {
+    axios
+      .get("http://localhost:8081/Gentoo/api/users/" + selectedUser + "/groups")
+      .then(resp => setUserGroups(resp.data));
+    axios
+      .get(
+        `http://localhost:8081/Gentoo/api/groups/userdoenstbelong/${selectedUser}`
+      )
+      .then(resp => setNonUserGroups(resp.data));
+  };
+  useEffect(updateCachedData, []);
 
   if (
     currentUsername === "loading" ||
@@ -38,30 +44,13 @@ const UserGroupsManager = props => {
   const heading = fullName + " priklauso šioms grupėms:";
   const heading2 = fullName + " gali būti priskirta šioms grupėms:";
 
-  const updateUserGroups = () => {
-    axios
-      .get("http://localhost:8081/Gentoo/api/users/" + selectedUser + "/groups")
-      .then(resp => setUserGroups(resp.data))
-      .catch(e => console.log(e));
-  };
-
-  const updateNonUserGroups = () => {
-    axios
-      .get(
-        `http://localhost:8081/Gentoo/api/groups/userdoenstbelong/${selectedUser}`
-      )
-      .then(resp => setNonUserGroups(resp.data))
-      .catch(e => console.log(e));
-  };
-
   const userGroupList = userGroups.map((group, index) => {
     function removeUserGroup() {
       axios
         .delete(
           `http://localhost:8081/Gentoo/api/groups/${group.id}/users/${selectedUser}`
         )
-        .then(updateUserGroups)
-        .then(updateNonUserGroups);
+        .then(updateCachedData);
     }
     return (
       <div className="row my-1" key={group.id}>
@@ -81,8 +70,7 @@ const UserGroupsManager = props => {
           `http://localhost:8081/Gentoo/api/groups/${group.id}/users/${selectedUser}`
         )
 
-        .then(updateUserGroups)
-        .then(updateNonUserGroups);
+        .then(updateCachedData);
     }
     return (
       <div className="row my-1" key={group.id}>
