@@ -3,6 +3,17 @@ import axios from "axios";
 import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
 
+function useServerData(path, setterFunction) {
+  useEffect(
+    function() {
+      axios
+        .get("http://localhost:8081/Gentoo/api" + path)
+        .then(resp => setterFunction(resp.data));
+    },
+    [path, setterFunction]
+  );
+}
+
 const UserGroupsManager = props => {
   const { currentUsername } = useMyData();
   const [user, setUser] = useState(null);
@@ -11,48 +22,9 @@ const UserGroupsManager = props => {
 
   const selectedUser = props.match.params.userid;
 
-  useEffect(
-    function() {
-      function updateUser() {
-        axios
-          .get("http://localhost:8081/Gentoo/api/users/" + selectedUser)
-          .then(resp => setUser(resp.data))
-          .catch(e => console.log(e));
-      }
-      updateUser();
-    },
-    [selectedUser]
-  );
-
-  useEffect(
-    function() {
-      function getUserGroups() {
-        axios
-          .get(
-            "http://localhost:8081/Gentoo/api/users/" + selectedUser + "/groups"
-          )
-          .then(resp => setUserGroups(resp.data))
-          .catch(e => console.log(e));
-      }
-      getUserGroups();
-    },
-    [selectedUser]
-  );
-
-  useEffect(
-    function() {
-      function getNonUserGroups() {
-        axios
-          .get(
-            `http://localhost:8081/Gentoo/api/groups/userdoenstbelong/${selectedUser}`
-          )
-          .then(resp => setNonUserGroups(resp.data))
-          .catch(e => console.log(e));
-      }
-      getNonUserGroups();
-    },
-    [selectedUser]
-  );
+  useServerData("/users/" + selectedUser, setUser);
+  useServerData("/users/" + selectedUser + "/groups", setUserGroups);
+  useServerData("/groups/userdoenstbelong/" + selectedUser, setNonUserGroups);
 
   if (currentUsername === "loading" || user === null)
     return <div>Loading...</div>;
