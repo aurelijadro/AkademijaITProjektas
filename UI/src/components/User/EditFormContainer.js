@@ -25,7 +25,6 @@ class EditFormContainer extends Component {
   }
 
   getUser = () => {
-    console.log(this.context);
     axios
       .get(`${this.context.apiUrl}users/${this.props.match.params.userid}`)
       .then(response => {

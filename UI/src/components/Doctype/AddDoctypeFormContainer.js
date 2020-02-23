@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
 import AddDoctypeFormComponent from "./AddDoctypeFormComponent";
+import { AppDataContext } from "../../context";
 
 class AddDoctypeFormContainer extends Component {
+  static contextType = AppDataContext;
   constructor() {
     super();
     this.state = {
@@ -21,7 +23,7 @@ class AddDoctypeFormContainer extends Component {
       title: this.state.title
     };
     axios
-      .post("http://localhost:8081/Gentoo/api/doctypes", data)
+      .post(`${this.context.apiUrl}doctypes`, data)
       .then(response => {
         alert("Jūs sėkmingai sukūrėte dokumentų tipą: " + this.state.title);
         this.props.history.push("/Gentoo/admin/doctypes");

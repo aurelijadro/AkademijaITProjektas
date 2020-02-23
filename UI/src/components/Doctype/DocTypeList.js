@@ -3,8 +3,10 @@ import axios from "axios";
 import DocTypeComponent from "./DocTypeComponent";
 import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
+import { AppDataContext } from "../../context";
 
 class DocTypeList extends Component {
+  static contextType = AppDataContext;
   constructor() {
     super();
     this.state = { doctypes: [] };
@@ -16,7 +18,7 @@ class DocTypeList extends Component {
 
   getDoctypes = () => {
     axios
-      .get("http://localhost:8081/Gentoo/api/doctypes")
+      .get(`${this.context.apiUrl}doctypes`)
       .then(response => {
         this.setState({ doctypes: response.data });
       })

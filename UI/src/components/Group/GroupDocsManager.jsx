@@ -4,7 +4,7 @@ import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
 
 const GroupDocsManager = props => {
-  const { currentUsername } = useMyData();
+  const { currentUsername, apiUrl } = useMyData();
   const [groupDoctypes, setGroupDoctypes] = useState([]);
   const [nonGroupDoctypes, setNonGroupDoctypes] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState("Loading");
@@ -14,14 +14,14 @@ const GroupDocsManager = props => {
 
   const updateGroupDoctypes = () => {
     axios
-      .get(`http://localhost:8081/Gentoo/api/groups/${groupId}/doctypes`)
+      .get(`${apiUrl}groups/${groupId}/doctypes`)
       .then(resp => setGroupDoctypes(resp.data))
       .catch(e => console.log(e));
   };
 
   const updateNonGroupDoctypes = () => {
     axios
-      .get(`http://localhost:8081/Gentoo/api/groups/${groupId}/notdoctypes`)
+      .get(`${apiUrl}groups/${groupId}/notdoctypes`)
       .then(resp => setNonGroupDoctypes(resp.data))
       .catch(e => console.log(e));
   };
@@ -30,33 +30,33 @@ const GroupDocsManager = props => {
     function() {
       function getGroupInfo() {
         axios
-          .get(`http://localhost:8081/Gentoo/api/groups/${groupId}`)
+          .get(`${apiUrl}groups/${groupId}`)
           .then(resp => setSelectedGroup(resp.data))
           .catch(e => console.log(e));
       }
       getGroupInfo();
       function getGroupDoctypes() {
         axios
-          .get(`http://localhost:8081/Gentoo/api/groups/${groupId}/doctypes`)
+          .get(`${apiUrl}groups/${groupId}/doctypes`)
           .then(resp => setGroupDoctypes(resp.data))
           .catch(e => console.log(e));
       }
       getGroupDoctypes();
     },
-    [groupId]
+    [groupId, apiUrl]
   );
 
   useEffect(
     function() {
       function getNonGroupDoctypes() {
         axios
-          .get(`http://localhost:8081/Gentoo/api/groups/${groupId}/notdoctypes`)
+          .get(`${apiUrl}groups/${groupId}/notdoctypes`)
           .then(resp => setNonGroupDoctypes(resp.data))
           .catch(e => console.log(e));
       }
       getNonGroupDoctypes();
     },
-    [groupId]
+    [groupId, apiUrl]
   );
 
   if (currentUsername === "loading" || setSelectedGroup === "Loading")
@@ -65,9 +65,7 @@ const GroupDocsManager = props => {
   const groupDoctypesList = groupDoctypes.map((doctype, index) => {
     function removeGroupDoctype() {
       axios
-        .delete(
-          `http://localhost:8081/Gentoo/api/groups/${groupId}/doctypes/${doctype.id}`
-        )
+        .delete(`${apiUrl}groups/${groupId}/doctypes/${doctype.id}`)
         .then(updateGroupDoctypes)
         .then(updateNonGroupDoctypes);
     }
@@ -85,9 +83,7 @@ const GroupDocsManager = props => {
   const nonGroupDoctypesList = nonGroupDoctypes.map((doctype, index) => {
     function addGroupDoctype() {
       axios
-        .post(
-          `http://localhost:8081/Gentoo/api/groups/${groupId}/doctypes/${doctype.id}`
-        )
+        .post(`${apiUrl}groups/${groupId}/doctypes/${doctype.id}`)
 
         .then(updateGroupDoctypes)
         .then(updateNonGroupDoctypes);

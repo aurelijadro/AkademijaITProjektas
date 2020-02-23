@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
 import EditDoctypeFormComponent from "./EditDoctypeFormComponent";
+import { AppDataContext } from "../../context";
 
 class EditDoctypeFormContainer extends Component {
+  static contextType = AppDataContext;
   constructor() {
     super();
     this.state = {
@@ -16,10 +18,7 @@ class EditDoctypeFormContainer extends Component {
 
   getDoctype = () => {
     axios
-      .get(
-        "http://localhost:8081/Gentoo/api/doctypes/" +
-          this.props.match.params.title
-      )
+      .get(`${(this.context.apiUrl, this.props.match.params.title)}`)
       .then(response => {
         this.setState(response.data);
       })
@@ -38,8 +37,8 @@ class EditDoctypeFormContainer extends Component {
     event.preventDefault();
     axios
       .put(
-        "http://localhost:8081/Gentoo/api/doctypes/" +
-          this.props.match.params.title,
+        `${this.context.apiUrl}doctypes/
+          ${this.props.match.params.title}`,
         {
           title: this.state.title
         }
