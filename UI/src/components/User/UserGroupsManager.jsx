@@ -16,9 +16,9 @@ function useServerData(path, setterFunction) {
 
 const UserGroupsManager = props => {
   const { currentUsername } = useMyData();
-  const [user, setUser] = useState(null);
-  const [userGroups, setUserGroups] = useState([]);
-  const [nonUserGroups, setNonUserGroups] = useState([]);
+  const [user, setUser] = useState("loading");
+  const [userGroups, setUserGroups] = useState("loading");
+  const [nonUserGroups, setNonUserGroups] = useState("loading");
 
   const selectedUser = props.match.params.userid;
 
@@ -26,7 +26,12 @@ const UserGroupsManager = props => {
   useServerData("/users/" + selectedUser + "/groups", setUserGroups);
   useServerData("/groups/userdoenstbelong/" + selectedUser, setNonUserGroups);
 
-  if (currentUsername === "loading" || user === null)
+  if (
+    currentUsername === "loading" ||
+    user === "loading" ||
+    userGroups === "loading" ||
+    nonUserGroups === "loading"
+  )
     return <div>Loading...</div>;
 
   const fullName = user.name + " " + user.surname;
