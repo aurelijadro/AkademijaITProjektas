@@ -14,6 +14,7 @@ const UserGroupsManager = props => {
   const [user, setUser] = useState("loading");
   const [userGroups, setUserGroups] = useState("loading");
   const [nonUserGroups, setNonUserGroups] = useState("loading");
+  const [saving, setSaving] = useState(false);
 
   const selectedUser = props.match.params.userid;
 
@@ -33,7 +34,10 @@ const UserGroupsManager = props => {
   useEffect(updateCachedData, []);
 
   function userChange(f) {
-    f().then(updateCachedData);
+    setSaving(true);
+    f()
+      .then(updateCachedData)
+      .then(() => setSaving(false));
   }
 
   if (
@@ -88,6 +92,11 @@ const UserGroupsManager = props => {
 
   return (
     <div>
+      {saving ? (
+        <span style={{ color: "white", position: "absolute", zIndex: 999 }}>
+          Saving changes...
+        </span>
+      ) : null}
       <NavigationForAdmin />
       <div className="container">
         <h4>{heading}</h4>
