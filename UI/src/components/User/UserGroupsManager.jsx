@@ -3,6 +3,12 @@ import axios from "axios";
 import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
 
+function fetchFromServer(path) {
+  return axios
+    .get("http://localhost:8081/Gentoo/api" + path)
+    .then(resp => resp.data);
+}
+
 const UserGroupsManager = props => {
   const { currentUsername } = useMyData();
   const [user, setUser] = useState("loading");
@@ -13,22 +19,16 @@ const UserGroupsManager = props => {
 
   useEffect(
     function() {
-      axios
-        .get("http://localhost:8081/Gentoo/api/users/" + selectedUser)
-        .then(resp => setUser(resp.data));
+      fetchFromServer("/users/" + selectedUser).then(setUser);
     },
     [selectedUser]
   );
 
   const updateCachedData = () => {
-    axios
-      .get("http://localhost:8081/Gentoo/api/users/" + selectedUser + "/groups")
-      .then(resp => setUserGroups(resp.data));
-    axios
-      .get(
-        `http://localhost:8081/Gentoo/api/groups/userdoenstbelong/${selectedUser}`
-      )
-      .then(resp => setNonUserGroups(resp.data));
+    fetchFromServer("/users/" + selectedUser + "/groups").then(setUserGroups);
+    fetchFromServer(`/groups/userdoenstbelong/${selectedUser}`).then(
+      setNonUserGroups
+    );
   };
   useEffect(updateCachedData, []);
 
@@ -69,7 +69,6 @@ const UserGroupsManager = props => {
         .post(
           `http://localhost:8081/Gentoo/api/groups/${group.id}/users/${selectedUser}`
         )
-
         .then(updateCachedData);
     }
     return (
