@@ -32,6 +32,10 @@ const UserGroupsManager = props => {
   };
   useEffect(updateCachedData, []);
 
+  function userChange(f) {
+    f().then(updateCachedData);
+  }
+
   if (
     currentUsername === "loading" ||
     user === "loading" ||
@@ -46,11 +50,11 @@ const UserGroupsManager = props => {
 
   const userGroupList = userGroups.map((group, index) => {
     function removeUserGroup() {
-      axios
-        .delete(
+      userChange(() =>
+        axios.delete(
           `http://localhost:8081/Gentoo/api/groups/${group.id}/users/${selectedUser}`
         )
-        .then(updateCachedData);
+      );
     }
     return (
       <div className="row my-1" key={group.id}>
@@ -65,11 +69,11 @@ const UserGroupsManager = props => {
 
   const nonUserGroupList = nonUserGroups.map((group, index) => {
     function addUserToGroup() {
-      axios
-        .post(
+      userChange(() =>
+        axios.post(
           `http://localhost:8081/Gentoo/api/groups/${group.id}/users/${selectedUser}`
         )
-        .then(updateCachedData);
+      );
     }
     return (
       <div className="row my-1" key={group.id}>
