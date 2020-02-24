@@ -5,62 +5,64 @@ import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
 
 const GroupUsersManager = props => {
-  const { currentUsername, apiUrl } = useMyData();
+  const { currentUsername } = useMyData();
   const [groupUsers, setGroupUsers] = useState([]);
   const [nonGroupUsers, setNonGroupUsers] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState("Loading");
 
-  const groupId = props.match.params.groupid;
+  const selectedGroup = props.match.params.grouptitle;
 
   const updateGroupUsers = () => {
     axios
-      .get(`${apiUrl}groups/${groupId}/users`)
+      .get(`http://localhost:8081/Gentoo/api/groups/${selectedGroup}/users`)
       .then(resp => setGroupUsers(resp.data))
       .catch(e => console.log(e));
   };
 
   const updateNonGroupUsers = () => {
     axios
-      .get(`${apiUrl}groups/${groupId}/usersnotingroup`)
+      .get(
+        `http://localhost:8081/Gentoo/api/groups/${selectedGroup}/usersnotingroup`
+      )
       .then(resp => setNonGroupUsers(resp.data))
       .catch(e => console.log(e));
   };
 
   useEffect(
-    function getGroupInfo() {
-      axios
-        .get(`${apiUrl}groups/${groupId}`)
-        .then(resp => setSelectedGroup(resp.data));
+    function() {
+      function getGroupUsers() {
+        axios
+          .get(`http://localhost:8081/Gentoo/api/groups/${selectedGroup}/users`)
+          .then(resp => setGroupUsers(resp.data))
+          .catch(e => console.log(e));
+      }
+      getGroupUsers();
     },
-    [groupId, apiUrl]
+    [selectedGroup]
   );
 
   useEffect(
-    function getGroupUsers() {
-      axios
-        .get(`${apiUrl}groups/${groupId}/users`)
-        .then(resp => setGroupUsers(resp.data));
+    function() {
+      function getNonGroupUsers() {
+        axios
+          .get(
+            `http://localhost:8081/Gentoo/api/groups/${selectedGroup}/usersnotingroup`
+          )
+          .then(resp => setNonGroupUsers(resp.data))
+          .catch(e => console.log(e));
+      }
+      getNonGroupUsers();
     },
-    [groupId, apiUrl]
+    [selectedGroup]
   );
 
-  useEffect(
-    function getNonGroupUsers() {
-      axios
-        .get(`${apiUrl}groups/${groupId}/usersnotingroup`)
-        .then(resp => setNonGroupUsers(resp.data))
-        .catch(e => console.log(e));
-    },
-    [groupId, apiUrl]
-  );
-
-  if (currentUsername === "loading" || selectedGroup === "Loading")
-    return <div>Loading...</div>;
+  if (currentUsername === "loading") return <div>Loading...</div>;
 
   const groupUsersList = groupUsers.map((user, index) => {
     function removeGroupUser() {
       axios
-        .delete(`${apiUrl}groups/${groupId}/users/${user.id}`)
+        .delete(
+          `http://localhost:8081/Gentoo/api/groups/${selectedGroup}/users/${user.username}`
+        )
         .then(updateGroupUsers)
         .then(updateNonGroupUsers);
     }
@@ -78,7 +80,9 @@ const GroupUsersManager = props => {
   const nonGroupUsersList = nonGroupUsers.map((user, index) => {
     function addGroupUser() {
       axios
-        .post(`${apiUrl}groups/${groupId}/users/${user.id}`)
+        .post(
+          `http://localhost:8081/Gentoo/api/groups/${selectedGroup}/users/${user.username}`
+        )
 
         .then(updateGroupUsers)
         .then(updateNonGroupUsers);
@@ -98,7 +102,7 @@ const GroupUsersManager = props => {
     <div>
       <NavigationForAdmin />
       <div className="container">
-        <h4>Grupei {selectedGroup.title} priklauso šie vartotojai:</h4>
+        <h4>Grupei {selectedGroup} priklauso šie vartotojai:</h4>
         <div className="row my-2">
           <div className="col-3 font-weight-bold">#</div>
           <div className="col-6 font-weight-bold">
