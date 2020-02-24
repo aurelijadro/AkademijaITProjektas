@@ -29,8 +29,10 @@ public class MainDocumentService {
 	public List<MainDocument> getMainDocuments(Long userId) {
 		User user = userRepo.findUserById(userId);
 
-		return user.getDocuments().stream().map((document) -> new MainDocument(document.getId(), document.getTitle(),
-				document.getSummary(), document.getDocumentStatus())).collect(Collectors.toList());
+		return user
+				.getDocuments().stream().map((document) -> new MainDocument(document.getId(), document.getTitle(),
+						document.getSummary(), document.getDocumentStatus(), document.getSubmissionDate()))
+				.collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -76,6 +78,7 @@ public class MainDocumentService {
 
 	@Transactional
 	public void changeDocumentToSubmitted(MainDocument document) {
+		document.setSubmissionDate();
 		document.updateDocumentStatusToSubmitted();
 		mainDocRepository.save(document);
 	}

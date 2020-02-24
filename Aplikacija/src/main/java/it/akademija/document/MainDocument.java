@@ -1,5 +1,6 @@
 package it.akademija.document;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -32,6 +33,14 @@ public class MainDocument {
 
 	private String documentStatus = "Sukurtas";
 
+	private LocalDate submissionDate = null;
+
+	private LocalDate approvalDate = null;
+
+	private LocalDate rejectionDate = null;
+
+	private String rejectionReason;
+
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.DETACH })
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
@@ -59,11 +68,12 @@ public class MainDocument {
 		this.summary = summary;
 	}
 
-	public MainDocument(Long id, String title, String summary, String documentStatus) {
+	public MainDocument(Long id, String title, String summary, String documentStatus, LocalDate submissionDate) {
 		this.id = id;
 		this.title = title;
 		this.summary = summary;
 		this.documentStatus = documentStatus;
+		this.submissionDate = submissionDate;
 	}
 
 	public Long getId() {
@@ -120,6 +130,46 @@ public class MainDocument {
 
 	public String updateDocumentStatusToSubmitted() {
 		return this.documentStatus = "Pateiktas";
+	}
+
+	public String updateDocumentStatusToApproved() {
+		return this.documentStatus = "Patvirtintas";
+	}
+
+	public String updateDocumentStatusToDenied() {
+		return this.documentStatus = "Atmestas";
+	}
+
+	public LocalDate getSubmissionDate() {
+		return submissionDate;
+	}
+
+	public void setSubmissionDate() {
+		this.submissionDate = LocalDate.now();
+	}
+
+	public LocalDate getApprovalDate() {
+		return approvalDate;
+	}
+
+	public void setApprovalDate() {
+		this.approvalDate = LocalDate.now();
+	}
+
+	public LocalDate getRejectionDate() {
+		return rejectionDate;
+	}
+
+	public void setRejectionDate() {
+		this.rejectionDate = LocalDate.now();
+	}
+
+	public String getRejectionReason() {
+		return rejectionReason;
+	}
+
+	public void setRejectionReason(String rejectionReason) {
+		this.rejectionReason = rejectionReason;
 	}
 
 }
