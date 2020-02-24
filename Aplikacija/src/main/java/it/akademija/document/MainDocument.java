@@ -53,9 +53,17 @@ public class MainDocument {
 	}
 
 	public MainDocument(Long id, String title, String summary) {
+		super();
 		this.id = id;
 		this.title = title;
 		this.summary = summary;
+	}
+
+	public MainDocument(Long id, String title, String summary, String documentStatus) {
+		this.id = id;
+		this.title = title;
+		this.summary = summary;
+		this.documentStatus = documentStatus;
 	}
 
 	public Long getId() {
@@ -110,8 +118,8 @@ public class MainDocument {
 		this.documentStatus = documentStatus;
 	}
 
-	public void updateDocumentStatusToSubmitted() {
-		this.documentStatus = "Pateiktas";
+	public String updateDocumentStatusToSubmitted() {
+		return this.documentStatus = "Pateiktas";
 	}
 
 }

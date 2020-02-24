@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import it.akademija.doctype.DoctypeEntity;
 import it.akademija.doctype.DoctypeEntityRepo;
+import it.akademija.user.UserRepository;
 
 @RestController
 @Api(value = "document")
@@ -31,6 +32,9 @@ public class MainDocumentController {
 
 	@Autowired
 	private DoctypeEntityRepo doctypeRepo;
+
+	@Autowired
+	private UserRepository userRepo;
 
 	@RequestMapping(path = "/{id}/documents", method = RequestMethod.GET)
 	@ApiOperation(value = "Get documents", notes = "Returns all documents")
@@ -116,5 +120,27 @@ public class MainDocumentController {
 			return;
 		}
 		mainDocService.changeDocumentToSubmitted(document);
+	}
+
+	@RequestMapping(path = "/{id}/createdDocuments", method = RequestMethod.GET)
+	@ApiOperation(value = "Get documents", notes = "Returns all documents")
+	public List<MainDocument> getCreatedDocuments(@PathVariable Long id, HttpServletResponse response) {
+		List<MainDocument> documentList = mainDocService.createdDocumentsList(id);
+		if (documentList == null) {
+			response.setStatus(404);
+			return null;
+		}
+		return documentList;
+	}
+
+	@RequestMapping(path = "/{id}/submittedDocuments", method = RequestMethod.GET)
+	@ApiOperation(value = "Get documents", notes = "Returns all documents")
+	public List<MainDocument> getSubmittedDocuments(@PathVariable Long id, HttpServletResponse response) {
+		List<MainDocument> documentList = mainDocService.submittedDocumentsList(id);
+		if (documentList == null) {
+			response.setStatus(404);
+			return null;
+		}
+		return documentList;
 	}
 }
