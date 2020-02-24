@@ -61,13 +61,15 @@ const GroupDocsManager = props => {
       );
     }
     return (
-      <div className="row my-1" key={doctype.id}>
-        <div className="col-3">{index + 1}</div>
-        <div className="col-6">{doctype.title}</div>
-        <button className="col-3 btn btn-dark" onClick={removeGroupDoctype}>
-          Pašalinti dokumento tipą iš grupės
-        </button>
-      </div>
+      <li className="list-group-item list-group-item-dark" key={doctype.id}>
+        <div className="row my-1">
+          <div className="col-3">{index + 1}</div>
+          <div className="col-6">{doctype.title}</div>
+          <button className="col-3 btn btn-dark" onClick={removeGroupDoctype}>
+            Pašalinti iš grupės
+          </button>
+        </div>
+      </li>
     );
   });
 
@@ -78,13 +80,15 @@ const GroupDocsManager = props => {
       );
     }
     return (
-      <div className="row my-1" key={doctype.id}>
-        <div className="col-3">{index + 1}</div>
-        <div className="col-6">{doctype.title}</div>
-        <button className="col-3 btn btn-dark" onClick={addGroupDoctype}>
-          Pridėti dokumento tipą į grupę
-        </button>
-      </div>
+      <li className="list-group-item list-group-item-dark" key={doctype.id}>
+        <div className="row my-1">
+          <div className="col-3">{index + 1}</div>
+          <div className="col-6">{doctype.title}</div>
+          <button className="col-3 btn btn-dark" onClick={addGroupDoctype}>
+            Pridėti į grupę
+          </button>
+        </div>
+      </li>
     );
   });
 
@@ -96,21 +100,25 @@ const GroupDocsManager = props => {
         </span>
       ) : null}
       <NavigationForAdmin />
-      <div className="container">
+      <div className="container my-4">
         <h4>Grupė {selectedGroup.title} valdo šiuos dokumentų tipus:</h4>
-        <div className="row my-2">
-          <div className="col-3 font-weight-bold">#</div>
-          <div className="col-6 font-weight-bold">Dokumento tipas</div>
-          <div className="col-3 font-weight-bold"></div>
-        </div>
+        <li className="list-group-item list-group-item-dark">
+          <div className="row my-2">
+            <div className="col-3 font-weight-bold">#</div>
+            <div className="col-6 font-weight-bold">Dokumento tipas</div>
+            <div className="col-3 font-weight-bold"></div>
+          </div>
+        </li>
         <div>{groupDoctypesList}</div>
         <hr></hr>
         <h4>Kiti dokumentų tipai:</h4>
-        <div className="row my-2">
-          <div className="col-3 font-weight-bold">#</div>
-          <div className="col-6 font-weight-bold">Dokumento tipas</div>
-          <div className="col-3 font-weight-bold"></div>
-        </div>
+        <li className="list-group-item list-group-item-dark">
+          <div className="row my-2">
+            <div className="col-3 font-weight-bold">#</div>
+            <div className="col-6 font-weight-bold">Dokumento tipas</div>
+            <div className="col-3 font-weight-bold"></div>
+          </div>
+        </li>
         <div>{nonGroupDoctypesList}</div>
       </div>
     </div>
