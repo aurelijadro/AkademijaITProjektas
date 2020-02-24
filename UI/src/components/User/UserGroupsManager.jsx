@@ -36,8 +36,6 @@ const UserGroupsManager = props => {
       .then(setNonUserGroups);
   };
 
-  // useEffect(updateCachedData, []);
-
   useEffect(function() {
     updateCachedData();
     const timer = setInterval(updateCachedData, 2000);

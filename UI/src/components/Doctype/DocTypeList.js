@@ -3,10 +3,9 @@ import axios from "axios";
 import DocTypeComponent from "./DocTypeComponent";
 import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
-import { AppDataContext } from "../../context";
+import ApiUrl from "../../APIURL";
 
 class DocTypeList extends Component {
-  static contextType = AppDataContext;
   constructor() {
     super();
     this.state = { doctypes: [] };
@@ -18,7 +17,7 @@ class DocTypeList extends Component {
 
   getDoctypes = () => {
     axios
-      .get(`${this.context.apiUrl}doctypes`)
+      .get(`${ApiUrl}doctypes`)
       .then(response => {
         this.setState({ doctypes: response.data });
       })
@@ -30,7 +29,12 @@ class DocTypeList extends Component {
   render() {
     let doctype = this.state.doctypes.map((doctype, index) => {
       return (
-        <DocTypeComponent key={index} id={doctype.id} title={doctype.title} />
+        <DocTypeComponent
+          key={index}
+          index={index}
+          id={doctype.id}
+          title={doctype.title}
+        />
       );
     });
     return (
@@ -42,33 +46,36 @@ class DocTypeList extends Component {
             </div>
           </div>
         </div>
-        <Link to="/Gentoo/admin/doctypes/add">
-          <button
-            type="button"
-            className="btn btn-light"
-            onClick={this.props.onAddNew}
-          >
-            Pridėti naują dokumentų tipą
-          </button>
-        </Link>
-        <Link to="/Gentoo/admin">
-          <button
-            type="button"
-            className="btn btn-light"
-            onClick={this.props.onBack}
-          >
-            Grįžti į pradinį langą
-          </button>
-        </Link>
-        <table className=" text-center table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Dokumentų tipo pavadinimas</th>
-            </tr>
-          </thead>
-          <tbody>{doctype}</tbody>
-        </table>
+        <div className="container">
+          <Link to="/Gentoo/admin/doctypes/add">
+            <button
+              type="button"
+              className="btn btn-light"
+              onClick={this.props.onAddNew}
+            >
+              Pridėti naują dokumentų tipą
+            </button>
+          </Link>
+          <Link to="/Gentoo/admin">
+            <button
+              type="button"
+              className="btn btn-light"
+              onClick={this.props.onBack}
+            >
+              Grįžti į pradinį langą
+            </button>
+          </Link>
+          <table className=" text-center table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Dokumentų tipo pavadinimas</th>
+                <th scope="col">Administruoti dokumentų tipus</th>
+              </tr>
+            </thead>
+            <tbody>{doctype}</tbody>
+          </table>
+        </div>
       </div>
     );
   }

@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import NavigationForAdmin from "../NavigationForAdmin";
-import { AppDataContext } from "../../context";
+import ApiUrl from "../../APIURL";
 
 class EditFormContainer extends Component {
-  static contextType = AppDataContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +25,7 @@ class EditFormContainer extends Component {
 
   getUser = () => {
     axios
-      .get(`${this.context.apiUrl}users/${this.props.match.params.userid}`)
+      .get(`${ApiUrl}users/${this.props.match.params.userid}`)
       .then(response => {
         this.setState(response.data);
         this.setState({ password: "" });
@@ -111,7 +110,7 @@ class EditFormContainer extends Component {
   onSubmit = event => {
     event.preventDefault();
     axios
-      .put(`${this.context.apiUrl}users/${this.props.match.params.userid}`, {
+      .put(`${ApiUrl}users/${this.props.match.params.userid}`, {
         name: this.state.name,
         surname: this.state.surname,
         username: this.state.username,

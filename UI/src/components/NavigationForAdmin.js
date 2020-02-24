@@ -13,18 +13,18 @@ const NavigationForAdmin = withRouter(({ history, ...props }) => {
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/Gentoo/admin/users/add" className="nav-link">
-              Naujas vartotojas
+            <Link to="/Gentoo/admin/users" className="nav-link">
+              Vartotojai
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/Gentoo/admin/groups/add" className="nav-link">
-              Nauja grupė
+            <Link to="/Gentoo/admin/groups" className="nav-link">
+              Grupės
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/Gentoo/admin/doctypes/add" className="nav-link">
-              Naujas dokumentų tipas
+            <Link to="/Gentoo/admin/doctypes" className="nav-link">
+              Dokumentų tipai
             </Link>
           </li>
         </ul>

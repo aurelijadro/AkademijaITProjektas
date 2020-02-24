@@ -4,14 +4,18 @@ import { Link } from "react-router-dom";
 const DocTypeComponent = props => {
   return (
     <tr>
-      <th scope="row">{props.id}</th>
-      <td>{props.title}</td>
+      <th scope="row">{props.index + 1}</th>
+      <td>
+        <Link to={"/Gentoo/admin/doctypes/edit/" + props.id} className="h5">
+          {props.title}
+        </Link>
+      </td>
       <td>
         <Link
-          to={"/Gentoo/doctypes/edit/" + props.id}
           className="btn btn-light"
+          to={`/>Gentoo/admin/doctypes/managedoctypesgroups/${props.id}`}
         >
-          Atnaujinti informaciją
+          Administruoti dokumentų tipo grupes
         </Link>
       </td>
     </tr>

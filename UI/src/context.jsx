@@ -2,8 +2,7 @@ import React from "react";
 
 export const AppDataContext = React.createContext({
   currentUsername: "",
-  updateUserInformation: () => {},
-  apiUrl: ""
+  updateUserInformation: () => {}
 });
 
 export function useMyData() {

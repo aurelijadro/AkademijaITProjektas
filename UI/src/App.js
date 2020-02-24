@@ -23,13 +23,13 @@ import { AppDataContext } from "./context";
 import Axios from "axios";
 import GroupUsersManager from "./components/Group/GroupUsersManager";
 import GroupDocsManager from "./components/Group/GroupDocsManager";
+import ApiUrl from "./APIURL";
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
-  const apiUrl = "http://localhost:8081/Gentoo/api/";
 
   function updateUserInformation() {
-    Axios.get(`${apiUrl}loggedUsername`).then(resp => {
+    Axios.get(`${ApiUrl}loggedUsername`).then(resp => {
       setCurrentUsername(resp.data);
     });
   }
@@ -42,8 +42,7 @@ function App() {
 
   const appData = {
     currentUsername: currentUsername,
-    updateUserInformation: updateUserInformation,
-    apiUrl: apiUrl
+    updateUserInformation: updateUserInformation
   };
 
   return (
