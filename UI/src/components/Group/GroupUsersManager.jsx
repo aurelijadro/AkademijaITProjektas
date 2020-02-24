@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
 import ApiUrl from "../../APIURL";
@@ -34,8 +33,8 @@ const GroupUsersManager = props => {
 
   useEffect(function() {
     updateCachedData();
-    const timer = setInterval(updateCachedData, 2000);
-    return () => clearInterval(timer);
+    // const timer = setInterval(updateCachedData, 2000);
+    // return () => clearInterval(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -61,13 +60,15 @@ const GroupUsersManager = props => {
       );
     }
     return (
-      <div className="row my-1" key={user.id}>
-        <div className="col-3">{index + 1}</div>
-        <div className="col-6">{user.name + " " + user.surname}</div>
-        <button className="col-3 btn btn-dark" onClick={removeGroupUser}>
-          Pašalinti vartotoją iš grupės
-        </button>
-      </div>
+      <li className="list-group-item list-group-item-dark" key={user.id}>
+        <div className="row my-1">
+          <div className="col-3">{index + 1}</div>
+          <div className="col-6">{user.name + " " + user.surname}</div>
+          <button className="col-3 btn btn-dark" onClick={removeGroupUser}>
+            Pašalinti vartotoją iš grupės
+          </button>
+        </div>
+      </li>
     );
   });
 
@@ -78,13 +79,15 @@ const GroupUsersManager = props => {
       );
     }
     return (
-      <div className="row my-1" key={user.id}>
-        <div className="col-3">{index + 1}</div>
-        <div className="col-6">{user.name + " " + user.surname}</div>
-        <button className="col-3 btn btn-dark" onClick={addGroupUser}>
-          Pridėti vartotoją į grupę
-        </button>
-      </div>
+      <li className="list-group-item list-group-item-dark" key={user.id}>
+        <div className="row my-1">
+          <div className="col-3">{index + 1}</div>
+          <div className="col-6">{user.name + " " + user.surname}</div>
+          <button className="col-3 btn btn-dark" onClick={addGroupUser}>
+            Pridėti vartotoją į grupę
+          </button>
+        </div>
+      </li>
     );
   });
 
@@ -96,31 +99,30 @@ const GroupUsersManager = props => {
         </span>
       ) : null}
       <NavigationForAdmin />
-      <div className="container">
+      <div className="container my-4">
         <h4>Grupei {selectedGroup.title} priklauso šie vartotojai:</h4>
-        <div className="row my-2">
-          <div className="col-3 font-weight-bold">#</div>
-          <div className="col-6 font-weight-bold">
-            Vartotojo vardas ir pavardė
+        <li className="list-group-item list-group-item-dark">
+          <div className="row my-2">
+            <div className="col-3 font-weight-bold">#</div>
+            <div className="col-6 font-weight-bold">
+              Vartotojo vardas ir pavardė
+            </div>
+            <div className="col-3 font-weight-bold"></div>
           </div>
-          <div className="col-3 font-weight-bold"></div>
-        </div>
+        </li>
         <div>{groupUsersList}</div>
         <hr></hr>
         <h4>Kiti sistemoje registruoti vartotojai:</h4>
-        <div className="row my-2">
-          <div className="col-3 font-weight-bold">#</div>
-          <div className="col-6 font-weight-bold">
-            Vartotojo vardas ir pavardė
+        <li className="list-group-item list-group-item-dark">
+          <div className="row my-2">
+            <div className="col-3 font-weight-bold">#</div>
+            <div className="col-6 font-weight-bold">
+              Vartotojo vardas ir pavardė
+            </div>
+            <div className="col-3 font-weight-bold"></div>
           </div>
-          <div className="col-3 font-weight-bold"></div>
-        </div>
+        </li>
         <div>{nonGroupUsersList}</div>
-        <Link to="/Gentoo/admin/groups">
-          <button className="btn btn-primary" onClick={props.onBack}>
-            Grįžti į grupių sąrašą
-          </button>
-        </Link>
       </div>
     </div>
   );

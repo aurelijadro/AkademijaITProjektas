@@ -38,8 +38,8 @@ const UserGroupsManager = props => {
 
   useEffect(function() {
     updateCachedData();
-    const timer = setInterval(updateCachedData, 2000);
-    return () => clearInterval(timer);
+    // const timer = setInterval(updateCachedData, 2000);
+    // return () => clearInterval(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
