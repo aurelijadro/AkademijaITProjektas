@@ -69,13 +69,15 @@ const UserGroupsManager = props => {
       );
     }
     return (
-      <div className="row my-1" key={group.id}>
-        <div className="col-3">{index + 1}</div>
-        <div className="col-6">{group.title}</div>
-        <button className="col-3 btn btn-dark" onClick={removeUserGroup}>
-          Pašalinti vartotoją iš grupės
-        </button>
-      </div>
+      <li className="list-group-item list-group-item-dark" key={group.id}>
+        <div className="row my-1">
+          <div className="col-3">{index + 1}</div>
+          <div className="col-6">{group.title}</div>
+          <button className="col-3 btn btn-dark" onClick={removeUserGroup}>
+            Pašalinti vartotoją iš grupės
+          </button>
+        </div>
+      </li>
     );
   });
 
@@ -86,13 +88,15 @@ const UserGroupsManager = props => {
       );
     }
     return (
-      <div className="row my-1" key={group.id}>
-        <div className="col-3">{index + 1}</div>
-        <div className="col-6">{group.title}</div>
-        <button className="col-3 btn btn-dark" onClick={addUserToGroup}>
-          Pridėti vartotoją į grupę
-        </button>
-      </div>
+      <li className="list-group-item list-group-item-dark" key={group.id}>
+        <div className="row my-1">
+          <div className="col-3">{index + 1}</div>
+          <div className="col-6">{group.title}</div>
+          <button className="col-3 btn btn-dark" onClick={addUserToGroup}>
+            Pridėti vartotoją į grupę
+          </button>
+        </div>
+      </li>
     );
   });
 
@@ -104,21 +108,28 @@ const UserGroupsManager = props => {
         </span>
       ) : null}
       <NavigationForAdmin />
-      <div className="container">
+      <div className="container my-4">
         <h4>{heading}</h4>
-        <div className="row my-2">
-          <div className="col-3 font-weight-bold">#</div>
-          <div className="col-6 font-weight-bold">Grupės pavadinimas</div>
-          <div className="col-3 font-weight-bold"></div>
-        </div>
+
+        <li className="list-group-item list-group-item-dark">
+          <div className="row my-2">
+            <div className="col-3 font-weight-bold">#</div>
+            <div className="col-6 font-weight-bold">Grupės pavadinimas</div>
+            <div className="col-3 font-weight-bold"></div>
+          </div>
+        </li>
+
         <div>{userGroupList}</div>
+
         <hr></hr>
         <h4>{heading2}</h4>
-        <div className="row my-2">
-          <div className="col-3 font-weight-bold">#</div>
-          <div className="col-6 font-weight-bold">Grupės pavadinimas</div>
-          <div className="col-3 font-weight-bold"></div>
-        </div>
+        <li className="list-group-item list-group-item-dark">
+          <div className="row my-2">
+            <div className="col-3 font-weight-bold">#</div>
+            <div className="col-6 font-weight-bold">Grupės pavadinimas</div>
+            <div className="col-3 font-weight-bold"></div>
+          </div>
+        </li>
         <div>{nonUserGroupList}</div>
       </div>
     </div>
