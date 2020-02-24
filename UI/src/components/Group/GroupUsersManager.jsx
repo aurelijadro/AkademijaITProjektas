@@ -7,24 +7,20 @@ import ApiUrl from "../../APIURL";
 
 const GroupUsersManager = props => {
   const { currentUsername } = useMyData();
-  const [groupUsers, setGroupUsers] = useState([]);
-  const [nonGroupUsers, setNonGroupUsers] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState("Loading");
+  const [groupUsers, setGroupUsers] = useState("loading");
+  const [nonGroupUsers, setNonGroupUsers] = useState("loading");
+  const [selectedGroup, setSelectedGroup] = useState("loading");
+  const [saving, setSaving] = useState(false);
 
   const groupId = props.match.params.groupid;
 
-  const updateGroupUsers = () => {
-    axios
-      .get(`${ApiUrl}groups/${groupId}/users`)
-      .then(resp => setGroupUsers(resp.data))
-      .catch(e => console.log(e));
-  };
+  function fetchFromServer(path) {
+    return axios.get(ApiUrl + path).then(resp => resp.data);
+  }
 
-  const updateNonGroupUsers = () => {
-    axios
-      .get(`${ApiUrl}groups/${groupId}/usersnotingroup`)
-      .then(resp => setNonGroupUsers(resp.data))
-      .catch(e => console.log(e));
+  const updateCachedData = () => {
+    fetchFromServer(`groups/${groupId}/users`).then(setGroupUsers);
+    fetchFromServer(`groups/${groupId}/usersnotingroup`).then(setNonGroupUsers);
   };
 
   useEffect(
@@ -36,34 +32,33 @@ const GroupUsersManager = props => {
     [groupId]
   );
 
-  useEffect(
-    function getGroupUsers() {
-      axios
-        .get(`${ApiUrl}groups/${groupId}/users`)
-        .then(resp => setGroupUsers(resp.data));
-    },
-    [groupId]
-  );
+  useEffect(function() {
+    updateCachedData();
+    const timer = setInterval(updateCachedData, 2000);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  useEffect(
-    function getNonGroupUsers() {
-      axios
-        .get(`${ApiUrl}groups/${groupId}/usersnotingroup`)
-        .then(resp => setNonGroupUsers(resp.data))
-        .catch(e => console.log(e));
-    },
-    [groupId]
-  );
+  function userChange(f) {
+    setSaving(true);
+    f()
+      .then(updateCachedData)
+      .then(() => setSaving(false));
+  }
 
-  if (currentUsername === "loading" || selectedGroup === "Loading")
+  if (
+    currentUsername === "loading" ||
+    selectedGroup === "loading" ||
+    groupUsers === "loading" ||
+    nonGroupUsers === "loading"
+  )
     return <div>Loading...</div>;
 
   const groupUsersList = groupUsers.map((user, index) => {
     function removeGroupUser() {
-      axios
-        .delete(`${ApiUrl}groups/${groupId}/users/${user.id}`)
-        .then(updateGroupUsers)
-        .then(updateNonGroupUsers);
+      userChange(() =>
+        axios.delete(`${ApiUrl}groups/${groupId}/users/${user.id}`)
+      );
     }
     return (
       <div className="row my-1" key={user.id}>
@@ -78,11 +73,9 @@ const GroupUsersManager = props => {
 
   const nonGroupUsersList = nonGroupUsers.map((user, index) => {
     function addGroupUser() {
-      axios
-        .post(`${ApiUrl}groups/${groupId}/users/${user.id}`)
-
-        .then(updateGroupUsers)
-        .then(updateNonGroupUsers);
+      userChange(() =>
+        axios.post(`${ApiUrl}groups/${groupId}/users/${user.id}`)
+      );
     }
     return (
       <div className="row my-1" key={user.id}>
@@ -97,6 +90,11 @@ const GroupUsersManager = props => {
 
   return (
     <div>
+      {saving ? (
+        <span style={{ color: "white", position: "absolute", zIndex: 999 }}>
+          Saving changes...
+        </span>
+      ) : null}
       <NavigationForAdmin />
       <div className="container">
         <h4>Grupei {selectedGroup.title} priklauso šie vartotojai:</h4>
