@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
+import ApiUrl from "../../APIURL";
 
 function fetchFromServer(path) {
-  return axios
-    .get("http://localhost:8081/Gentoo/api" + path)
-    .then(resp => resp.data);
+  return axios.get(ApiUrl + path).then(resp => resp.data);
 }
 
 const UserGroupsManager = props => {
@@ -20,7 +19,7 @@ const UserGroupsManager = props => {
 
   useEffect(
     function() {
-      fetchFromServer("/users/" + selectedUser).then(setUser);
+      fetchFromServer("users/" + selectedUser).then(setUser);
     },
     [selectedUser]
   );
@@ -29,10 +28,10 @@ const UserGroupsManager = props => {
     groups.sort((a, b) => a.title.localeCompare(b.title));
 
   const updateCachedData = () => {
-    fetchFromServer("/users/" + selectedUser + "/groups")
+    fetchFromServer("users/" + selectedUser + "/groups")
       .then(sortByTitle)
       .then(setUserGroups);
-    fetchFromServer(`/groups/userdoenstbelong/${selectedUser}`)
+    fetchFromServer(`groups/userdoenstbelong/${selectedUser}`)
       .then(sortByTitle)
       .then(setNonUserGroups);
   };
@@ -68,9 +67,7 @@ const UserGroupsManager = props => {
   const userGroupList = userGroups.map((group, index) => {
     function removeUserGroup() {
       userChange(() =>
-        axios.delete(
-          `http://localhost:8081/Gentoo/api/groups/${group.id}/users/${selectedUser}`
-        )
+        axios.delete(`${ApiUrl}groups/${group.id}/users/${selectedUser}`)
       );
     }
     return (
@@ -87,9 +84,7 @@ const UserGroupsManager = props => {
   const nonUserGroupList = nonUserGroups.map((group, index) => {
     function addUserToGroup() {
       userChange(() =>
-        axios.post(
-          `http://localhost:8081/Gentoo/api/groups/${group.id}/users/${selectedUser}`
-        )
+        axios.post(`${ApiUrl}groups/${group.id}/users/${selectedUser}`)
       );
     }
     return (

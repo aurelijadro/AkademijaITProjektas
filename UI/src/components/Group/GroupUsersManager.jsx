@@ -3,9 +3,10 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
+import ApiUrl from "../../APIURL";
 
 const GroupUsersManager = props => {
-  const { currentUsername, apiUrl } = useMyData();
+  const { currentUsername } = useMyData();
   const [groupUsers, setGroupUsers] = useState([]);
   const [nonGroupUsers, setNonGroupUsers] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState("Loading");
@@ -14,14 +15,14 @@ const GroupUsersManager = props => {
 
   const updateGroupUsers = () => {
     axios
-      .get(`${apiUrl}groups/${groupId}/users`)
+      .get(`${ApiUrl}groups/${groupId}/users`)
       .then(resp => setGroupUsers(resp.data))
       .catch(e => console.log(e));
   };
 
   const updateNonGroupUsers = () => {
     axios
-      .get(`${apiUrl}groups/${groupId}/usersnotingroup`)
+      .get(`${ApiUrl}groups/${groupId}/usersnotingroup`)
       .then(resp => setNonGroupUsers(resp.data))
       .catch(e => console.log(e));
   };
@@ -29,29 +30,29 @@ const GroupUsersManager = props => {
   useEffect(
     function getGroupInfo() {
       axios
-        .get(`${apiUrl}groups/${groupId}`)
+        .get(`${ApiUrl}groups/${groupId}`)
         .then(resp => setSelectedGroup(resp.data));
     },
-    [groupId, apiUrl]
+    [groupId]
   );
 
   useEffect(
     function getGroupUsers() {
       axios
-        .get(`${apiUrl}groups/${groupId}/users`)
+        .get(`${ApiUrl}groups/${groupId}/users`)
         .then(resp => setGroupUsers(resp.data));
     },
-    [groupId, apiUrl]
+    [groupId]
   );
 
   useEffect(
     function getNonGroupUsers() {
       axios
-        .get(`${apiUrl}groups/${groupId}/usersnotingroup`)
+        .get(`${ApiUrl}groups/${groupId}/usersnotingroup`)
         .then(resp => setNonGroupUsers(resp.data))
         .catch(e => console.log(e));
     },
-    [groupId, apiUrl]
+    [groupId]
   );
 
   if (currentUsername === "loading" || selectedGroup === "Loading")
@@ -60,7 +61,7 @@ const GroupUsersManager = props => {
   const groupUsersList = groupUsers.map((user, index) => {
     function removeGroupUser() {
       axios
-        .delete(`${apiUrl}groups/${groupId}/users/${user.id}`)
+        .delete(`${ApiUrl}groups/${groupId}/users/${user.id}`)
         .then(updateGroupUsers)
         .then(updateNonGroupUsers);
     }
@@ -78,7 +79,7 @@ const GroupUsersManager = props => {
   const nonGroupUsersList = nonGroupUsers.map((user, index) => {
     function addGroupUser() {
       axios
-        .post(`${apiUrl}groups/${groupId}/users/${user.id}`)
+        .post(`${ApiUrl}groups/${groupId}/users/${user.id}`)
 
         .then(updateGroupUsers)
         .then(updateNonGroupUsers);
@@ -118,10 +119,10 @@ const GroupUsersManager = props => {
         </div>
         <div>{nonGroupUsersList}</div>
         <Link to="/Gentoo/admin/groups">
-              <button className="btn btn-primary" onClick={props.onBack}>
-                Grįžti į grupių sąrašą
-              </button>
-            </Link>
+          <button className="btn btn-primary" onClick={props.onBack}>
+            Grįžti į grupių sąrašą
+          </button>
+        </Link>
       </div>
     </div>
   );
