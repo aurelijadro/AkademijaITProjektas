@@ -11,6 +11,10 @@ import CreateUserForm from "./components/User/CreateUserForm";
 import EditFormContainer from "./components/User/EditFormContainer";
 import EditDoctypeFormContainer from "./components/Doctype/EditDoctypeFormContainer";
 import AddDoctypeFormContainer from "./components/Doctype/AddDoctypeFormContainer";
+
+import AddGroupFormContainer from "./components/Group/AddGroupFormContainer";
+import EditGroupFormContainer from "./components/Group/EditGroupFormContainer"
+
 import UserDashboard from "./components/UserDashboard";
 import MainDocumentList from "./components/Document/MainDocumentList";
 import { Route } from "react-router-dom";
@@ -64,6 +68,18 @@ function App() {
               exact
               path="/Gentoo/admin/doctypes"
               component={DocTypeList}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/groups/add"
+              component={AddGroupFormContainer}
+            />
+
+
+            <Route
+              exact
+              path="/Gentoo/admin/groups/edit/:title"
+              component={EditGroupFormContainer}
             />
             <Route
               exact

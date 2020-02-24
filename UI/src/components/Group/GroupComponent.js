@@ -8,7 +8,7 @@ const GroupComponent = props => {
       <td>{props.title}</td>
       <td>
         <Link
-          to={"/Gentoo/groups/edit/" + props.title}
+          to={"/Gentoo/admin/groups/edit/" + props.title}
           className="btn btn-light"
         >
           Atnaujinti informaciją
@@ -18,6 +18,13 @@ const GroupComponent = props => {
           className="btn btn-light mx-2"
         >
           Valdyti grupės narius
+        </Link>
+
+        <Link
+          to={"/Gentoo/admin/users/manageusergroups/" + props.title}
+          className="btn btn-light mx-2"
+        >
+          Valdyti Dokumentus
         </Link>
       </td>
     </tr>

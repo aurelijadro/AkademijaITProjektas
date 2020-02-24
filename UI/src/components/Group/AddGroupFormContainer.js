@@ -24,7 +24,7 @@ class AddGroupFormContainer extends Component {
     axios
       .get(
         "http://localhost:8081/Gentoo/api/groups/groupDoctype/" +
-          this.props.match.params.title
+          this.props.match.params.doctypes
       )
       .then(response => {
         this.setState({ doctypes: response.data });
