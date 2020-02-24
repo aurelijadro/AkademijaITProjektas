@@ -25,13 +25,26 @@ const UserGroupsManager = props => {
     [selectedUser]
   );
 
+  const sortByTitle = groups =>
+    groups.sort((a, b) => a.title.localeCompare(b.title));
+
   const updateCachedData = () => {
-    fetchFromServer("/users/" + selectedUser + "/groups").then(setUserGroups);
-    fetchFromServer(`/groups/userdoenstbelong/${selectedUser}`).then(
-      setNonUserGroups
-    );
+    fetchFromServer("/users/" + selectedUser + "/groups")
+      .then(sortByTitle)
+      .then(setUserGroups);
+    fetchFromServer(`/groups/userdoenstbelong/${selectedUser}`)
+      .then(sortByTitle)
+      .then(setNonUserGroups);
   };
-  useEffect(updateCachedData, []);
+
+  // useEffect(updateCachedData, []);
+
+  useEffect(function() {
+    updateCachedData();
+    const timer = setInterval(updateCachedData, 2000);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function userChange(f) {
     setSaving(true);
