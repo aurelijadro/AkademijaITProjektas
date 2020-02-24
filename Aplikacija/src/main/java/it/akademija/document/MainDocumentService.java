@@ -1,5 +1,6 @@
 package it.akademija.document;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,9 +29,8 @@ public class MainDocumentService {
 	public List<MainDocument> getMainDocuments(Long userId) {
 		User user = userRepo.findUserById(userId);
 
-		return user.getDocuments().stream()
-				.map((document) -> new MainDocument(document.getId(), document.getTitle(), document.getSummary()))
-				.collect(Collectors.toList());
+		return user.getDocuments().stream().map((document) -> new MainDocument(document.getId(), document.getTitle(),
+				document.getSummary(), document.getDocumentStatus())).collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -80,4 +80,29 @@ public class MainDocumentService {
 		mainDocRepository.save(document);
 	}
 
+	@Transactional
+	public List<MainDocument> createdDocumentsList(Long id) {
+		User user = userRepo.findUserById(id);
+		List<MainDocument> createdDocuments = new ArrayList<MainDocument>();
+		List<MainDocument> usersDocuments = user.getDocuments();
+		for (MainDocument mainDocument : usersDocuments) {
+			if (mainDocument.getDocumentStatus().contains("Sukurtas")) {
+				createdDocuments.add(mainDocument);
+			}
+		}
+		return createdDocuments;
+	}
+
+	@Transactional
+	public List<MainDocument> submittedDocumentsList(long id) {
+		User user = userRepo.findUserById(id);
+		List<MainDocument> submittedDocuments = new ArrayList<MainDocument>();
+		List<MainDocument> usersDocuments = user.getDocuments();
+		for (MainDocument mainDocument : usersDocuments) {
+			if (mainDocument.getDocumentStatus().contains("Pateiktas")) {
+				submittedDocuments.add(mainDocument);
+			}
+		}
+		return submittedDocuments;
+	}
 }
