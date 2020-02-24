@@ -13,7 +13,7 @@ import EditDoctypeFormContainer from "./components/Doctype/EditDoctypeFormContai
 import AddDoctypeFormContainer from "./components/Doctype/AddDoctypeFormContainer";
 
 import AddGroupFormContainer from "./components/Group/AddGroupFormContainer";
-import EditGroupFormContainer from "./components/Group/EditGroupFormContainer"
+import EditGroupFormContainer from "./components/Group/EditGroupFormContainer";
 
 import UserDashboard from "./components/UserDashboard";
 import MainDocumentList from "./components/Document/MainDocumentList";
@@ -78,10 +78,9 @@ function App() {
               component={AddGroupFormContainer}
             />
 
-
             <Route
               exact
-              path="/Gentoo/admin/groups/edit/:title"
+              path="/Gentoo/admin/groups/edit/:id"
               component={EditGroupFormContainer}
             />
             <Route

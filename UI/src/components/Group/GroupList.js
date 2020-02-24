@@ -71,7 +71,9 @@ class GroupList extends Component {
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Grupės pavadinimas</th>
-                <th scope="col"></th>
+                <th scope="col" colSpan="2">
+                  Grupės administravimo veiksmai
+                </th>
               </tr>
             </thead>
             <tbody>{group}</tbody>

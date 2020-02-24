@@ -14,7 +14,7 @@ code {
 }
 
 a {
-  color: white;
+  color: black;
 }
 
 .blue {
@@ -28,4 +28,3 @@ nav li a {
 .container-fluid {
   padding: 0;
 }
-

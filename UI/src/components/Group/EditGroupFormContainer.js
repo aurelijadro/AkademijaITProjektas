@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import NavigationForAdmin from "../NavigationForAdmin";
+import ApiUrl from "../../APIURL";
 
 class EditGroupFormContainer extends Component {
   constructor() {
@@ -8,23 +9,22 @@ class EditGroupFormContainer extends Component {
     this.state = {
       title: "",
       titleError: ""
-      };
+    };
   }
 
   componentDidMount() {
     this.getGroup();
-      }
-
+  }
 
   getGroup = () => {
     axios
       .get(
-        "http://localhost:8081/Gentoo/api/groups/" +
-          this.props.match.params.title
+        `${ApiUrl}groups/+
+          ${this.props.match.params.id}`
       )
       .then(response => {
         this.setState(response.data);
-         })
+      })
       .catch(error => {
         alert("Nėra galimybės pateikti duomenų apie grupę.");
       });
@@ -41,8 +41,6 @@ class EditGroupFormContainer extends Component {
     });
   };
 
-
-
   validateTitle = () => {
     const { title } = this.state;
     this.setState({
@@ -56,13 +54,9 @@ class EditGroupFormContainer extends Component {
   onSubmit = event => {
     event.preventDefault();
     axios
-      .put(
-        "http://localhost:8081/Gentoo/api/groups/" +
-          this.props.match.params.title,
-        {
-          title: this.state.title
-        }
-      )
+      .put(`${ApiUrl}groups/${this.props.match.params.title}`, {
+        title: this.state.title
+      })
       .then(() => {
         alert("Jūs sėkmingai pakeitėte grupės duomenis.");
         this.props.history.push("/Gentoo/admin/groups");
@@ -74,9 +68,8 @@ class EditGroupFormContainer extends Component {
 
   render() {
     const { title } = this.state;
-    const isEnabled =
-            title.length >= 2;
-      
+    const isEnabled = title.length >= 2;
+
     return (
       <div>
         <NavigationForAdmin></NavigationForAdmin>
@@ -101,28 +94,10 @@ class EditGroupFormContainer extends Component {
                     placeholder="Pavadinimas"
                     required
                   />
-                  <div className="invalid-feedback">{this.state.titleError}</div>
-                </div>
-                {/* <div className="form-group">
-                  <label>Pavardė:</label>
-                  <input
-                    type="text"
-                    className={`form-control ${
-                      this.state.surnameError ? "is-invalid" : ""
-                    }`}
-                    name="surname"
-                    value={surname}
-                    onChange={this.handleSurnameChange}
-                    onBlur={this.validateSurname}
-                    placeholder="Pavardė"
-                    required
-                  />
                   <div className="invalid-feedback">
-                    {this.state.surnameError}
+                    {this.state.titleError}
                   </div>
-                </div> */}
-         
-               
+                </div>
                 <button
                   className="btn btn-dark"
                   type="submit"
@@ -132,7 +107,9 @@ class EditGroupFormContainer extends Component {
                 </button>
                 <button
                   className="btn mx-3 btn-dark"
-                  onClick={() => this.props.history.push("/Gentoo/admin/groups")}
+                  onClick={() =>
+                    this.props.history.push("/Gentoo/admin/groups")
+                  }
                 >
                   Atšaukti
                 </button>
@@ -146,43 +123,3 @@ class EditGroupFormContainer extends Component {
 }
 
 export default EditGroupFormContainer;
-
-
-
-//   // onChange = event => {
-//   //   event.preventDefault();
-//     // const { name, value } = event.target;
-//     // let errors = this.state.errors;
-
-
-
-//     // this.setState({ errors, [name]: value }, () => {
-//     //   console.log(errors);
-//     // });
-
-
-//   onChange = e => {
-//     const state = this.state;
-//     state[e.target.name] = e.target.value;
-//     this.setState(state);
-//   };
-
-
-
-
-
-//   render() {
-//     return (
-//       <div>
-//         <EditGroupFormComponent
-//           title={this.state.title}
-//           onBack={this.onBack}
-//           onSubmit={this.onSubmit}
-//           onChange={this.onChange}
-//         />
-//       </div>
-//     );
-//   }
-// }
-
-// export default EditGroupFormContainer;
