@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +48,23 @@ public class FileService {
 			}
 		}
 		return results;
+	}
+
+	@Transactional
+	public List<String> getUploadedFilesPaths(Long userId, Long documentId) {
+		List<String> results = new ArrayList<String>();
+		try (Stream<Path> walk = Files.walk(Paths.get("/tmp/Uploads/" + userId + "/" + documentId))) {
+			List<String> result = walk.filter(Files::isRegularFile).map(x -> x.toString()).collect(Collectors.toList());
+
+			results = result;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
+
+	public void deleteFileFromFolder(Long userId, Long documentId, File fileName) {
+
 	}
 
 }

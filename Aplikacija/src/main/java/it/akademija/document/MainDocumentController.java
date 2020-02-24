@@ -107,4 +107,14 @@ public class MainDocumentController {
 		}
 	}
 
+	@RequestMapping(path = "/{id}/statusUpdate", method = RequestMethod.POST)
+	@ApiOperation(value = "Changes document status", notes = "Changes status from created to submitted")
+	public void updateDocumentStatusToSubmitted(@PathVariable Long id, HttpServletResponse response) {
+		MainDocument document = mainDocService.findDocumentById(id);
+		if (document == null) {
+			response.setStatus(404);
+			return;
+		}
+		mainDocService.changeDocumentToSubmitted(document);
+	}
 }

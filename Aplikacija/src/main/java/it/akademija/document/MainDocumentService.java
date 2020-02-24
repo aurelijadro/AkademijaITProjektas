@@ -42,6 +42,7 @@ public class MainDocumentService {
 	public MainDocument addDocument(NewMainDocument newMainDocument, Long userId) {
 		User user = userRepo.findUserById(userId);
 		MainDocument document = new MainDocument(newMainDocument.getTitle(), newMainDocument.getSummary());
+		document.getDocumentStatus();
 		logger.debug("New document (ID{}) was added.", document.getId());
 		user.addDocument(document);
 		document.setUser(user);
@@ -51,6 +52,7 @@ public class MainDocumentService {
 	@Transactional
 	public MainDocument updateDocument(Long documentId, NewMainDocument newDocument) {
 		MainDocument existingDocument = findDocumentById(documentId);
+		existingDocument.getDocumentStatus();
 		existingDocument.setTitle(newDocument.getTitle());
 		existingDocument.setSummary(newDocument.getSummary());
 		logger.debug("Document (ID{}) was updated.", existingDocument.getId());
@@ -69,6 +71,12 @@ public class MainDocumentService {
 	@Transactional
 	public void addDoctypeToDocument(MainDocument document, DoctypeEntity doctype) {
 		document.setDoctypes(doctype);
+		mainDocRepository.save(document);
+	}
+
+	@Transactional
+	public void changeDocumentToSubmitted(MainDocument document) {
+		document.updateDocumentStatusToSubmitted();
 		mainDocRepository.save(document);
 	}
 
