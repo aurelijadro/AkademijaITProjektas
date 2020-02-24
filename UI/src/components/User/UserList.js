@@ -56,15 +56,6 @@ class UserList extends Component {
               Pridėti naują vartotoją
             </button>
           </Link>
-          <Link to="/Gentoo/admin">
-            <button
-              type="button"
-              className="btn mx-2 btn-dark"
-              onClick={this.props.onBack}
-            >
-              Grįžti į pradinį langą
-            </button>
-          </Link>
           <table className=" text-center table table-striped">
             <thead>
               <tr>

@@ -57,15 +57,6 @@ class GroupList extends Component {
               Pridėti naują grupę
             </button>
           </Link>
-          <Link to="/Gentoo/admin">
-            <button
-              type="button"
-              className="btn mx-2 btn-dark"
-              onClick={this.props.onBack}
-            >
-              Grįžti į pradinį langą
-            </button>
-          </Link>
           <table className=" text-center table table-striped">
             <thead>
               <tr>

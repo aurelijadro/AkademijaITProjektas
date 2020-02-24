@@ -50,19 +50,10 @@ class DocTypeList extends Component {
           <Link to="/Gentoo/admin/doctypes/add">
             <button
               type="button"
-              className="btn btn-light"
+              className="btn btn-dark my-4"
               onClick={this.props.onAddNew}
             >
               Pridėti naują dokumentų tipą
-            </button>
-          </Link>
-          <Link to="/Gentoo/admin">
-            <button
-              type="button"
-              className="btn btn-light"
-              onClick={this.props.onBack}
-            >
-              Grįžti į pradinį langą
             </button>
           </Link>
           <table className=" text-center table table-striped">
