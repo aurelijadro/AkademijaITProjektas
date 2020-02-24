@@ -2,72 +2,63 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
+import ApiUrl from "../../APIURL";
 
 const GroupDocsManager = props => {
-  const { currentUsername, apiUrl } = useMyData();
-  const [groupDoctypes, setGroupDoctypes] = useState([]);
-  const [nonGroupDoctypes, setNonGroupDoctypes] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState("Loading");
+  const { currentUsername } = useMyData();
+  const [groupDoctypes, setGroupDoctypes] = useState("loading");
+  const [nonGroupDoctypes, setNonGroupDoctypes] = useState("loading");
+  const [selectedGroup, setSelectedGroup] = useState("loading");
+  const [saving, setSaving] = useState(false);
 
   const groupId = props.match.params.groupid;
-  console.log("group id: ", groupId);
 
-  const updateGroupDoctypes = () => {
-    axios
-      .get(`${apiUrl}groups/${groupId}/doctypes`)
-      .then(resp => setGroupDoctypes(resp.data))
-      .catch(e => console.log(e));
+  function fetchFromServer(path) {
+    return axios.get(ApiUrl + path).then(resp => resp.data);
+  }
+
+  const updateCachedData = () => {
+    fetchFromServer(`groups/${groupId}/doctypes`).then(setGroupDoctypes);
+    fetchFromServer(`groups/${groupId}/notdoctypes`).then(setNonGroupDoctypes);
   };
 
-  const updateNonGroupDoctypes = () => {
-    axios
-      .get(`${apiUrl}groups/${groupId}/notdoctypes`)
-      .then(resp => setNonGroupDoctypes(resp.data))
-      .catch(e => console.log(e));
-  };
+  useEffect(function() {
+    updateCachedData();
+    const timer = setInterval(updateCachedData, 2000);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(
-    function() {
-      function getGroupInfo() {
-        axios
-          .get(`${apiUrl}groups/${groupId}`)
-          .then(resp => setSelectedGroup(resp.data))
-          .catch(e => console.log(e));
-      }
-      getGroupInfo();
-      function getGroupDoctypes() {
-        axios
-          .get(`${apiUrl}groups/${groupId}/doctypes`)
-          .then(resp => setGroupDoctypes(resp.data))
-          .catch(e => console.log(e));
-      }
-      getGroupDoctypes();
+    function getGroupInfo() {
+      axios
+        .get(`${ApiUrl}groups/${groupId}`)
+        .then(resp => setSelectedGroup(resp.data))
+        .catch(e => console.log(e));
     },
-    [groupId, apiUrl]
+    [groupId]
   );
 
-  useEffect(
-    function() {
-      function getNonGroupDoctypes() {
-        axios
-          .get(`${apiUrl}groups/${groupId}/notdoctypes`)
-          .then(resp => setNonGroupDoctypes(resp.data))
-          .catch(e => console.log(e));
-      }
-      getNonGroupDoctypes();
-    },
-    [groupId, apiUrl]
-  );
+  function doctypeChange(f) {
+    setSaving(true);
+    f()
+      .then(updateCachedData)
+      .then(() => setSaving(false));
+  }
 
-  if (currentUsername === "loading" || setSelectedGroup === "Loading")
+  if (
+    currentUsername === "loading" ||
+    selectedGroup === "loading" ||
+    groupDoctypes === "loading" ||
+    nonGroupDoctypes === "loading"
+  )
     return <div>Loading...</div>;
 
   const groupDoctypesList = groupDoctypes.map((doctype, index) => {
     function removeGroupDoctype() {
-      axios
-        .delete(`${apiUrl}groups/${groupId}/doctypes/${doctype.id}`)
-        .then(updateGroupDoctypes)
-        .then(updateNonGroupDoctypes);
+      doctypeChange(() =>
+        axios.delete(`${ApiUrl}groups/${groupId}/doctypes/${doctype.id}`)
+      );
     }
     return (
       <div className="row my-1" key={doctype.id}>
@@ -82,11 +73,9 @@ const GroupDocsManager = props => {
 
   const nonGroupDoctypesList = nonGroupDoctypes.map((doctype, index) => {
     function addGroupDoctype() {
-      axios
-        .post(`${apiUrl}groups/${groupId}/doctypes/${doctype.id}`)
-
-        .then(updateGroupDoctypes)
-        .then(updateNonGroupDoctypes);
+      doctypeChange(() =>
+        axios.post(`${ApiUrl}groups/${groupId}/doctypes/${doctype.id}`)
+      );
     }
     return (
       <div className="row my-1" key={doctype.id}>
@@ -101,6 +90,11 @@ const GroupDocsManager = props => {
 
   return (
     <div>
+      {saving ? (
+        <span style={{ color: "white", position: "absolute", zIndex: 999 }}>
+          Saving changes...
+        </span>
+      ) : null}
       <NavigationForAdmin />
       <div className="container">
         <h4>Grupė {selectedGroup.title} valdo šiuos dokumentų tipus:</h4>
