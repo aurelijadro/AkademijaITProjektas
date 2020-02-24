@@ -4,8 +4,8 @@ import NavigationForAdmin from "../NavigationForAdmin";
 import ApiUrl from "../../APIURL";
 
 class EditGroupFormContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       title: "",
       titleError: ""
@@ -54,7 +54,7 @@ class EditGroupFormContainer extends Component {
   onSubmit = event => {
     event.preventDefault();
     axios
-      .put(`${ApiUrl}groups/${this.props.match.params.title}`, {
+      .put(`${ApiUrl}groups/${this.props.match.params.id}`, {
         title: this.state.title
       })
       .then(() => {
