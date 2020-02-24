@@ -30,6 +30,8 @@ public class MainDocument {
 
 	private String summary;
 
+	private String documentStatus = "Sukurtas";
+
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.DETACH })
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
@@ -98,6 +100,18 @@ public class MainDocument {
 
 	public void removeUser(User user) {
 		user.removeDocument(this);
+	}
+
+	public String getDocumentStatus() {
+		return documentStatus;
+	}
+
+	public void setDocumentStatus(String documentStatus) {
+		this.documentStatus = documentStatus;
+	}
+
+	public void updateDocumentStatusToSubmitted() {
+		this.documentStatus = "Pateiktas";
 	}
 
 }

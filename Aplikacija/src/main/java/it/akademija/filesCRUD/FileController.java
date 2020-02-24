@@ -1,9 +1,11 @@
 package it.akademija.filesCRUD;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +41,11 @@ public class FileController {
 	@GetMapping("{userId}/{documentId}/uploadedFilesNames")
 	public List<String> getListOfFiles(@PathVariable Long userId, @PathVariable Long documentId) throws IOException {
 		return fileService.getUploadedFilesNames(userId, documentId);
+	}
+
+	@DeleteMapping("{userId}/{documentId}/{fileName}")
+	public void deleteFile(@PathVariable Long userId, @PathVariable Long documentId, @PathVariable File fileName) {
+		fileService.deleteFileFromFolder(userId, documentId, fileName);
 	}
 
 }
