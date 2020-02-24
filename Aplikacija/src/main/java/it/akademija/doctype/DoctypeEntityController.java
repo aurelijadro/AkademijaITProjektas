@@ -26,7 +26,7 @@ import it.akademija.group.GroupEntity;
 @RestController
 @RequestMapping("api/doctypes")
 public class DoctypeEntityController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(DoctypeEntityController.class);
 
 	@Autowired
@@ -53,7 +53,7 @@ public class DoctypeEntityController {
 	}
 
 	@GetMapping("/{id}")
-	public DoctypeEntity getDoctypeByTitle(@PathVariable Long id, HttpServletResponse response) {
+	public DoctypeEntity getDoctypeById(@PathVariable Long id, HttpServletResponse response) {
 		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
 		if (doctype == null) {
 			response.setStatus(404);
@@ -102,7 +102,8 @@ public class DoctypeEntityController {
 	}
 
 	@PostMapping("/{doctypeId}/documents/{documentId}")
-	public void addDocumentByIdToDoctype(@PathVariable Long doctypeId, Long documentId, HttpServletResponse response) {
+	public void addDocumentByIdToDoctype(@PathVariable Long doctypeId, @PathVariable Long documentId,
+			HttpServletResponse response) {
 		DoctypeEntity doctype = doctypeService.findDoctypeById(doctypeId);
 		if (doctype == null) {
 			response.setStatus(404);

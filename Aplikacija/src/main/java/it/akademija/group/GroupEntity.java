@@ -87,6 +87,13 @@ public class GroupEntity {
 		}
 	}
 
+	public void removeDoctype(DoctypeEntity doctype) {
+		if (doctypes.contains(doctype)) {
+			this.doctypes.remove(doctype);
+			doctype.removeGroup(this);
+		}
+	}
+
 	public Set<User> getUsers() {
 		return users;
 	}

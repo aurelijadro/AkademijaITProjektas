@@ -87,12 +87,16 @@ public class DoctypeEntity {
 		this.groups.add(group);
 	}
 
+	public void removeGroup(GroupEntity group) {
+		this.groups.remove(group);
+	}
+
 	public void addDocument(MainDocument document) {
 		if (mainDocuments.contains(document)) {
 			return;
 		} else {
 			this.mainDocuments.add(document);
-			document.addDoctype(this);
+			document.setDoctypes(this);
 		}
 	}
 

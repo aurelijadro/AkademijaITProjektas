@@ -22,12 +22,14 @@ import UserGroupsManager from "./components/User/UserGroupsManager";
 import { AppDataContext } from "./context";
 import Axios from "axios";
 import GroupUsersManager from "./components/Group/GroupUsersManager";
+import GroupDocsManager from "./components/Group/GroupDocsManager";
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
+  const apiUrl = "http://localhost:8081/Gentoo/api/";
 
   function updateUserInformation() {
-    Axios.get("http://localhost:8081/Gentoo/api/loggedUsername").then(resp => {
+    Axios.get(`${apiUrl}loggedUsername`).then(resp => {
       setCurrentUsername(resp.data);
     });
   }
@@ -40,7 +42,8 @@ function App() {
 
   const appData = {
     currentUsername: currentUsername,
-    updateUserInformation: updateUserInformation
+    updateUserInformation: updateUserInformation,
+    apiUrl: apiUrl
   };
 
   return (
@@ -60,7 +63,7 @@ function App() {
             />
             <Route
               exact
-              path="/Gentoo/admin/users/edit/:username"
+              path="/Gentoo/admin/users/edit/:userid"
               component={EditFormContainer}
             />
             <Route exact path="/Gentoo/admin/groups" component={GroupList} />
@@ -88,7 +91,7 @@ function App() {
             />
             <Route
               exact
-              path="/Gentoo/admin/doctypes/edit/:title"
+              path="/Gentoo/admin/doctypes/edit/:doctypeid"
               component={EditDoctypeFormContainer}
             />
             <Route exact path="/Gentoo/user" component={UserDashboard} />
@@ -99,13 +102,18 @@ function App() {
             />
             <Route
               exact
-              path="/Gentoo/admin/users/manageusergroups/:username"
+              path="/Gentoo/admin/users/manageusergroups/:userid"
               component={UserGroupsManager}
             />
             <Route
               exact
-              path="/Gentoo/admin/users/managegroupusers/:grouptitle"
+              path="/Gentoo/admin/managegroupusers/:groupid"
               component={GroupUsersManager}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/managegroupdocs/:groupid"
+              component={GroupDocsManager}
             />
           </Switch>
         </div>

@@ -1,12 +1,5 @@
 package it.akademija.document;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,23 +7,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import it.akademija.doctype.DoctypeEntity;
-import it.akademija.doctype.DoctypeService;
+import it.akademija.doctype.DoctypeEntityRepo;
 
 @RestController
 @Api(value = "document")
@@ -43,12 +30,12 @@ public class MainDocumentController {
 	private MainDocumentService mainDocService;
 
 	@Autowired
-	private DoctypeService doctypeService;
+	private DoctypeEntityRepo doctypeRepo;
 
-	@RequestMapping(path = "/{username}/documents", method = RequestMethod.GET)
+	@RequestMapping(path = "/{id}/documents", method = RequestMethod.GET)
 	@ApiOperation(value = "Get documents", notes = "Returns all documents")
-	public List<MainDocument> getDocuments(@PathVariable String username) {
-		return mainDocService.getMainDocuments(username);
+	public List<MainDocument> getDocuments(@PathVariable Long id) {
+		return mainDocService.getMainDocuments(id);
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -65,11 +52,11 @@ public class MainDocumentController {
 		return document;
 	}
 
-	@RequestMapping(path = "/{username}", method = RequestMethod.POST)
+	@RequestMapping(path = "/{id}", method = RequestMethod.POST)
 	@ApiOperation(value = "Add new document", notes = "Returns new document")
-	public MainDocument createDocument(@PathVariable String username, @RequestBody final NewMainDocument newDocument,
+	public MainDocument createDocument(@PathVariable Long id, @RequestBody final NewMainDocument newDocument,
 			HttpServletResponse response) {
-		return mainDocService.addDocument(newDocument, username);
+		return mainDocService.addDocument(newDocument, id);
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
@@ -87,29 +74,29 @@ public class MainDocumentController {
 		return mainDocService.updateDocument(id, newDocument);
 	}
 
-	@RequestMapping(path = "{username}/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(path = "{userId}/{documentId}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "Delete document", notes = "Deletes document by id")
-	public void deleteDocument(@PathVariable Long id, String username, HttpServletResponse response) {
-		MainDocument document = mainDocService.findDocumentById(id);
+	public void deleteDocument(@PathVariable Long documentId, @PathVariable Long userId, HttpServletResponse response) {
+		MainDocument document = mainDocService.findDocumentById(documentId);
 		if (document == null) {
 			response.setStatus(404);
 			return;
 		}
 		logger.debug("Document was deleted.");
 		response.setStatus(200);
-		mainDocService.deleteDocument(id, username);
+		mainDocService.deleteDocument(documentId, userId);
 	}
 
-	@RequestMapping(path = "/{id}/doctypes/{existingDoctypeId}", method = RequestMethod.POST)
+	@RequestMapping(path = "/{documentId}/doctypes/{doctypeId}", method = RequestMethod.POST)
 	@ApiOperation(value = "Adds doctype to document", notes = "Adds doctype by id to document by its id")
-	public void addDoctypeByTitleToDocument(@PathVariable Long id, Long existingDoctypeId,
+	public void addDoctypeByIdToDocument(@PathVariable Long documentId, @PathVariable Long doctypeId,
 			HttpServletResponse response) {
-		MainDocument document = mainDocService.findDocumentById(id);
+		MainDocument document = mainDocService.findDocumentById(documentId);
 		if (document == null) {
 			response.setStatus(404);
 			return;
 		} else {
-			DoctypeEntity doctype = doctypeService.findDoctypeById(existingDoctypeId);
+			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
 			if (doctype == null) {
 				response.setStatus(404);
 				return;
@@ -118,49 +105,6 @@ public class MainDocumentController {
 				mainDocService.addDoctypeToDocument(document, doctype);
 			}
 		}
-	}
-
-	@RequestMapping(path = "/{id}/doctypes/{newDoctypeId}", method = RequestMethod.PUT)
-	@ApiOperation(value = "Update doctype for document", notes = "Updates doctype by id for document")
-	public void updateDoctypeTitleInDocument(@PathVariable Long id, Long newDoctypeId, HttpServletResponse response) {
-		MainDocument document = mainDocService.findDocumentById(id);
-		if (document == null) {
-			response.setStatus(404);
-			return;
-		} else {
-			DoctypeEntity newDoctype = doctypeService.findDoctypeById(newDoctypeId);
-			if (newDoctype == null) {
-				response.setStatus(404);
-				return;
-			} else {
-				response.setStatus(200);
-				mainDocService.updateDoctypeInDocument(document, newDoctype);
-			}
-		}
-	}
-
-	@PostMapping(value = "/upload")
-	public ResponseEntity uploadToLocalFileSystem(@RequestParam("file") MultipartFile file) {
-		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-		String fileBasePath = Paths.get(".").toAbsolutePath().toString();
-		Path path = Paths.get(fileBasePath + fileName);
-		try {
-			Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/files/download/")
-				.path(fileName).toUriString();
-		logger.debug("File ({}) was downloaded.", fileName);
-		return ResponseEntity.ok(fileDownloadUri);
-	}
-
-	@PostMapping(value = "/multi-upload")
-	public ResponseEntity multiUpload(@RequestParam("files") MultipartFile[] files) {
-		List<Object> fileDownloadUrls = new ArrayList<>();
-		Arrays.asList(files).stream().forEach(file -> fileDownloadUrls.add(uploadToLocalFileSystem(file).getBody()));
-		logger.debug("File ({}) was downloaded.", files);
-		return ResponseEntity.ok(fileDownloadUrls);
 	}
 
 }

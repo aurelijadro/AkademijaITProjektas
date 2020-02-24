@@ -1,6 +1,5 @@
 package it.akademija.document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,6 +15,7 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import it.akademija.doctype.DoctypeEntity;
+import it.akademija.filesCRUD.FileEntity;
 import it.akademija.user.User;
 
 @Entity
@@ -40,7 +40,7 @@ public class MainDocument {
 	private DoctypeEntity doctypes;
 
 	@OneToMany(mappedBy = "mainDocument", cascade = CascadeType.ALL)
-	private List<FileForDocument> files = new ArrayList<>();
+	private List<FileEntity> filesForDocuments;
 
 	public MainDocument() {
 	}
@@ -54,11 +54,6 @@ public class MainDocument {
 		this.id = id;
 		this.title = title;
 		this.summary = summary;
-	}
-
-	public void addFile(FileForDocument file) {
-		this.files.add(file);
-		file.setDocument(this);
 	}
 
 	public Long getId() {
@@ -91,10 +86,6 @@ public class MainDocument {
 
 	public void setDoctypes(DoctypeEntity doctypes) {
 		this.doctypes = doctypes;
-	}
-
-	public void addDoctype(DoctypeEntity doctype) {
-		this.doctypes = doctype;
 	}
 
 	public User getUser() {

@@ -47,8 +47,8 @@ public class GroupService {
 	}
 
 	@Transactional
-	public GroupEntity updateGroupInfo(String title, NewGroup newGroup) {
-		GroupEntity existingGroup = findGroupByTitle(title);
+	public GroupEntity updateGroupInfo(Long id, NewGroup newGroup) {
+		GroupEntity existingGroup = findGroupById(id);
 		existingGroup.setTitle(newGroup.getTitle());
 
 		return existingGroup;
@@ -61,8 +61,9 @@ public class GroupService {
 	}
 
 	@Transactional
-	public void deleteDoctypeFromGroup(DoctypeEntity doctype) {
-		doctypeRepo.delete(doctype);
+	public void removeDoctypeFromGroup(DoctypeEntity doctype, GroupEntity group) {
+		group.removeDoctype(doctype);
+		groupRepo.save(group);
 	}
 
 	@Transactional
@@ -101,6 +102,15 @@ public class GroupService {
 		allUsers.addAll(userRepo.findAll());
 		allUsers.removeAll(GroupUsers);
 		return allUsers;
+	}
+
+	@Transactional
+	public Set<DoctypeEntity> getDoctypesGroupDoesntManage(GroupEntity group) {
+		Set<DoctypeEntity> GroupDoctypes = group.getDoctypes();
+		Set<DoctypeEntity> allDoctypes = new HashSet<DoctypeEntity>();
+		allDoctypes.addAll(doctypeRepo.findAll());
+		allDoctypes.removeAll(GroupDoctypes);
+		return allDoctypes;
 	}
 
 }

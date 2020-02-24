@@ -25,8 +25,8 @@ public class MainDocumentService {
 	UserRepository userRepo;
 
 	@Transactional
-	public List<MainDocument> getMainDocuments(String username) {
-		User user = userRepo.findByUsername(username);
+	public List<MainDocument> getMainDocuments(Long userId) {
+		User user = userRepo.findUserById(userId);
 
 		return user.getDocuments().stream()
 				.map((document) -> new MainDocument(document.getId(), document.getTitle(), document.getSummary()))
@@ -39,8 +39,8 @@ public class MainDocumentService {
 	}
 
 	@Transactional
-	public MainDocument addDocument(NewMainDocument newMainDocument, String username) {
-		User user = userRepo.findByUsername(username);
+	public MainDocument addDocument(NewMainDocument newMainDocument, Long userId) {
+		User user = userRepo.findUserById(userId);
 		MainDocument document = new MainDocument(newMainDocument.getTitle(), newMainDocument.getSummary());
 		logger.debug("New document (ID{}) was added.", document.getId());
 		user.addDocument(document);
@@ -49,8 +49,8 @@ public class MainDocumentService {
 	}
 
 	@Transactional
-	public MainDocument updateDocument(Long id, NewMainDocument newDocument) {
-		MainDocument existingDocument = findDocumentById(id);
+	public MainDocument updateDocument(Long documentId, NewMainDocument newDocument) {
+		MainDocument existingDocument = findDocumentById(documentId);
 		existingDocument.setTitle(newDocument.getTitle());
 		existingDocument.setSummary(newDocument.getSummary());
 		logger.debug("Document (ID{}) was updated.", existingDocument.getId());
@@ -58,9 +58,9 @@ public class MainDocumentService {
 	}
 
 	@Transactional
-	public void deleteDocument(Long id, String username) {
-		User user = userRepo.findByUsername(username);
-		MainDocument document = findDocumentById(id);
+	public void deleteDocument(Long documentId, Long userId) {
+		User user = userRepo.findUserById(userId);
+		MainDocument document = findDocumentById(documentId);
 		mainDocRepository.delete(document);
 		userRepo.save(user);
 		logger.debug("Document (ID{}) was deleted.", document);
@@ -68,12 +68,7 @@ public class MainDocumentService {
 
 	@Transactional
 	public void addDoctypeToDocument(MainDocument document, DoctypeEntity doctype) {
-		document.addDoctype(doctype);
-		mainDocRepository.save(document);
-	}
-
-	public void updateDoctypeInDocument(MainDocument document, DoctypeEntity newDoctype) {
-		document.setDoctypes(newDoctype);
+		document.setDoctypes(doctype);
 		mainDocRepository.save(document);
 	}
 
