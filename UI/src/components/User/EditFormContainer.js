@@ -121,7 +121,7 @@ class EditFormContainer extends Component {
         alert("Jūs sėkmingai pakeitėte vartotojo duomenis.");
         this.props.history.push("/Gentoo/admin/users");
       })
-      .catch(function(error) {
+      .catch(function (error) {
         alert("Toks vartotojo vardas jau egzistuoja.");
       });
   };
@@ -150,7 +150,7 @@ class EditFormContainer extends Component {
                     type="text"
                     className={`form-control ${
                       this.state.nameError ? "is-invalid" : ""
-                    }`}
+                      }`}
                     name="name"
                     value={name}
                     onChange={this.handleNameChange}
@@ -166,7 +166,7 @@ class EditFormContainer extends Component {
                     type="text"
                     className={`form-control ${
                       this.state.surnameError ? "is-invalid" : ""
-                    }`}
+                      }`}
                     name="surname"
                     value={surname}
                     onChange={this.handleSurnameChange}
@@ -184,7 +184,7 @@ class EditFormContainer extends Component {
                     type="text"
                     className={`form-control ${
                       this.state.usernameError ? "is-invalid" : ""
-                    }`}
+                      }`}
                     name="username"
                     value={username}
                     onChange={this.handleUsernameChange}
@@ -202,12 +202,12 @@ class EditFormContainer extends Component {
                     type="password"
                     className={`form-control ${
                       this.state.passwordError ? "is-invalid" : ""
-                    }`}
+                      }`}
                     name="password"
                     value={password}
                     onChange={this.handlePasswordChange}
                     onBlur={this.validatePassword}
-                    placeholder="Slaptažodis"
+                    placeholder="********"
                     required
                   />
                   <div className="invalid-feedback">
@@ -250,12 +250,3 @@ class EditFormContainer extends Component {
 }
 
 export default EditFormContainer;
-
-//   // onChange = event => {
-//   //   event.preventDefault();
-//     // const { name, value } = event.target;
-//     // let errors = this.state.errors;
-
-//     // this.setState({ errors, [name]: value }, () => {
-//     //   console.log(errors);
-//     // });
