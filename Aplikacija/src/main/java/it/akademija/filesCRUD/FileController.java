@@ -1,6 +1,5 @@
 package it.akademija.filesCRUD;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -43,9 +42,9 @@ public class FileController {
 		return fileService.getUploadedFilesNames(userId, documentId);
 	}
 
-	@DeleteMapping("{userId}/{documentId}/{fileName}")
-	public void deleteFile(@PathVariable Long userId, @PathVariable Long documentId, @PathVariable File fileName) {
-		fileService.deleteFileFromFolder(userId, documentId, fileName);
+	@DeleteMapping("{userId}/{documentId}/delete")
+	public void deleteFile(@PathVariable Long userId, @PathVariable Long documentId) throws IOException {
+		fileService.deleteAllFilesFromFolder(userId, documentId);
 	}
 
 }

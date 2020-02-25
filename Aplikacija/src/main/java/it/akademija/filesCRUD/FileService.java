@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -63,8 +64,8 @@ public class FileService {
 		return results;
 	}
 
-	public void deleteFileFromFolder(Long userId, Long documentId, File fileName) {
-
+	public void deleteAllFilesFromFolder(Long userId, Long documentId) throws IOException {
+		FileUtils.cleanDirectory(new File("/tmp/Uploads/" + userId + "/" + documentId));
 	}
 
 }
