@@ -24,7 +24,8 @@ import Axios from "axios";
 import GroupUsersManager from "./components/Group/GroupUsersManager";
 import GroupDoctypeManager from "./components/Group/GroupDoctypeManager";
 import ApiUrl from "./APIURL";
-import DoctypeGroupsManager from "./components/Doctype/DoctypeGroupsManager";
+import DoctypesToCreateGroupsManager from "./components/Doctype/DoctypesToCreateGroupsManager";
+import DoctypesToModerateGroupsManager from "./components/Doctype/DoctypesToModerateGroupsManager";
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
@@ -115,8 +116,13 @@ function App() {
             />{" "}
             <Route
               exact
-              path="/Gentoo/admin/managedoctypegroups/:doctypeid"
-              component={DoctypeGroupsManager}
+              path="/Gentoo/admin/managecreatabledoctypegroups/:doctypeid"
+              component={DoctypesToCreateGroupsManager}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/managemoderatabledoctypegroups/:doctypeid"
+              component={DoctypesToModerateGroupsManager}
             />
           </Switch>
         </div>

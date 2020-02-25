@@ -61,7 +61,9 @@ class DocTypeList extends Component {
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Dokumentų tipo pavadinimas</th>
-                <th scope="col">Administruoti dokumentų tipus</th>
+                <th scope="col" colSpan="2">
+                  Veiksmai su dokumentų tipais
+                </th>
               </tr>
             </thead>
             <tbody>{doctype}</tbody>
