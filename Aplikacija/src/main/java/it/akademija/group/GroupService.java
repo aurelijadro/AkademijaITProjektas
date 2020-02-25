@@ -60,11 +60,11 @@ public class GroupService {
 		groupRepo.save(group);
 	}
 
-	@Transactional
-	public void addDoctypeToModerateToGroup(GroupEntity group, DoctypeEntity doctypeToModerate) {
-		group.addDoctypeToModerate(doctypeToModerate);
-		groupRepo.save(group);
-	}
+//	@Transactional
+//	public void addDoctypeToModerateToGroup(GroupEntity group, DoctypeEntity doctypeToModerate) {
+//		group.addDoctypeToModerate(doctypeToModerate);
+//		groupRepo.save(group);
+//	}
 
 	@Transactional
 	public void removeDoctypeToCreateFromGroup(DoctypeEntity doctypeToCreate, GroupEntity group) {
@@ -72,11 +72,11 @@ public class GroupService {
 		groupRepo.save(group);
 	}
 
-	@Transactional
-	public void removeDoctypeToModerateFromGroup(DoctypeEntity doctypeToModerate, GroupEntity group) {
-		group.removeDoctypeToModerate(doctypeToModerate);
-		groupRepo.save(group);
-	}
+//	@Transactional
+//	public void removeDoctypeToModerateFromGroup(DoctypeEntity doctypeToModerate, GroupEntity group) {
+//		group.removeDoctypeToModerate(doctypeToModerate);
+//		groupRepo.save(group);
+//	}
 
 	@Transactional
 	public void addUserToGroup(GroupEntity group, User user) {

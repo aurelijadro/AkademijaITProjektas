@@ -92,14 +92,14 @@ public class DoctypeEntityController {
 	}
 
 	@GetMapping("/{id}/groups")
-	public Set<GroupEntity> getGroupsByDoctypeId(@PathVariable Long id, HttpServletResponse response) {
+	public Set<GroupEntity> getCreatingGroupsByDoctypeId(@PathVariable Long id, HttpServletResponse response) {
 		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
 		if (doctype == null) {
 			response.setStatus(404);
 			return null;
 		}
 		response.setStatus(200);
-		return doctype.getGroups();
+		return doctype.getCreatingGroups();
 	}
 
 	@GetMapping("/{id}/notDoctypeGroups")
@@ -110,7 +110,7 @@ public class DoctypeEntityController {
 			return null;
 		} else {
 			response.setStatus(200);
-			Set<GroupEntity> notDoctypeGroups = doctypeService.getNonDoctypeGroups(doctype);
+			Set<GroupEntity> notDoctypeGroups = doctypeService.getNonDoctypeCreatingGroups(doctype);
 			return notDoctypeGroups;
 		}
 	}

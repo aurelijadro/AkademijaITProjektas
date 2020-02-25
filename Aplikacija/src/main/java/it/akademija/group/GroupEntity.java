@@ -32,12 +32,14 @@ public class GroupEntity {
 	@Column(nullable = false)
 	private String title;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST }, mappedBy = "groups")
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE,
+			CascadeType.PERSIST }, mappedBy = "creatingGroups")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private Set<DoctypeEntity> doctypesToCreate = new HashSet<>();
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST }, mappedBy = "groups")
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE,
+			CascadeType.PERSIST }, mappedBy = "moderatingGroups")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private Set<DoctypeEntity> doctypesToModerate = new HashSet<>();
@@ -88,14 +90,14 @@ public class GroupEntity {
 			return;
 		} else {
 			this.doctypesToCreate.add(doctype);
-			doctype.addGroup(this);
+			doctype.addCreatingGroup(this);
 		}
 	}
 
 	public void removeDoctypeToCreate(DoctypeEntity doctype) {
 		if (doctypesToCreate.contains(doctype)) {
 			this.doctypesToCreate.remove(doctype);
-			doctype.removeGroup(this);
+			doctype.removeCreatingGroup(this);
 		}
 	}
 
@@ -107,21 +109,21 @@ public class GroupEntity {
 		this.doctypesToModerate = doctypesToModerate;
 	}
 
-	public void addDoctypeToModerate(DoctypeEntity doctype) {
-		if (doctypesToModerate.contains(doctype)) {
-			return;
-		} else {
-			this.doctypesToModerate.add(doctype);
-			doctype.addGroup(this);
-		}
-	}
-
-	public void removeDoctypeToModerate(DoctypeEntity doctype) {
-		if (doctypesToModerate.contains(doctype)) {
-			this.doctypesToModerate.remove(doctype);
-			doctype.removeGroup(this);
-		}
-	}
+//	public void addDoctypeToModerate(DoctypeEntity doctype) {
+//		if (doctypesToModerate.contains(doctype)) {
+//			return;
+//		} else {
+//			this.doctypesToModerate.add(doctype);
+//			doctype.addGroup(this);
+//		}
+//	}
+//
+//	public void removeDoctypeToModerate(DoctypeEntity doctype) {
+//		if (doctypesToModerate.contains(doctype)) {
+//			this.doctypesToModerate.remove(doctype);
+//			doctype.removeGroup(this);
+//		}
+//	}
 
 	public Set<User> getUsers() {
 		return users;

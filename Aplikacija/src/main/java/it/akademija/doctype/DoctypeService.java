@@ -14,6 +14,7 @@ import it.akademija.document.MainDocument;
 import it.akademija.group.GroupEntity;
 import it.akademija.group.GroupEntityRepo;
 import it.akademija.user.User;
+import it.akademija.doctype.NewDoctype;
 
 @Service
 public class DoctypeService {
@@ -70,8 +71,8 @@ public class DoctypeService {
 	}
 
 	@Transactional
-	public Set<GroupEntity> getNonDoctypeGroups(DoctypeEntity doctype) {
-		Set<GroupEntity> doctypeGroups = doctype.getGroups();
+	public Set<GroupEntity> getNonDoctypeCreatingGroups(DoctypeEntity doctype) {
+		Set<GroupEntity> doctypeGroups = doctype.getCreatingGroups();
 
 		Set<GroupEntity> allGroups = new HashSet<GroupEntity>();
 		allGroups.addAll(groupRepo.findAll());

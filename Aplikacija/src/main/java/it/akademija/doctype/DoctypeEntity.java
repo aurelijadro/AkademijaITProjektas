@@ -38,11 +38,18 @@ public class DoctypeEntity {
 	private String title;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	@JoinTable(name = "doctype_groups", joinColumns = { @JoinColumn(name = "doctype_id") }, inverseJoinColumns = {
+	@JoinTable(name = "creatinggroups", joinColumns = { @JoinColumn(name = "doctype_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "group_id") })
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
-	private Set<GroupEntity> groups = new HashSet<>();
+	private Set<GroupEntity> creatingGroups = new HashSet<>();
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@JoinTable(name = "moderatinggroups", joinColumns = { @JoinColumn(name = "doctype_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "group_id") })
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private Set<GroupEntity> moderatingGroups = new HashSet<>();
 
 	@OneToMany(mappedBy = "doctypes")
 	private List<MainDocument> mainDocuments = new ArrayList<>();
@@ -75,20 +82,20 @@ public class DoctypeEntity {
 		this.title = title;
 	}
 
-	public Set<GroupEntity> getGroups() {
-		return groups;
+	public Set<GroupEntity> getCreatingGroups() {
+		return creatingGroups;
 	}
 
-	public void setGroups(Set<GroupEntity> groups) {
-		this.groups = groups;
+	public void setCreatingGroups(Set<GroupEntity> groups) {
+		this.creatingGroups = groups;
 	}
 
-	public void addGroup(GroupEntity group) {
-		this.groups.add(group);
+	public void addCreatingGroup(GroupEntity group) {
+		this.creatingGroups.add(group);
 	}
 
-	public void removeGroup(GroupEntity group) {
-		this.groups.remove(group);
+	public void removeCreatingGroup(GroupEntity group) {
+		this.creatingGroups.remove(group);
 	}
 
 	public void addDocument(MainDocument document) {
