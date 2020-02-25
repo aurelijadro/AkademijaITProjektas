@@ -27,17 +27,23 @@ public class MainDocument {
 	@Column(unique = true)
 	private Long id;
 
+	private Long creatorId;
+
 	private String title;
 
 	private String summary;
 
 	private String documentStatus = "Sukurtas";
 
+	private String afterSubmissionStatus;
+
 	private LocalDate submissionDate = null;
 
 	private LocalDate approvalDate = null;
 
 	private LocalDate rejectionDate = null;
+
+	private Long approverId;
 
 	private String rejectionReason;
 
@@ -128,16 +134,24 @@ public class MainDocument {
 		this.documentStatus = documentStatus;
 	}
 
+	public String getAfterSubmissionStatus() {
+		return afterSubmissionStatus;
+	}
+
+	public void setAfterSubmissionStatus(String afterSubmissionStatus) {
+		this.afterSubmissionStatus = afterSubmissionStatus;
+	}
+
 	public String updateDocumentStatusToSubmitted() {
 		return this.documentStatus = "Pateiktas";
 	}
 
 	public String updateDocumentStatusToApproved() {
-		return this.documentStatus = "Patvirtintas";
+		return this.afterSubmissionStatus = "Patvirtintas";
 	}
 
 	public String updateDocumentStatusToDenied() {
-		return this.documentStatus = "Atmestas";
+		return this.afterSubmissionStatus = "Atmestas";
 	}
 
 	public LocalDate getSubmissionDate() {
@@ -170,6 +184,22 @@ public class MainDocument {
 
 	public void setRejectionReason(String rejectionReason) {
 		this.rejectionReason = rejectionReason;
+	}
+
+	public Long getCreatorId() {
+		return creatorId;
+	}
+
+	public void setCreatorId(Long creatorId) {
+		this.creatorId = creatorId;
+	}
+
+	public Long getApproverId() {
+		return approverId;
+	}
+
+	public void setApproverId(Long approverId) {
+		this.approverId = approverId;
 	}
 
 }

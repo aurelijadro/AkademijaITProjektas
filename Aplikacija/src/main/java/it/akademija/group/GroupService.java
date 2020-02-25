@@ -55,14 +55,26 @@ public class GroupService {
 	}
 
 	@Transactional
-	public void addDoctypeToGroup(GroupEntity group, DoctypeEntity doctype) {
-		group.addDoctype(doctype);
+	public void addDoctypeToCreateToGroup(GroupEntity group, DoctypeEntity doctypeToCreate) {
+		group.addDoctypeToCreate(doctypeToCreate);
 		groupRepo.save(group);
 	}
 
 	@Transactional
-	public void removeDoctypeFromGroup(DoctypeEntity doctype, GroupEntity group) {
-		group.removeDoctype(doctype);
+	public void addDoctypeToModerateToGroup(GroupEntity group, DoctypeEntity doctypeToModerate) {
+		group.addDoctypeToModerate(doctypeToModerate);
+		groupRepo.save(group);
+	}
+
+	@Transactional
+	public void removeDoctypeToCreateFromGroup(DoctypeEntity doctypeToCreate, GroupEntity group) {
+		group.removeDoctypeToCreate(doctypeToCreate);
+		groupRepo.save(group);
+	}
+
+	@Transactional
+	public void removeDoctypeToModerateFromGroup(DoctypeEntity doctypeToModerate, GroupEntity group) {
+		group.removeDoctypeToModerate(doctypeToModerate);
 		groupRepo.save(group);
 	}
 
@@ -105,8 +117,17 @@ public class GroupService {
 	}
 
 	@Transactional
-	public Set<DoctypeEntity> getDoctypesGroupDoesntManage(GroupEntity group) {
-		Set<DoctypeEntity> GroupDoctypes = group.getDoctypes();
+	public Set<DoctypeEntity> getDoctypesToCreateGroupDoesntManage(GroupEntity group) {
+		Set<DoctypeEntity> GroupDoctypes = group.getDoctypesToCreate();
+		Set<DoctypeEntity> allDoctypes = new HashSet<DoctypeEntity>();
+		allDoctypes.addAll(doctypeRepo.findAll());
+		allDoctypes.removeAll(GroupDoctypes);
+		return allDoctypes;
+	}
+
+	@Transactional
+	public Set<DoctypeEntity> getDoctypesToModerateGroupDoesntManage(GroupEntity group) {
+		Set<DoctypeEntity> GroupDoctypes = group.getDoctypesToModerate();
 		Set<DoctypeEntity> allDoctypes = new HashSet<DoctypeEntity>();
 		allDoctypes.addAll(doctypeRepo.findAll());
 		allDoctypes.removeAll(GroupDoctypes);
