@@ -86,10 +86,6 @@ public class User {
 		this.id = id;
 	}
 
-	public String getUserNameAndSurname() {
-		return name + " " + surname;
-	}
-
 	public String getName() {
 		return name;
 	}
