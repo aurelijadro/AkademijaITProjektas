@@ -4,7 +4,7 @@ import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
 import ApiUrl from "../../APIURL";
 
-const DoctypeGroupsManager = props => {
+const DoctypesToCreateGroupsManager = props => {
   const { currentUsername } = useMyData();
   const [doctypeGroups, setDoctypeGroups] = useState("loading");
   const [nonDoctypeGroups, setNonDoctypeGroups] = useState("loading");
@@ -130,4 +130,4 @@ const DoctypeGroupsManager = props => {
   );
 };
 
-export default DoctypeGroupsManager;
+export default DoctypesToCreateGroupsManager;
