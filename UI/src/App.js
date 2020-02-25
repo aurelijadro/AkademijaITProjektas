@@ -22,8 +22,9 @@ import UserGroupsManager from "./components/User/UserGroupsManager";
 import { AppDataContext } from "./context";
 import Axios from "axios";
 import GroupUsersManager from "./components/Group/GroupUsersManager";
-import GroupDocsManager from "./components/Group/GroupDocsManager";
+import GroupDoctypeManager from "./components/Group/GroupDoctypeManager";
 import ApiUrl from "./APIURL";
+import DoctypeGroupsManager from "./components/Doctype/DoctypeGroupsManager";
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
@@ -76,7 +77,6 @@ function App() {
               path="/Gentoo/admin/groups/add"
               component={AddGroupFormContainer}
             />
-
             <Route
               exact
               path="/Gentoo/admin/groups/edit/:id"
@@ -111,7 +111,12 @@ function App() {
             <Route
               exact
               path="/Gentoo/admin/managegroupdocs/:groupid"
-              component={GroupDocsManager}
+              component={GroupDoctypeManager}
+            />{" "}
+            <Route
+              exact
+              path="/Gentoo/admin/managedoctypegroups/:doctypeid"
+              component={DoctypeGroupsManager}
             />
           </Switch>
         </div>
