@@ -84,6 +84,23 @@ public class MainDocumentService {
 	}
 
 	@Transactional
+	public void changeDocumentToApproved(Long userId, MainDocument document) {
+		document.setApprovalDate();
+		document.updateDocumentStatusToApproved();
+		document.setApproverId(userId);
+		mainDocRepository.save(document);
+	}
+
+	@Transactional
+	public void changeDocumentToDenied(Long userId, MainDocument document) {
+		document.setRejectionDate();
+		document.updateDocumentStatusToDenied();
+		document.setApproverId(userId);
+		document.getRejectionReason();
+		mainDocRepository.save(document);
+	}
+
+	@Transactional
 	public List<MainDocument> createdDocumentsList(Long id) {
 		User user = userRepo.findUserById(id);
 		List<MainDocument> createdDocuments = new ArrayList<MainDocument>();
@@ -97,15 +114,17 @@ public class MainDocumentService {
 	}
 
 	@Transactional
-	public List<MainDocument> submittedDocumentsList(long id) {
+	public List<MainDocument> submittedDocumentsList(Long id) {
 		User user = userRepo.findUserById(id);
 		List<MainDocument> submittedDocuments = new ArrayList<MainDocument>();
 		List<MainDocument> usersDocuments = user.getDocuments();
 		for (MainDocument mainDocument : usersDocuments) {
 			if (mainDocument.getDocumentStatus().contains("Pateiktas")) {
+				mainDocument.setCreatorId(id);
 				submittedDocuments.add(mainDocument);
 			}
 		}
 		return submittedDocuments;
 	}
+
 }
