@@ -18,7 +18,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import it.akademija.doctype.DoctypeEntity;
 import it.akademija.doctype.DoctypeEntityRepo;
-import it.akademija.user.UserRepository;
 
 @RestController
 @Api(value = "document")
@@ -32,9 +31,6 @@ public class MainDocumentController {
 
 	@Autowired
 	private DoctypeEntityRepo doctypeRepo;
-
-	@Autowired
-	private UserRepository userRepo;
 
 	@RequestMapping(path = "/{id}/documents", method = RequestMethod.GET)
 	@ApiOperation(value = "Get documents", notes = "Returns all documents")
@@ -111,7 +107,7 @@ public class MainDocumentController {
 		}
 	}
 
-	@RequestMapping(path = "/{id}/statusUpdate", method = RequestMethod.POST)
+	@RequestMapping(path = "/{id}/submittedStatusUpdate", method = RequestMethod.POST)
 	@ApiOperation(value = "Changes document status", notes = "Changes status from created to submitted")
 	public void updateDocumentStatusToSubmitted(@PathVariable Long id, HttpServletResponse response) {
 		MainDocument document = mainDocService.findDocumentById(id);
@@ -120,6 +116,28 @@ public class MainDocumentController {
 			return;
 		}
 		mainDocService.changeDocumentToSubmitted(document);
+	}
+
+	@RequestMapping(path = "/{id}/approvedStatusUpdate", method = RequestMethod.POST)
+	@ApiOperation(value = "Changes document status", notes = "Changes status from created to submitted")
+	public void updateDocumentStatusToApproved(@PathVariable Long id, HttpServletResponse response) {
+		MainDocument document = mainDocService.findDocumentById(id);
+		if (document == null) {
+			response.setStatus(404);
+			return;
+		}
+		mainDocService.changeDocumentToApproved(id, document);
+	}
+
+	@RequestMapping(path = "/{id}/rejectedStatusUpdate", method = RequestMethod.POST)
+	@ApiOperation(value = "Changes document status", notes = "Changes status from created to submitted")
+	public void updateDocumentStatusToDenied(@PathVariable Long id, HttpServletResponse response) {
+		MainDocument document = mainDocService.findDocumentById(id);
+		if (document == null) {
+			response.setStatus(404);
+			return;
+		}
+		mainDocService.changeDocumentToDenied(id, document);
 	}
 
 	@RequestMapping(path = "/{id}/createdDocuments", method = RequestMethod.GET)

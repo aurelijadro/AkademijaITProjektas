@@ -86,8 +86,8 @@ public class DoctypeEntity {
 		return creatingGroups;
 	}
 
-	public void setCreatingGroups(Set<GroupEntity> groups) {
-		this.creatingGroups = groups;
+	public void setCreatingGroups(Set<GroupEntity> creatingGroups) {
+		this.creatingGroups = creatingGroups;
 	}
 
 	public void addCreatingGroup(GroupEntity group) {
@@ -96,6 +96,22 @@ public class DoctypeEntity {
 
 	public void removeCreatingGroup(GroupEntity group) {
 		this.creatingGroups.remove(group);
+	}
+
+	public Set<GroupEntity> getModeratingGroups() {
+		return moderatingGroups;
+	}
+
+	public void setModeratingGroups(Set<GroupEntity> moderatingGroups) {
+		this.moderatingGroups = moderatingGroups;
+	}
+
+	public void addModeratingGroup(GroupEntity group) {
+		this.moderatingGroups.add(group);
+	}
+
+	public void removeModeratingGroup(GroupEntity group) {
+		this.moderatingGroups.remove(group);
 	}
 
 	public void addDocument(MainDocument document) {

@@ -10,10 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,6 +72,36 @@ public class FileService {
 
 	public void deleteAllFilesFromFolder(Long userId, Long documentId) throws IOException {
 		FileUtils.cleanDirectory(new File("/tmp/Uploads/" + userId + "/" + documentId));
+	}
+
+	@Transactional
+	public void downloadFile(Long userId, Long documentId, HttpServletResponse response) throws Exception {
+
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment;filename=download.zip");
+		response.setStatus(HttpServletResponse.SC_OK);
+
+		List<String> fileNames = getUploadedFilesPaths(userId, documentId);
+
+		{
+
+			try (ZipOutputStream zippedOut = new ZipOutputStream(response.getOutputStream())) {
+				for (String file : fileNames) {
+					FileSystemResource resource = new FileSystemResource(file);
+
+					ZipEntry e = new ZipEntry(resource.getFilename());
+					e.setSize(resource.contentLength());
+					e.setTime(System.currentTimeMillis());
+					zippedOut.putNextEntry(e);
+					StreamUtils.copy(resource.getInputStream(), zippedOut);
+					zippedOut.closeEntry();
+				}
+				zippedOut.finish();
+			} catch (Exception e) {
+				throw e;
+			}
+
+		}
 	}
 
 }

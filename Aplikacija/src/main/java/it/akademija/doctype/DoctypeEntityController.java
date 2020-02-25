@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import it.akademija.document.MainDocument;
 import it.akademija.document.MainDocumentService;
 import it.akademija.group.GroupEntity;
-import it.akademija.user.User;
 
 @RestController
 @RequestMapping("api/doctypes")
@@ -91,7 +90,7 @@ public class DoctypeEntityController {
 		doctypeService.deleteDoctype(doctype);
 	}
 
-	@GetMapping("/{id}/groups")
+	@GetMapping("/{id}/creatingGroups")
 	public Set<GroupEntity> getCreatingGroupsByDoctypeId(@PathVariable Long id, HttpServletResponse response) {
 		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
 		if (doctype == null) {
@@ -102,8 +101,19 @@ public class DoctypeEntityController {
 		return doctype.getCreatingGroups();
 	}
 
-	@GetMapping("/{id}/notDoctypeGroups")
-	public Set<GroupEntity> getNotDoctypeGroups(@PathVariable Long id, HttpServletResponse response) {
+	@GetMapping("/{id}/moderatingGroups")
+	public Set<GroupEntity> getModeratingGroupsByDoctypeId(@PathVariable Long id, HttpServletResponse response) {
+		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
+		if (doctype == null) {
+			response.setStatus(404);
+			return null;
+		}
+		response.setStatus(200);
+		return doctype.getModeratingGroups();
+	}
+
+	@GetMapping("/{id}/notDoctypeCreatingGroups")
+	public Set<GroupEntity> getNotDoctypeCreatingGroups(@PathVariable Long id, HttpServletResponse response) {
 		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
 		if (doctype == null) {
 			response.setStatus(404);
@@ -111,6 +121,19 @@ public class DoctypeEntityController {
 		} else {
 			response.setStatus(200);
 			Set<GroupEntity> notDoctypeGroups = doctypeService.getNonDoctypeCreatingGroups(doctype);
+			return notDoctypeGroups;
+		}
+	}
+
+	@GetMapping("/{id}/notDoctypeModeratingGroups")
+	public Set<GroupEntity> getNotDoctypeModeratingGroups(@PathVariable Long id, HttpServletResponse response) {
+		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
+		if (doctype == null) {
+			response.setStatus(404);
+			return null;
+		} else {
+			response.setStatus(200);
+			Set<GroupEntity> notDoctypeGroups = doctypeService.getNonDoctypeModeratingGroups(doctype);
 			return notDoctypeGroups;
 		}
 	}

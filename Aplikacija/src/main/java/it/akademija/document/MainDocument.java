@@ -146,6 +146,10 @@ public class MainDocument {
 		return this.documentStatus = "Pateiktas";
 	}
 
+	public String updateDocumentStatusToPending() {
+		return this.afterSubmissionStatus = "Laukiantis";
+	}
+
 	public String updateDocumentStatusToApproved() {
 		return this.afterSubmissionStatus = "Patvirtintas";
 	}

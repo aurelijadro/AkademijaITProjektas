@@ -109,21 +109,21 @@ public class GroupEntity {
 		this.doctypesToModerate = doctypesToModerate;
 	}
 
-//	public void addDoctypeToModerate(DoctypeEntity doctype) {
-//		if (doctypesToModerate.contains(doctype)) {
-//			return;
-//		} else {
-//			this.doctypesToModerate.add(doctype);
-//			doctype.addGroup(this);
-//		}
-//	}
-//
-//	public void removeDoctypeToModerate(DoctypeEntity doctype) {
-//		if (doctypesToModerate.contains(doctype)) {
-//			this.doctypesToModerate.remove(doctype);
-//			doctype.removeGroup(this);
-//		}
-//	}
+	public void addDoctypeToModerate(DoctypeEntity doctype) {
+		if (doctypesToModerate.contains(doctype)) {
+			return;
+		} else {
+			this.doctypesToModerate.add(doctype);
+			doctype.addModeratingGroup(this);
+		}
+	}
+
+	public void removeDoctypeToModerate(DoctypeEntity doctype) {
+		if (doctypesToModerate.contains(doctype)) {
+			this.doctypesToModerate.remove(doctype);
+			doctype.removeModeratingGroup(this);
+		}
+	}
 
 	public Set<User> getUsers() {
 		return users;

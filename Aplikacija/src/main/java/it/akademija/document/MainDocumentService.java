@@ -44,7 +44,6 @@ public class MainDocumentService {
 	public MainDocument addDocument(NewMainDocument newMainDocument, Long userId) {
 		User user = userRepo.findUserById(userId);
 		MainDocument document = new MainDocument(newMainDocument.getTitle(), newMainDocument.getSummary());
-		document.getDocumentStatus();
 		logger.debug("New document (ID{}) was added.", document.getId());
 		user.addDocument(document);
 		document.setUser(user);
@@ -80,6 +79,7 @@ public class MainDocumentService {
 	public void changeDocumentToSubmitted(MainDocument document) {
 		document.setSubmissionDate();
 		document.updateDocumentStatusToSubmitted();
+		document.updateDocumentStatusToPending();
 		mainDocRepository.save(document);
 	}
 

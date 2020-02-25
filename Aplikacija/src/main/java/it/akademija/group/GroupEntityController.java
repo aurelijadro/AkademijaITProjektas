@@ -101,6 +101,17 @@ public class GroupEntityController {
 		return group.getDoctypesToCreate();
 	}
 
+//	@GetMapping("/{id}/doctypesToModerate")
+//	public Set<DoctypeEntity> getDoctypesToModerateByGroupId(@PathVariable Long id, HttpServletResponse response) {
+//		GroupEntity group = groupService.findGroupById(id);
+//		if (group == null) {
+//			response.setStatus(404);
+//			return null;
+//		}
+//		response.setStatus(200);
+//		return group.getDoctypesToModerate();
+//	}
+
 	@PostMapping("/{groupId}/doctypesToCreate/{doctypeId}")
 	public void addDoctypeToCreateByIdToGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
 			HttpServletResponse response) {
@@ -123,6 +134,28 @@ public class GroupEntityController {
 		}
 	}
 
+	@PostMapping("/{groupId}/doctypesToModerate/{doctypeId}")
+	public void addDoctypeToModerateByIdToGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
+			HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupById(groupId);
+		if (group == null) {
+			response.setStatus(404);
+			return;
+		} else {
+			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
+			if (doctype == null) {
+				response.setStatus(404);
+				return;
+			} else {
+				response.setStatus(200);
+				logger.debug("Initiated by [{}]: Doctype [{}] was added to the group [{}]",
+						SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getTitle(),
+						group.getTitle());
+				groupService.addDoctypeToModerateToGroup(group, doctype);
+			}
+		}
+	}
+
 	@DeleteMapping("/{groupId}/doctypesToCreate/{doctypeId}")
 	public void deleteDoctypeToCreateByIdFromGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
 			HttpServletResponse response) {
@@ -141,6 +174,29 @@ public class GroupEntityController {
 						SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getTitle(),
 						group.getTitle());
 				groupService.removeDoctypeToCreateFromGroup(doctype, group);
+			}
+		}
+
+	}
+
+	@DeleteMapping("/{groupId}/doctypesToModerate/{doctypeId}")
+	public void deleteDoctypeToModerateByIdFromGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
+			HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupById(groupId);
+		if (group == null) {
+			response.setStatus(403);
+			return;
+		} else {
+			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
+			if (doctype == null) {
+				response.setStatus(404);
+				return;
+			} else {
+				response.setStatus(200);
+				logger.debug("Initiated by [{}]: Doctype [{}] was deleted from the group [{}]",
+						SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getTitle(),
+						group.getTitle());
+				groupService.removeDoctypeToModerateFromGroup(doctype, group);
 			}
 		}
 
@@ -238,4 +294,17 @@ public class GroupEntityController {
 		Set<DoctypeEntity> notGroupDoctypes = groupService.getDoctypesToCreateGroupDoesntManage(group);
 		return notGroupDoctypes;
 	}
+
+//	@GetMapping("/{id}/notdoctypesToModerate")
+//	public Set<DoctypeEntity> getDoctypesToModerateNotInGroupByGroupId(@PathVariable Long id,
+//			HttpServletResponse response) {
+//		GroupEntity group = groupService.findGroupById(id);
+//		if (group == null) {
+//			response.setStatus(404);
+//			return null;
+//		}
+//		response.setStatus(200);
+//		Set<DoctypeEntity> notGroupDoctypes = groupService.getDoctypesToModerateGroupDoesntManage(group);
+//		return notGroupDoctypes;
+//	}
 }
