@@ -46,7 +46,7 @@ class DocTypeList extends Component {
             </div>
           </div>
         </div>
-        <div className="container">
+        <div className="container ">
           <Link to="/Gentoo/admin/doctypes/add">
             <button
               type="button"

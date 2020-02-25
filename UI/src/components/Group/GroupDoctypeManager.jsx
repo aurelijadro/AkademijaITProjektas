@@ -1,133 +1,128 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
+import ApiUrl from "../../APIURL";
 
-const GroupUsersManager = props => {
+const GroupDocsManager = props => {
   const { currentUsername } = useMyData();
-  const [groupUsers, setGroupUsers] = useState([]);
-  const [nonGroupUsers, setNonGroupUsers] = useState([]);
+  const [groupDoctypes, setGroupDoctypes] = useState("loading");
+  const [nonGroupDoctypes, setNonGroupDoctypes] = useState("loading");
+  const [selectedGroup, setSelectedGroup] = useState("loading");
+  const [saving, setSaving] = useState(false);
 
-  const selectedGroup = props.match.params.grouptitle;
+  const groupId = props.match.params.groupid;
 
-  const updateGroupUsers = () => {
-    axios
-      .get(`http://localhost:8081/Gentoo/api/groups/${selectedGroup}/users`)
-      .then(resp => setGroupUsers(resp.data))
-      .catch(e => console.log(e));
+  function fetchFromServer(path) {
+    return axios.get(ApiUrl + path).then(resp => resp.data);
+  }
+
+  const updateCachedData = () => {
+    fetchFromServer(`groups/${groupId}/doctypes`).then(setGroupDoctypes);
+    fetchFromServer(`groups/${groupId}/notdoctypes`).then(setNonGroupDoctypes);
   };
 
-  const updateNonGroupUsers = () => {
-    axios
-      .get(
-        `http://localhost:8081/Gentoo/api/groups/${selectedGroup}/usersnotingroup`
-      )
-      .then(resp => setNonGroupUsers(resp.data))
-      .catch(e => console.log(e));
-  };
+  useEffect(function() {
+    updateCachedData();
+    const timer = setInterval(updateCachedData, 2000);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(
-    function() {
-      function getGroupUsers() {
-        axios
-          .get(`http://localhost:8081/Gentoo/api/groups/${selectedGroup}/users`)
-          .then(resp => setGroupUsers(resp.data))
-          .catch(e => console.log(e));
-      }
-      getGroupUsers();
-    },
-    [selectedGroup]
-  );
-
-  useEffect(
-    function() {
-      function getNonGroupUsers() {
-        axios
-          .get(
-            `http://localhost:8081/Gentoo/api/groups/${selectedGroup}/usersnotingroup`
-          )
-          .then(resp => setNonGroupUsers(resp.data))
-          .catch(e => console.log(e));
-      }
-      getNonGroupUsers();
-    },
-    [selectedGroup]
-  );
-
-  if (currentUsername === "loading") return <div>Loading...</div>;
-
-  const groupUsersList = groupUsers.map((user, index) => {
-    function removeGroupUser() {
+    function getGroupInfo() {
       axios
-        .delete(
-          `http://localhost:8081/Gentoo/api/groups/${selectedGroup}/users/${user.username}`
-        )
-        .then(updateGroupUsers)
-        .then(updateNonGroupUsers);
+        .get(`${ApiUrl}groups/${groupId}`)
+        .then(resp => setSelectedGroup(resp.data))
+        .catch(e => console.log(e));
+    },
+    [groupId]
+  );
+
+  function doctypeChange(f) {
+    setSaving(true);
+    f()
+      .then(updateCachedData)
+      .then(() => setSaving(false));
+  }
+
+  if (
+    currentUsername === "loading" ||
+    selectedGroup === "loading" ||
+    groupDoctypes === "loading" ||
+    nonGroupDoctypes === "loading"
+  )
+    return <div>Loading...</div>;
+
+  const groupDoctypesList = groupDoctypes.map((doctype, index) => {
+    function removeGroupDoctype() {
+      doctypeChange(() =>
+        axios.delete(`${ApiUrl}groups/${groupId}/doctypes/${doctype.id}`)
+      );
     }
     return (
-      <div className="row my-1" key={user.id}>
-        <div className="col-3">{index + 1}</div>
-        <div className="col-6">{user.name + " " + user.surname}</div>
-        <button className="col-3 btn btn-dark" onClick={removeGroupUser}>
-          Pašalinti vartotoją iš grupės
-        </button>
-      </div>
+      <li className="list-group-item list-group-item-dark" key={doctype.id}>
+        <div className="row my-1">
+          <div className="col-3">{index + 1}</div>
+          <div className="col-6">{doctype.title}</div>
+          <button className="col-3 btn btn-dark" onClick={removeGroupDoctype}>
+            Pašalinti iš grupės
+          </button>
+        </div>
+      </li>
     );
   });
 
-  const nonGroupUsersList = nonGroupUsers.map((user, index) => {
-    function addGroupUser() {
-      axios
-        .post(
-          `http://localhost:8081/Gentoo/api/groups/${selectedGroup}/users/${user.username}`
-        )
-
-        .then(updateGroupUsers)
-        .then(updateNonGroupUsers);
+  const nonGroupDoctypesList = nonGroupDoctypes.map((doctype, index) => {
+    function addGroupDoctype() {
+      doctypeChange(() =>
+        axios.post(`${ApiUrl}groups/${groupId}/doctypes/${doctype.id}`)
+      );
     }
     return (
-      <div className="row my-1" key={user.id}>
-        <div className="col-3">{index + 1}</div>
-        <div className="col-6">{user.name + " " + user.surname}</div>
-        <button className="col-3 btn btn-dark" onClick={addGroupUser}>
-          Pridėti vartotoją į grupę
-        </button>
-      </div>
+      <li className="list-group-item list-group-item-dark" key={doctype.id}>
+        <div className="row my-1">
+          <div className="col-3">{index + 1}</div>
+          <div className="col-6">{doctype.title}</div>
+          <button className="col-3 btn btn-dark" onClick={addGroupDoctype}>
+            Pridėti į grupę
+          </button>
+        </div>
+      </li>
     );
   });
 
   return (
     <div>
+      {saving ? (
+        <span style={{ color: "white", position: "absolute", zIndex: 999 }}>
+          Saving changes...
+        </span>
+      ) : null}
       <NavigationForAdmin />
-      <div className="container">
-        <h4>Grupei {selectedGroup} priklauso šie vartotojai:</h4>
-        <div className="row my-2">
-          <div className="col-3 font-weight-bold">#</div>
-          <div className="col-6 font-weight-bold">
-            Vartotojo vardas ir pavardė
+      <div className="container my-4">
+        <h4>Grupė {selectedGroup.title} valdo šiuos dokumentų tipus:</h4>
+        <li className="list-group-item list-group-item-dark">
+          <div className="row my-2">
+            <div className="col-3 font-weight-bold">#</div>
+            <div className="col-6 font-weight-bold">Dokumento tipas</div>
+            <div className="col-3 font-weight-bold"></div>
           </div>
-          <div className="col-3 font-weight-bold"></div>
-        </div>
-        <div>{groupUsersList}</div>
+        </li>
+        <div>{groupDoctypesList}</div>
         <hr></hr>
-        <h4>Kiti sistemoje registruoti vartotojai:</h4>
-        <div className="row my-2">
-          <div className="col-3 font-weight-bold">#</div>
-          <div className="col-6 font-weight-bold">
-            Vartotojo vardas ir pavardė
+        <h4>Kiti dokumentų tipai:</h4>
+        <li className="list-group-item list-group-item-dark">
+          <div className="row my-2">
+            <div className="col-3 font-weight-bold">#</div>
+            <div className="col-6 font-weight-bold">Dokumento tipas</div>
+            <div className="col-3 font-weight-bold"></div>
           </div>
-          <div className="col-3 font-weight-bold"></div>
-        </div>
-        <div>{nonGroupUsersList}</div>
-        <Link to="/Gentoo/admin/groups">
-              <button className="btn btn-primary" onClick={props.onBack}>
-                Grįžti į grupių sąrašą
-              </button>
-            </Link>
+        </li>
+        <div>{nonGroupDoctypesList}</div>
       </div>
     </div>
   );
 };
-export default GroupUsersManager;
+
+export default GroupDocsManager;

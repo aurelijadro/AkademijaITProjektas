@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const AddGroupFormComponent = props => {
   return (
     <div className="container">
-      <div className="panel panel-default">
+      <div className="panel panel-default my-4">
         <div className="panel-heading">
           <h3 className="panel-title">Grupių kūrimas</h3>
         </div>
@@ -22,11 +22,11 @@ const AddGroupFormComponent = props => {
               />
             </div>
 
-            <button className="btn btn-primary" type="submit">
+            <button className="btn btn-dark" type="submit">
               Išsaugoti
             </button>
             <Link to="/Gentoo/admin/groups">
-              <button className="btn btn-primary" onClick={props.onBack}>
+              <button className="btn btn-dark  mx-3" onClick={props.onBack}>
                 Grįžti į grupių sąrašą
               </button>
             </Link>

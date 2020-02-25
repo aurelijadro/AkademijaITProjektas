@@ -4,21 +4,21 @@ import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
 import ApiUrl from "../../APIURL";
 
-const GroupDocsManager = props => {
+const DoctypeGroupsManager = props => {
   const { currentUsername } = useMyData();
-  const [groupDoctypes, setGroupDoctypes] = useState("loading");
-  const [nonGroupDoctypes, setNonGroupDoctypes] = useState("loading");
+  const [DoctypeGroups, setDoctypeGroups] = useState("loading");
+  const [nonDoctypeGroups, setNonDoctypeGroups] = useState("loading");
   const [selectedGroup, setSelectedGroup] = useState("loading");
   const [saving, setSaving] = useState(false);
 
-  const groupId = props.match.params.groupid;
+  const doctypeId = props.match.params.doctypeid;
 
   function fetchFromServer(path) {
     return axios.get(ApiUrl + path).then(resp => resp.data);
   }
 
   const updateCachedData = () => {
-    fetchFromServer(`groups/${groupId}/doctypes`).then(setGroupDoctypes);
+    fetchFromServer(`doctypes/${doctypeId}/groups`).then(setDoctypeGroups);
     fetchFromServer(`groups/${groupId}/notdoctypes`).then(setNonGroupDoctypes);
   };
 

@@ -1,6 +1,8 @@
 package it.akademija.doctype;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.akademija.document.MainDocument;
+import it.akademija.group.GroupEntity;
 import it.akademija.group.GroupEntityRepo;
+import it.akademija.user.User;
 
 @Service
 public class DoctypeService {
@@ -63,6 +67,17 @@ public class DoctypeService {
 	public void addDoctypeToDocuments(DoctypeEntity doctype, MainDocument document) {
 		doctype.addDocument(document);
 		doctypeRepo.save(doctype);
+	}
+
+	@Transactional
+	public Set<GroupEntity> getNonDoctypeGroups(DoctypeEntity doctype) {
+		Set<GroupEntity> doctypeGroups = doctype.getGroups();
+
+		Set<GroupEntity> allGroups = new HashSet<GroupEntity>();
+		allGroups.addAll(groupRepo.findAll());
+
+		allGroups.removeAll(doctypeGroups);
+		return allGroups;
 	}
 
 }
