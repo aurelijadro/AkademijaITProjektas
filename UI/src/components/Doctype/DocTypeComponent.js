@@ -21,7 +21,7 @@ const DocTypeComponent = props => {
       <td>
         <Link
           className="btn btn-light"
-          to={`/Gentoo/admin/managecreatabledoctypegroups/${props.id}`}
+          to={`/Gentoo/admin/managemoderatabledoctypegroups/${props.id}`}
         >
           Valdyti grupių leidimus moderuoti
         </Link>

@@ -18,8 +18,10 @@ const DoctypesToModerateGroupsManager = props => {
   }
 
   const updateCachedData = () => {
-    fetchFromServer(`doctypes/${doctypeId}/groups`).then(setDoctypeGroups);
-    fetchFromServer(`doctypes/${doctypeId}/notDoctypeGroups`).then(
+    fetchFromServer(`doctypes/${doctypeId}/moderatingGroups`).then(
+      setDoctypeGroups
+    );
+    fetchFromServer(`doctypes/${doctypeId}/notDoctypeModeratingGroups`).then(
       setNonDoctypeGroups
     );
   };
@@ -59,7 +61,9 @@ const DoctypesToModerateGroupsManager = props => {
   const doctypeGroupsList = doctypeGroups.map((group, index) => {
     function removeDoctypeGroup() {
       groupChange(() =>
-        axios.delete(`${ApiUrl}groups/${group.id}/doctypes/${doctypeId}`)
+        axios.delete(
+          `${ApiUrl}groups/${group.id}/doctypesToModerate/${doctypeId}`
+        )
       );
     }
     return (
@@ -78,7 +82,9 @@ const DoctypesToModerateGroupsManager = props => {
   const nonDoctypeGroupsList = nonDoctypeGroups.map((group, index) => {
     function addDoctypeGroup() {
       groupChange(() =>
-        axios.post(`${ApiUrl}groups/${group.id}/doctypes/${doctypeId}`)
+        axios.post(
+          `${ApiUrl}groups/${group.id}/doctypesToModerate/${doctypeId}`
+        )
       );
     }
     return (
@@ -104,8 +110,7 @@ const DoctypesToModerateGroupsManager = props => {
       <NavigationForAdmin />
       <div className="container my-4">
         <h4>
-          {" "}
-          {selectedDoctype.title} tipo dokumentus gali kurti šios grupės:
+          "{selectedDoctype.title}" tipo dokumentus gali kurti šios grupės:
         </h4>
         <li className="list-group-item list-group-item-dark">
           <div className="row my-2">
