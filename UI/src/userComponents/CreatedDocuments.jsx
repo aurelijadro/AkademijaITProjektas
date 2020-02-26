@@ -58,21 +58,17 @@ const CreatedDocuments = props => {
     return (
       <li className="list-group-item list-group-item-dark" key={document.id}>
         <div className="row my-1">
-          <div className="col-1">{index + 1}</div>
-          <div className="col-2">{document.title}</div>
+          <div className="col-3">{document.title}</div>
           <div className="col-2">{document.doctypes.title}</div>
-          <Link to={`/Gentoo/user`}>
-            <button
-              type="button"
-              className="btn btn-secondary btn-lg btn-block"
-            >
+          <Link className="col-2 mx-3" to={`/Gentoo/user`}>
+            <button type="button" className="btn btn-dark ">
               Peržiūrėti/Redaguoti
             </button>
           </Link>
-          <button className="col-3 btn btn-dark" onClick={submitDocument}>
+          <button className="col-2 btn btn-dark mx-2" onClick={submitDocument}>
             Pateikti dokumentą
           </button>
-          <button className="col-3 btn btn-dark" onClick={deleteDocumet}>
+          <button className="col-2 btn btn-dark mx-2 " onClick={deleteDocumet}>
             Ištrinti dokumentą
           </button>
         </div>
@@ -83,6 +79,7 @@ const CreatedDocuments = props => {
   return (
     <div className="container my-4">
       <h2>Sukurti dokumentai:</h2>
+      <div>{createdDocumentsList}</div>
     </div>
   );
 };
