@@ -35,7 +35,11 @@ const CreatedDocuments = props => {
       .then(() => setSaving(false));
   }
 
-  if (userId === -2 || createdDocuments === "loading")
+  if (
+    userId === -2 ||
+    createdDocuments === "loading" ||
+    submittedDocuments === "loading"
+  )
     return <div>Loading...</div>;
 
   if (userId === -1) {
@@ -76,10 +80,55 @@ const CreatedDocuments = props => {
     );
   });
 
+  const submittedDocumentsList = submittedDocuments.map((document, index) => {
+    return (
+      <li className="list-group-item list-group-item-dark" key={document.id}>
+        <div className="row my-1">
+          <div className="col-3">{document.title}</div>
+          <div className="col-2">{document.doctypes.title}</div>
+          <div className="col-2">{document.afterSubmissionStatus}</div>
+          <div className="col-2">{document.submissionDate}</div>
+          <Link className="col-2 mx-3" to={`/Gentoo/user`}>
+            <button type="button" className="btn btn-dark ">
+              Peržiūrėti/Redaguoti
+            </button>
+          </Link>
+        </div>
+      </li>
+    );
+  });
+
   return (
-    <div className="container my-4">
-      <h2>Sukurti dokumentai:</h2>
+    <div className="container">
+      {saving ? (
+        <span style={{ color: "white", position: "absolute", zIndex: 999 }}>
+          Saving changes...
+        </span>
+      ) : null}
+
+      <h2 className="my-4">Sukurti dokumentai:</h2>
+      <li className="list-group-item list-group-item-dark">
+        <div className="row my-2">
+          <div className="col-3 font-weight-bold">Pavadinimas</div>
+          <div className="col-2 font-weight-bold">Tipas</div>
+          <div className="col-7 text-center font-weight-bold">
+            Veiksmai su dokumentu
+          </div>
+        </div>
+      </li>
       <div>{createdDocumentsList}</div>
+
+      <h2 className="my-4">Pateikti dokumentai:</h2>
+      <li className="list-group-item list-group-item-dark">
+        <div className="row my-2">
+          <div className="col-3 font-weight-bold">Pavadinimas</div>
+          <div className="col-2 font-weight-bold">Tipas</div>
+          <div className="col-2 font-weight-bold">Statusas</div>
+          <div className="col-2 font-weight-bold">Pateikimo data</div>
+          <div className="col-3 font-weight-bold">Veiksmai su dokumentu</div>
+        </div>
+      </li>
+      <div>{submittedDocumentsList}</div>
     </div>
   );
 };
