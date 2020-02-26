@@ -76,7 +76,8 @@ public class MainDocumentService {
 	}
 
 	@Transactional
-	public void changeDocumentToSubmitted(MainDocument document) {
+	public void changeDocumentToSubmitted(Long creatorId, MainDocument document) {
+		document.setCreatorId(creatorId);
 		document.setSubmissionDate();
 		document.updateDocumentStatusToSubmitted();
 		document.updateDocumentStatusToPending();

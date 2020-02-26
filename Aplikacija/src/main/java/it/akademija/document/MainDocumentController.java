@@ -107,37 +107,40 @@ public class MainDocumentController {
 		}
 	}
 
-	@RequestMapping(path = "/{id}/submittedStatusUpdate", method = RequestMethod.POST)
+	@RequestMapping(path = "{userId}/{documentId}/submittedStatusUpdate", method = RequestMethod.POST)
 	@ApiOperation(value = "Changes document status", notes = "Changes status from created to submitted")
-	public void updateDocumentStatusToSubmitted(@PathVariable Long id, HttpServletResponse response) {
-		MainDocument document = mainDocService.findDocumentById(id);
+	public void updateDocumentStatusToSubmitted(@PathVariable Long userId, @PathVariable Long documentId,
+			HttpServletResponse response) {
+		MainDocument document = mainDocService.findDocumentById(documentId);
 		if (document == null) {
 			response.setStatus(404);
 			return;
 		}
-		mainDocService.changeDocumentToSubmitted(document);
+		mainDocService.changeDocumentToSubmitted(userId, document);
 	}
 
-	@RequestMapping(path = "/{id}/approvedStatusUpdate", method = RequestMethod.POST)
+	@RequestMapping(path = "{approverId}/{documentId}/approvedStatusUpdate", method = RequestMethod.POST)
 	@ApiOperation(value = "Changes document status", notes = "Changes status from created to submitted")
-	public void updateDocumentStatusToApproved(@PathVariable Long id, HttpServletResponse response) {
-		MainDocument document = mainDocService.findDocumentById(id);
+	public void updateDocumentStatusToApproved(@PathVariable Long approverId, @PathVariable Long documentId,
+			HttpServletResponse response) {
+		MainDocument document = mainDocService.findDocumentById(documentId);
 		if (document == null) {
 			response.setStatus(404);
 			return;
 		}
-		mainDocService.changeDocumentToApproved(id, document);
+		mainDocService.changeDocumentToApproved(approverId, document);
 	}
 
-	@RequestMapping(path = "/{id}/rejectedStatusUpdate", method = RequestMethod.POST)
+	@RequestMapping(path = "{approverId}/{documentId}/rejectedStatusUpdate", method = RequestMethod.POST)
 	@ApiOperation(value = "Changes document status", notes = "Changes status from created to submitted")
-	public void updateDocumentStatusToDenied(@PathVariable Long id, HttpServletResponse response) {
-		MainDocument document = mainDocService.findDocumentById(id);
+	public void updateDocumentStatusToDenied(@PathVariable Long approverId, @PathVariable Long documentId,
+			HttpServletResponse response) {
+		MainDocument document = mainDocService.findDocumentById(documentId);
 		if (document == null) {
 			response.setStatus(404);
 			return;
 		}
-		mainDocService.changeDocumentToDenied(id, document);
+		mainDocService.changeDocumentToDenied(approverId, document);
 	}
 
 	@RequestMapping(path = "/{id}/createdDocuments", method = RequestMethod.GET)
