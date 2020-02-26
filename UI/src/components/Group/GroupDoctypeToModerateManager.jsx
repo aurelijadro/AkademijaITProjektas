@@ -4,7 +4,7 @@ import NavigationForAdmin from "../NavigationForAdmin";
 import { useMyData } from "../../context";
 import ApiUrl from "../../APIURL";
 
-const GroupDocsManager = props => {
+const GroupDocsToModerateManager = props => {
   const { currentUsername } = useMyData();
   const [groupDoctypes, setGroupDoctypes] = useState("loading");
   const [nonGroupDoctypes, setNonGroupDoctypes] = useState("loading");
@@ -18,14 +18,18 @@ const GroupDocsManager = props => {
   }
 
   const updateCachedData = () => {
-    fetchFromServer(`groups/${groupId}/doctypes`).then(setGroupDoctypes);
-    fetchFromServer(`groups/${groupId}/notdoctypes`).then(setNonGroupDoctypes);
+    fetchFromServer(`groups/${groupId}/doctypesToModerate`).then(
+      setGroupDoctypes
+    );
+    fetchFromServer(`groups/${groupId}/notdoctypesToModerate`).then(
+      setNonGroupDoctypes
+    );
   };
 
   useEffect(function() {
     updateCachedData();
-    const timer = setInterval(updateCachedData, 2000);
-    return () => clearInterval(timer);
+    // const timer = setInterval(updateCachedData, 2000);
+    // return () => clearInterval(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -57,7 +61,9 @@ const GroupDocsManager = props => {
   const groupDoctypesList = groupDoctypes.map((doctype, index) => {
     function removeGroupDoctype() {
       doctypeChange(() =>
-        axios.delete(`${ApiUrl}groups/${groupId}/doctypes/${doctype.id}`)
+        axios.delete(
+          `${ApiUrl}groups/${groupId}/doctypesToModerate/${doctype.id}`
+        )
       );
     }
     return (
@@ -76,7 +82,9 @@ const GroupDocsManager = props => {
   const nonGroupDoctypesList = nonGroupDoctypes.map((doctype, index) => {
     function addGroupDoctype() {
       doctypeChange(() =>
-        axios.post(`${ApiUrl}groups/${groupId}/doctypes/${doctype.id}`)
+        axios.post(
+          `${ApiUrl}groups/${groupId}/doctypesToModerate/${doctype.id}`
+        )
       );
     }
     return (
@@ -101,7 +109,9 @@ const GroupDocsManager = props => {
       ) : null}
       <NavigationForAdmin />
       <div className="container my-4">
-        <h4>Grupė {selectedGroup.title} valdo šiuos dokumentų tipus:</h4>
+        <h4>
+          Grupė {selectedGroup.title} gali moderuoti šiuos dokumentų tipus:
+        </h4>
         <li className="list-group-item list-group-item-dark">
           <div className="row my-2">
             <div className="col-3 font-weight-bold">#</div>
@@ -125,4 +135,4 @@ const GroupDocsManager = props => {
   );
 };
 
-export default GroupDocsManager;
+export default GroupDocsToModerateManager;
