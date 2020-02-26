@@ -34,7 +34,10 @@ public class AppController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			String currentUserName = authentication.getName();
-			userService.findByUsername(currentUserName);
+			User user = userService.findByUsername(currentUserName);
+			if (user == null) {
+				return -1l;
+			}
 			return userService.findByUsername(currentUserName).getId();
 		}
 		return -1l;
