@@ -52,6 +52,9 @@ public class FileController {
 
 	@GetMapping("{userId}/{documentId}/uploadedFilesNames")
 	public List<String> getListOfFiles(@PathVariable Long userId, @PathVariable Long documentId) throws IOException {
+		if (fileService.getUploadedFilesNames(userId, documentId) == null) {
+			return null;
+		}
 		return fileService.getUploadedFilesNames(userId, documentId);
 	}
 

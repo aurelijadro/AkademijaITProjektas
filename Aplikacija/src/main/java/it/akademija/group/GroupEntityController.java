@@ -101,16 +101,16 @@ public class GroupEntityController {
 		return group.getDoctypesToCreate();
 	}
 
-//	@GetMapping("/{id}/doctypesToModerate")
-//	public Set<DoctypeEntity> getDoctypesToModerateByGroupId(@PathVariable Long id, HttpServletResponse response) {
-//		GroupEntity group = groupService.findGroupById(id);
-//		if (group == null) {
-//			response.setStatus(404);
-//			return null;
-//		}
-//		response.setStatus(200);
-//		return group.getDoctypesToModerate();
-//	}
+	@GetMapping("/{id}/doctypesToModerate")
+	public Set<DoctypeEntity> getDoctypesToModerateByGroupId(@PathVariable Long id, HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupById(id);
+		if (group == null) {
+			response.setStatus(404);
+			return null;
+		}
+		response.setStatus(200);
+		return group.getDoctypesToModerate();
+	}
 
 	@PostMapping("/{groupId}/doctypesToCreate/{doctypeId}")
 	public void addDoctypeToCreateByIdToGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
@@ -295,16 +295,16 @@ public class GroupEntityController {
 		return notGroupDoctypes;
 	}
 
-//	@GetMapping("/{id}/notdoctypesToModerate")
-//	public Set<DoctypeEntity> getDoctypesToModerateNotInGroupByGroupId(@PathVariable Long id,
-//			HttpServletResponse response) {
-//		GroupEntity group = groupService.findGroupById(id);
-//		if (group == null) {
-//			response.setStatus(404);
-//			return null;
-//		}
-//		response.setStatus(200);
-//		Set<DoctypeEntity> notGroupDoctypes = groupService.getDoctypesToModerateGroupDoesntManage(group);
-//		return notGroupDoctypes;
-//	}
+	@GetMapping("/{id}/notdoctypesToModerate")
+	public Set<DoctypeEntity> getDoctypesToModerateNotInGroupByGroupId(@PathVariable Long id,
+			HttpServletResponse response) {
+		GroupEntity group = groupService.findGroupById(id);
+		if (group == null) {
+			response.setStatus(404);
+			return null;
+		}
+		response.setStatus(200);
+		Set<DoctypeEntity> notGroupDoctypes = groupService.getDoctypesToModerateGroupDoesntManage(group);
+		return notGroupDoctypes;
+	}
 }

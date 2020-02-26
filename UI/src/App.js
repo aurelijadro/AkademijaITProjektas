@@ -26,6 +26,7 @@ import GroupDoctypeManager from "./components/Group/GroupDoctypeManager";
 import ApiUrl from "./APIURL";
 import DoctypesToCreateGroupsManager from "./components/Doctype/DoctypesToCreateGroupsManager";
 import DoctypesToModerateGroupsManager from "./components/Doctype/DoctypesToModerateGroupsManager";
+import AddMainDocumentForm from "./components/Document/AddMainDocumentForm";
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
@@ -36,7 +37,7 @@ function App() {
     });
   }
 
-  useEffect(function() {
+  useEffect(function () {
     updateUserInformation();
     const timer = setInterval(updateUserInformation, 60000);
     return () => clearInterval(timer);
@@ -124,6 +125,7 @@ function App() {
               path="/Gentoo/admin/managemoderatabledoctypegroups/:doctypeid"
               component={DoctypesToModerateGroupsManager}
             />
+            <Route exact path="/Gentoo/user/documents/add" component={AddMainDocumentForm} />
           </Switch>
         </div>
       </div>

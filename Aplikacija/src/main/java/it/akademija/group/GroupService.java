@@ -125,13 +125,13 @@ public class GroupService {
 		return allDoctypes;
 	}
 
-//	@Transactional
-//	public Set<DoctypeEntity> getDoctypesToModerateGroupDoesntManage(GroupEntity group) {
-//		Set<DoctypeEntity> GroupDoctypes = group.getDoctypesToModerate();
-//		Set<DoctypeEntity> allDoctypes = new HashSet<DoctypeEntity>();
-//		allDoctypes.addAll(doctypeRepo.findAll());
-//		allDoctypes.removeAll(GroupDoctypes);
-//		return allDoctypes;
-//	}
+	@Transactional
+	public Set<DoctypeEntity> getDoctypesToModerateGroupDoesntManage(GroupEntity group) {
+		Set<DoctypeEntity> GroupDoctypes = group.getDoctypesToModerate();
+		Set<DoctypeEntity> allDoctypes = new HashSet<DoctypeEntity>();
+		allDoctypes.addAll(doctypeRepo.findAll());
+		allDoctypes.removeAll(GroupDoctypes);
+		return allDoctypes;
+	}
 
 }
