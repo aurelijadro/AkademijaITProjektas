@@ -18,10 +18,10 @@ const DoctypesToCreateGroupsManager = props => {
   }
 
   const updateCachedData = () => {
-    fetchFromServer(`doctypes/${doctypeId}/groups`).then(setDoctypeGroups);
-    fetchFromServer(`doctypes/${doctypeId}/notDoctypeGroups`).then(
-      setNonDoctypeGroups
-    );
+    fetchFromServer(`doctypes/${doctypeId}/creatingGroups
+    `).then(setDoctypeGroups);
+    fetchFromServer(`doctypes/${doctypeId}/notDoctypeCreatingGroups
+    `).then(setNonDoctypeGroups);
   };
 
   useEffect(function() {
@@ -59,7 +59,9 @@ const DoctypesToCreateGroupsManager = props => {
   const doctypeGroupsList = doctypeGroups.map((group, index) => {
     function removeDoctypeGroup() {
       groupChange(() =>
-        axios.delete(`${ApiUrl}groups/${group.id}/doctypes/${doctypeId}`)
+        axios.delete(
+          `${ApiUrl}groups/${group.id}/doctypesToCreate/${doctypeId}`
+        )
       );
     }
     return (
@@ -78,7 +80,7 @@ const DoctypesToCreateGroupsManager = props => {
   const nonDoctypeGroupsList = nonDoctypeGroups.map((group, index) => {
     function addDoctypeGroup() {
       groupChange(() =>
-        axios.post(`${ApiUrl}groups/${group.id}/doctypes/${doctypeId}`)
+        axios.post(`${ApiUrl}groups/${group.id}/doctypesToCreate/${doctypeId}`)
       );
     }
     return (
@@ -104,8 +106,7 @@ const DoctypesToCreateGroupsManager = props => {
       <NavigationForAdmin />
       <div className="container my-4">
         <h4>
-          {" "}
-          {selectedDoctype.title} tipo dokumentus gali kurti šios grupės:
+          "{selectedDoctype.title}" tipo dokumentus gali kurti šios grupės:
         </h4>
         <li className="list-group-item list-group-item-dark">
           <div className="row my-2">

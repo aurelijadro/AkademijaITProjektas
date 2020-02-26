@@ -6,7 +6,7 @@ const DocTypeComponent = props => {
     <tr>
       <th scope="row">{props.index + 1}</th>
       <td>
-        <Link to={"/Gentoo/admin/doctypes/edit/" + props.id} className="h5">
+        <Link to={"/Gentoo/admin/doctypes/edit/" + props.id} className="h6">
           {props.title}
         </Link>
       </td>
