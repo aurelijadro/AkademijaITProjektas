@@ -20,10 +20,18 @@ const GroupComponent = props => {
       </td>
       <td>
         <Link
-          to={`/Gentoo/admin/managegroupdocs/${props.id}`}
+          to={`/Gentoo/admin/managegroupcreatedocs/${props.id}`}
           className="btn btn-light mx-2"
         >
-          Valdyti grupės dokumentų tipus
+          Grupės kuriami dokumentų tipai
+        </Link>
+      </td>
+      <td>
+        <Link
+          to={`/Gentoo/admin/managegroupmoderatedocs/${props.id}`}
+          className="btn btn-light mx-2"
+        >
+          Grupės moderuojami dokumentų tipai
         </Link>
       </td>
     </tr>

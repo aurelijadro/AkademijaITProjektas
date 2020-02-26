@@ -22,7 +22,8 @@ import UserGroupsManager from "./components/User/UserGroupsManager";
 import { AppDataContext } from "./context";
 import Axios from "axios";
 import GroupUsersManager from "./components/Group/GroupUsersManager";
-import GroupDoctypeManager from "./components/Group/GroupDoctypeManager";
+import GroupDocsToCreateManager from "./components/Group/GroupDoctypeToCreateManager";
+import GroupDocsToModerateManager from "./components/Group/GroupDoctypeToModerateManager";
 import ApiUrl from "./APIURL";
 import DoctypesToCreateGroupsManager from "./components/Doctype/DoctypesToCreateGroupsManager";
 import DoctypesToModerateGroupsManager from "./components/Doctype/DoctypesToModerateGroupsManager";
@@ -112,9 +113,15 @@ function App() {
             />
             <Route
               exact
-              path="/Gentoo/admin/managegroupdocs/:groupid"
-              component={GroupDoctypeManager}
-            />{" "}
+              path="/Gentoo/admin/managegroupcreatedocs/:groupid"
+              component={GroupDocsToCreateManager}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/managegroupmoderatedocs/:groupid"
+              component={GroupDocsToModerateManager}
+            />
+
             <Route
               exact
               path="/Gentoo/admin/managecreatabledoctypegroups/:doctypeid"
