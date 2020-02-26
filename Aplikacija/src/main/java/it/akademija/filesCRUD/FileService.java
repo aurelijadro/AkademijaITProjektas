@@ -29,10 +29,10 @@ public class FileService {
 	private Path fileStorageLocation;
 
 	@Transactional
-	public String storeUploadedFile(MultipartFile file, Long userId, Long documentId) throws IOException {
+	public String storeUploadedFile(MultipartFile file, Long userId) throws IOException {
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-		fileStorageLocation = Files.createDirectories(Paths.get("/tmp/Uploads/" + userId + "/" + documentId));
+		fileStorageLocation = Files.createDirectories(Paths.get("/tmp/Uploads/" + userId));
 
 		try {
 			Path targetLocation = this.fileStorageLocation.resolve(fileName);
@@ -45,9 +45,9 @@ public class FileService {
 	}
 
 	@Transactional
-	public List<String> getUploadedFilesNames(Long userId, Long documentId) {
+	public List<String> getUploadedFilesNames(Long userId) {
 		List<String> results = new ArrayList<String>();
-		File[] files = new File("/tmp/Uploads/" + userId + "/" + documentId).listFiles();
+		File[] files = new File("/tmp/Uploads/" + userId).listFiles();
 
 		for (File file : files) {
 			if (file.isFile()) {

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import it.akademija.doctype.DoctypeEntity;
 import it.akademija.doctype.DoctypeEntityRepo;
 
 @RestController
@@ -52,11 +51,15 @@ public class MainDocumentController {
 		return document;
 	}
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.POST)
+	@RequestMapping(path = "/{userId}/{doctypeId}", method = RequestMethod.POST)
 	@ApiOperation(value = "Add new document", notes = "Returns new document")
-	public MainDocument createDocument(@PathVariable Long id, @RequestBody final NewMainDocument newDocument,
-			HttpServletResponse response) {
-		return mainDocService.addDocument(newDocument, id);
+	public MainDocument createDocument(@PathVariable Long userId, @PathVariable Long doctypeId,
+			@RequestBody final NewMainDocument newDocument, HttpServletResponse response) {
+		if (mainDocService.addDocument(newDocument, userId, doctypeId) == null) {
+			response.setStatus(404);
+			return null;
+		}
+		return mainDocService.addDocument(newDocument, userId, doctypeId);
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
@@ -87,25 +90,25 @@ public class MainDocumentController {
 		mainDocService.deleteDocument(documentId, userId);
 	}
 
-	@RequestMapping(path = "/{documentId}/doctypes/{doctypeId}", method = RequestMethod.POST)
-	@ApiOperation(value = "Adds doctype to document", notes = "Adds doctype by id to document by its id")
-	public void addDoctypeByIdToDocument(@PathVariable Long documentId, @PathVariable Long doctypeId,
-			HttpServletResponse response) {
-		MainDocument document = mainDocService.findDocumentById(documentId);
-		if (document == null) {
-			response.setStatus(404);
-			return;
-		} else {
-			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
-			if (doctype == null) {
-				response.setStatus(404);
-				return;
-			} else {
-				response.setStatus(200);
-				mainDocService.addDoctypeToDocument(document, doctype);
-			}
-		}
-	}
+//	@RequestMapping(path = "/{documentId}/doctypes/{doctypeId}", method = RequestMethod.POST)
+//	@ApiOperation(value = "Adds doctype to document", notes = "Adds doctype by id to document by its id")
+//	public void addDoctypeByIdToDocument(@PathVariable Long documentId, @PathVariable Long doctypeId,
+//			HttpServletResponse response) {
+//		MainDocument document = mainDocService.findDocumentById(documentId);
+//		if (document == null) {
+//			response.setStatus(404);
+//			return;
+//		} else {
+//			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
+//			if (doctype == null) {
+//				response.setStatus(404);
+//				return;
+//			} else {
+//				response.setStatus(200);
+//				mainDocService.addDoctypeToDocument(document, doctype);
+//			}
+//		}
+//	}
 
 	@RequestMapping(path = "{userId}/{documentId}/submittedStatusUpdate", method = RequestMethod.POST)
 	@ApiOperation(value = "Changes document status", notes = "Changes status from created to submitted")

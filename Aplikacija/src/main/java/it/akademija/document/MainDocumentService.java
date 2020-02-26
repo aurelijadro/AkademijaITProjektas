@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.akademija.doctype.DoctypeEntity;
+import it.akademija.doctype.DoctypeEntityRepo;
 import it.akademija.user.User;
 import it.akademija.user.UserRepository;
 
@@ -24,6 +25,9 @@ public class MainDocumentService {
 
 	@Autowired
 	UserRepository userRepo;
+
+	@Autowired
+	DoctypeEntityRepo doctypeRepo;
 
 	@Transactional
 	public List<MainDocument> getMainDocuments(Long userId) {
@@ -41,13 +45,24 @@ public class MainDocumentService {
 	}
 
 	@Transactional
-	public MainDocument addDocument(NewMainDocument newMainDocument, Long userId) {
+	public MainDocument addDocument(NewMainDocument newMainDocument, Long userId, Long doctypeId) {
 		User user = userRepo.findUserById(userId);
-		MainDocument document = new MainDocument(newMainDocument.getTitle(), newMainDocument.getSummary());
-		logger.debug("New document (ID{}) was added.", document.getId());
-		user.addDocument(document);
-		document.setUser(user);
-		return mainDocRepository.save(document);
+		if (user == null) {
+			return null;
+		} else {
+			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
+			if (doctype == null) {
+				return null;
+			} else {
+				MainDocument document = new MainDocument(newMainDocument.getTitle(), newMainDocument.getSummary());
+				logger.debug("New document (ID{}) was added.", document.getId());
+				user.addDocument(document);
+				document.setUser(user);
+				document.setDoctypes(doctype);
+				document.setCreatorId(userId);
+				return mainDocRepository.save(document);
+			}
+		}
 	}
 
 	@Transactional
@@ -69,11 +84,11 @@ public class MainDocumentService {
 		logger.debug("Document (ID{}) was deleted.", document);
 	}
 
-	@Transactional
-	public void addDoctypeToDocument(MainDocument document, DoctypeEntity doctype) {
-		document.setDoctypes(doctype);
-		mainDocRepository.save(document);
-	}
+//	@Transactional
+//	public void addDoctypeToDocument(MainDocument document, DoctypeEntity doctype) {
+//		document.setDoctypes(doctype);
+//		mainDocRepository.save(document);
+//	}
 
 	@Transactional
 	public void changeDocumentToSubmitted(Long creatorId, MainDocument document) {

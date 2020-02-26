@@ -34,10 +34,9 @@ public class FileController {
 	@Autowired
 	MainDocumentService docService;
 
-	@PostMapping("{userId}/{documentId}/uploadFile")
-	public FileEntity uploadFile(@PathVariable Long userId, @PathVariable Long documentId,
-			@RequestParam MultipartFile file) throws IOException {
-		String fileName = fileService.storeUploadedFile(file, userId, documentId);
+	@PostMapping("{userId}/uploadFile")
+	public FileEntity uploadFile(@PathVariable Long userId, @RequestParam MultipartFile file) throws IOException {
+		String fileName = fileService.storeUploadedFile(file, userId);
 
 		if (fileName.isEmpty()) {
 			return null;
@@ -50,12 +49,12 @@ public class FileController {
 		}
 	}
 
-	@GetMapping("{userId}/{documentId}/uploadedFilesNames")
-	public List<String> getListOfFiles(@PathVariable Long userId, @PathVariable Long documentId) throws IOException {
-		if (fileService.getUploadedFilesNames(userId, documentId) == null) {
+	@GetMapping("{userId}/uploadedFilesNames")
+	public List<String> getListOfFiles(@PathVariable Long userId) throws IOException {
+		if (fileService.getUploadedFilesNames(userId) == null) {
 			return null;
 		}
-		return fileService.getUploadedFilesNames(userId, documentId);
+		return fileService.getUploadedFilesNames(userId);
 	}
 
 	@DeleteMapping("{userId}/{documentId}/delete")

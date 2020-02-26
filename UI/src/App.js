@@ -28,6 +28,7 @@ import ApiUrl from "./APIURL";
 import DoctypesToCreateGroupsManager from "./components/Doctype/DoctypesToCreateGroupsManager";
 import DoctypesToModerateGroupsManager from "./components/Doctype/DoctypesToModerateGroupsManager";
 import AddMainDocumentForm from "./components/Document/AddMainDocumentForm";
+import AddMainDocumentContainer from "./components/Document/AddMainDocumentContainer";
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
@@ -132,7 +133,7 @@ function App() {
               path="/Gentoo/admin/managemoderatabledoctypegroups/:doctypeid"
               component={DoctypesToModerateGroupsManager}
             />
-            <Route exact path="/Gentoo/user/documents/add" component={AddMainDocumentForm} />
+            <Route exact path="/Gentoo/user/documents/add" component={AddMainDocumentContainer} />
           </Switch>
         </div>
       </div>
