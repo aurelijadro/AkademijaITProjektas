@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
 import { useMyData } from "../context";
+import ApiForLogin from "../ApiForLogin";
 
 axios.defaults.withCredentials = true;
 const Login = withRouter(({ history, ...props }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { currentUsername, updateUserInformation } = useMyData();
+  const { updateUserInformation } = useMyData();
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -15,7 +16,7 @@ const Login = withRouter(({ history, ...props }) => {
     userData.append("username", username);
     userData.append("password", password);
     axios
-      .post("http://localhost:8081/Gentoo/login", userData, {
+      .post(`${ApiForLogin}login`, userData, {
         headers: { "Content-type": "application/x-www-form-urlencoded" }
       })
       .then(resp => {

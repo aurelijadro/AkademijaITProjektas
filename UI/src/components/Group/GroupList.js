@@ -3,6 +3,7 @@ import axios from "axios";
 import GroupComponent from "./GroupComponent";
 import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
+import ApiUrl from "../../APIURL";
 
 class GroupList extends Component {
   constructor() {
@@ -18,7 +19,7 @@ class GroupList extends Component {
 
   getGroups = () => {
     axios
-      .get("http://localhost:8081/Gentoo/api/groups")
+      .get(`${ApiUrl}groups`)
       .then(response => {
         this.setState({ groups: response.data });
       })
