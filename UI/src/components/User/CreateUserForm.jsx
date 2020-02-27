@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import NavigationForAdmin from "../NavigationForAdmin";
+import ApiUrl from "../../APIURL";
 
 class CreateUserForm extends Component {
   constructor() {
@@ -11,7 +12,6 @@ class CreateUserForm extends Component {
       username: "",
       password: "",
       role: "USER",
-      url: "http://localhost:8081/Gentoo",
       nameError: "",
       surnameError: "",
       usernameError: "",
@@ -89,9 +89,9 @@ class CreateUserForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { name, surname, username, password, role, url } = this.state;
+    const { name, surname, username, password, role } = this.state;
     axios
-      .post(`${url}/api/users`, { name, surname, username, password, role })
+      .post(`${ApiUrl}users`, { name, surname, username, password, role })
       .then(result => {
         alert(
           "Jūs sėkmingai sukūrėte naują vartotoją: \n Vardas: " +

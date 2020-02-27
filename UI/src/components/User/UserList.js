@@ -3,6 +3,7 @@ import axios from "axios";
 import UserComponent from "./UserComponent";
 import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
+import ApiUrl from "../../APIURL";
 
 class UserList extends Component {
   constructor() {
@@ -16,7 +17,7 @@ class UserList extends Component {
 
   getUsers = () => {
     axios
-      .get("http://localhost:8081/Gentoo/api/users")
+      .get(`${ApiUrl}users`)
       .then(response => {
         this.setState({ users: response.data });
       })

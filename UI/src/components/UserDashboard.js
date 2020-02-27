@@ -10,11 +10,16 @@ class UserDashboard extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { userId: -2 };
+    this.state = { userId: -2, isModerator:false };
+
   }
 
   componentDidMount() {
     this.getUserId();
+  }
+
+  getIsModerator(){
+    axios.get(`${ApiUrl}`)
   }
 
   getUserId() {

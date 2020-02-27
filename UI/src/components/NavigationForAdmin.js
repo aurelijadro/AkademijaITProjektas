@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
-
+import ApiForLogin from "../ApiForLogin";
 const NavigationForAdmin = withRouter(({ history, ...props }) => {
   return (
     <nav id="navbar" className="navbar navbar-expand-sm  navbar-light bg-dark">
@@ -32,7 +32,7 @@ const NavigationForAdmin = withRouter(({ history, ...props }) => {
           type="button"
           className="btn btn-light"
           onClick={() => {
-            axios.post("http://localhost:8081/Gentoo/logout").then(resp => {
+            axios.post(`${ApiForLogin}logout`).then(resp => {
               history.push("/Gentoo/");
             });
           }}
