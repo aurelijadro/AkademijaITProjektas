@@ -36,9 +36,13 @@ class AddMainDocumentContainer extends Component {
             })
     };
 
+    componentDidMount() {
+        this.getDoctypes();
+    }
+
     getDoctypes = () => {
         axios
-            .get(`${ApiUrl}doctypes`)
+            .get("http://localhost:8081/Gentoo/api/doctypes")
             .then(response => {
                 console.log(response)
                 this.setState({ doctypes: response.data });
@@ -59,7 +63,6 @@ class AddMainDocumentContainer extends Component {
 
     onFormSubmit = (e) => {
         e.preventDefault();
-        const userId = this.state.userId;
         const data = new FormData()
         data.append("file", this.state.file)
         axios

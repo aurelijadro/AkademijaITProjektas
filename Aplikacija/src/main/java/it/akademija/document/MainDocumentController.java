@@ -55,10 +55,6 @@ public class MainDocumentController {
 	@ApiOperation(value = "Add new document", notes = "Returns new document")
 	public MainDocument createDocument(@PathVariable Long userId, @PathVariable Long doctypeId,
 			@RequestBody final NewMainDocument newDocument, HttpServletResponse response) {
-		if (mainDocService.addDocument(newDocument, userId, doctypeId) == null) {
-			response.setStatus(404);
-			return null;
-		}
 		return mainDocService.addDocument(newDocument, userId, doctypeId);
 	}
 

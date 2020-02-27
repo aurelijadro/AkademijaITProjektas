@@ -47,22 +47,15 @@ public class MainDocumentService {
 	@Transactional
 	public MainDocument addDocument(NewMainDocument newMainDocument, Long userId, Long doctypeId) {
 		User user = userRepo.findUserById(userId);
-		if (user == null) {
-			return null;
-		} else {
-			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
-			if (doctype == null) {
-				return null;
-			} else {
-				MainDocument document = new MainDocument(newMainDocument.getTitle(), newMainDocument.getSummary());
-				logger.debug("New document (ID{}) was added.", document.getId());
-				user.addDocument(document);
-				document.setUser(user);
-				document.setDoctypes(doctype);
-				document.setCreatorId(userId);
-				return mainDocRepository.save(document);
-			}
-		}
+		DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
+		MainDocument document = new MainDocument(newMainDocument.getTitle(), newMainDocument.getSummary());
+		logger.debug("New document (ID{}) was added.", document.getId());
+		document.setDoctypes(doctype);
+		document.setCreatorId(userId);
+		user.addDocument(document);
+		document.setUser(user);
+		return mainDocRepository.save(document);
+
 	}
 
 	@Transactional
