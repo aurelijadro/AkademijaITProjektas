@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import AddMainDocumentForm from './AddMainDocumentForm';
 import ApiUrl from "../../APIURL";
-import DoctypeSelect from './DoctypeSelect';
 import FileListComponent from './FileListComponent';
 
 class NewDocumentContainer extends Component {
@@ -44,11 +42,15 @@ class NewDocumentContainer extends Component {
 
     }
 
-
     handleDoctypesChange = e => {
         this.setState({ doctypeItem: e.target.value });
         console.log("Astos", e.target.value)
     };
+
+    onChange = (event) => {
+        event.preventDefault();
+        this.setState({ [event.target.name]: event.target.value });
+    }
 
     addNewDocument = e => {
         e.preventDefault();
@@ -89,7 +91,7 @@ class NewDocumentContainer extends Component {
                 axios.get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`)
                     .then(response => {
                         this.setState({ results: response.data });
-                        console.log(this.state.results)
+                        console.log("sekme sekme")
                     })
                     .catch(error => {
                         alert("Kuriant dokumentą būtina pridėti bent vieną bylą.")
@@ -118,13 +120,17 @@ class NewDocumentContainer extends Component {
     downloadFiles = (e) => {
         fetch(`${ApiUrl}files/${this.state.userId}/${this.state.id}/downloadZip`)
             .then(response => {
-                response.blob().then(blob => {
-                    let url = window.URL.createObjectURL(blob);
-                    let a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'Results.zip';
-                    a.click();
-                });
+                if (this.state.results && this.state.results.length > 0) {
+                    response.blob().then(blob => {
+                        let url = window.URL.createObjectURL(blob);
+                        let a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'Results.zip';
+                        a.click();
+                    });
+                } else {
+                    alert("Jūs neprisegėte nei vienos bylos.");
+                }
             });
     }
 
@@ -163,7 +169,7 @@ class NewDocumentContainer extends Component {
                             </div>
                             <div className="form-group" >
                                 <label > Trumpas aprašymas </label>
-                                <textarea className="form-control" name="summary" rows="3" > </textarea>
+                                <textarea className="form-control" name="summary" onChange={this.onChange} rows="3" > </textarea>
                             </div >
                             <div className="form-group" >
                                 <label > Pasirinkite dokumento tipą:
@@ -181,42 +187,33 @@ class NewDocumentContainer extends Component {
 
 
                     <div className="panel-body">
-                        {/* {this.state.showResults ? */}
-                        <div>
-
-                            <form onSubmit={this.onFormSubmit} >
-                                <div className="form-group" >
-                                    <label > Jūsų prisegtos bylos: </label>
-                                    <button className="btn-dark" id="document" type="submit">Ištrinti bylas</button>
-                                    {result}
-
-                                    <div className="row" > </div>
-                                    <input type="file" onChange={this.onFilesChange} />
-                                    <div >
-                                        <button id="uploadButton" type="submit" > Įkelti </button>
-                                    </div >
-                                </div>
-                            </form >
-
-                            {/* <div className="col-3">
-                                <button onClick={this.handleClick}>Delete present files</button>
-                            </div> */}
-
+                        {this.state.showResults ?
                             <div>
-                                <h4 className="download">If you'd like to download files with the results, please press the download button below:</h4>
-                                <button className="download" onClick={this.downloadFiles}>Download</button>
+
+                                <form onSubmit={this.onFormSubmit} >
+                                    <div className="form-group" >
+                                        <label > Jūsų prisegtos bylos: </label>
+                                        <button className="btn-dark" id="document" onClick={this.handleClick}>Ištrinti bylas</button>
+                                        {result}
+
+                                        <div className="row" > </div>
+                                        <input type="file" onChange={this.onFilesChange} />
+                                        <div >
+                                            <button id="uploadButton" type="submit" > Įkelti </button>
+                                        </div >
+                                    </div>
+                                </form >
+
+                                <div className="panel-body">
+                                    <label>Parsisiųsti bylas peržiūrai:</label>
+                                    <div className="row" > </div>
+                                    <button className="download" onClick={this.downloadFiles}>Download</button>
+                                </div>
+
+                                <button className="btn btn-dark" type="submit" onClick={this.saveDocument}> Išsaugoti </button>
+
                             </div>
-
-                            <button className="btn btn-dark" type="submit" onClick={this.saveDocument}> Išsaugoti </button>
-
-                        </div>
-                        {/* : null} */}
-
-
-
-
-
-
+                            : null}
 
                     </div>
                 </div >
