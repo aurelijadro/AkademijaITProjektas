@@ -24,7 +24,7 @@ public class UserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = findByUsername(username);
+		User user = userRepository.findByUsername(username);
 		if (user == null) {
 			logger.debug("User [{})] was not found.", username);
 			throw new UsernameNotFoundException(username + " not found.");
@@ -49,13 +49,15 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
+	public UserDTO findByUsername(String username) {
+		User user = userRepository.findByUsername(username);
+		return new UserDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername(), user.getGroups());
 	}
 
 	@Transactional
-	public User findById(Long id) {
-		return userRepository.findUserById(id);
+	public UserDTO findById(Long id) {
+		User user = userRepository.findUserById(id);
+		return new UserDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername(), user.getGroups());
 	}
 
 	@Transactional
@@ -70,7 +72,7 @@ public class UserService implements UserDetailsService {
 
 	@Transactional
 	public User updateUser(Long id, NewUser newUser) {
-		User existingUser = findById(id);
+		User existingUser = userRepository.findUserById(id);
 		existingUser.setName(newUser.getName());
 		existingUser.setSurname(newUser.getSurname());
 		existingUser.setUsername(newUser.getUsername());

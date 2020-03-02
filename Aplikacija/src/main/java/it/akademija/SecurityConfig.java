@@ -28,7 +28,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
-
+import it.akademija.user.UserRepository;
 import it.akademija.user.UserService;
 
 @Configuration
@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 	@Autowired
-	private UserService userService;
+	private UserRepository userRepository;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -65,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 								.print("{\"username\": \""
 										+ SecurityContextHolder.getContext().getAuthentication().getName()
 										+ "\", \"role\":\""
-										+ userService.findByUsername(
+										+ userRepository.findByUsername(
 												SecurityContextHolder.getContext().getAuthentication().getName())
 												.getRole()
 										+ "\"}");

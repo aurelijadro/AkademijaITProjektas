@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import it.akademija.document.MainDocument;
 import it.akademija.document.MainDocumentService;
 import it.akademija.user.User;
+import it.akademija.user.UserRepository;
 import it.akademija.user.UserService;
 
 @RestController
@@ -33,6 +34,9 @@ public class FileController {
 
 	@Autowired
 	MainDocumentService docService;
+
+	@Autowired
+	UserRepository userRepository;
 
 	@PostMapping("{userId}/uploadFile")
 	public FileEntity uploadFile(@PathVariable Long userId, @RequestParam MultipartFile file) throws IOException {
@@ -65,7 +69,7 @@ public class FileController {
 	@GetMapping("{userId}/{documentId}/downloadZip")
 	public void downloadZipFromDocumentById(@PathVariable Long userId, @PathVariable Long documentId,
 			HttpServletResponse response) throws Exception {
-		User user = userService.findById(userId);
+		User user = userRepository.findUserById(userId);
 		if (user == null) {
 			response.setStatus(404);
 		} else {

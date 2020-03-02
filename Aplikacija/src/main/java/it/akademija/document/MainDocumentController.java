@@ -17,6 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import it.akademija.doctype.DoctypeEntityRepo;
+import it.akademija.filesCRUD.FileService;
 
 @RestController
 @Api(value = "document")
@@ -30,6 +31,9 @@ public class MainDocumentController {
 
 	@Autowired
 	private DoctypeEntityRepo doctypeRepo;
+
+	@Autowired
+	private FileService fileService;
 
 	@RequestMapping(path = "/{id}/documents", method = RequestMethod.GET)
 	@ApiOperation(value = "Get documents", notes = "Returns all documents")
@@ -82,8 +86,10 @@ public class MainDocumentController {
 			return;
 		}
 		logger.debug("Document was deleted.");
-		response.setStatus(200);
+
 		mainDocService.deleteDocument(documentId, userId);
+		fileService.deleteAllFilesFromFolder(userId, documentId);
+		response.setStatus(200);
 	}
 
 //	@RequestMapping(path = "/{documentId}/doctypes/{doctypeId}", method = RequestMethod.POST)
