@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import it.akademija.doctype.DoctypeEntity;
 import it.akademija.group.GroupEntity;
 
 @RestController
@@ -37,6 +38,39 @@ public class UserController {
 	@ApiOperation(value = "Get users", notes = "Returns all users")
 	public List<User> getUsers() {
 		return userService.getUsers();
+	}
+
+	@RequestMapping(path = "/{id}/doctypesusercreates", method = RequestMethod.GET)
+	@ApiOperation(value = "Get doctypes user can create")
+	public Set<DoctypeEntity> getDoctypesUserCanCreate(
+			@ApiParam(value = "user id", required = true) @PathVariable Long id, HttpServletResponse response) {
+		Set<DoctypeEntity> doctypestocreate = userService.getDoctypesUserCreates(id);
+		if (doctypestocreate == null) {
+			response.setStatus(404);
+			return null;
+		}
+		response.setStatus(200);
+		return doctypestocreate;
+	}
+
+	@RequestMapping(path = "/{id}/doctypesusermoderates", method = RequestMethod.GET)
+	@ApiOperation(value = "Get doctypes user can moderate")
+	public Set<DoctypeEntity> getDoctypesUserCanModerate(
+			@ApiParam(value = "user id", required = true) @PathVariable Long id, HttpServletResponse response) {
+		Set<DoctypeEntity> doctypestomoderate = userService.getDoctypesUserModerates(id);
+		if (doctypestomoderate == null) {
+			response.setStatus(404);
+			return null;
+		}
+		response.setStatus(200);
+		return doctypestomoderate;
+	}
+
+	@RequestMapping(path = "/{id}/ismoderator", method = RequestMethod.GET)
+	@ApiOperation(value = "Check if user is moderator")
+	public Boolean isModerator(@ApiParam(value = "user id", required = true) @PathVariable Long id,
+			HttpServletResponse response) {
+		return userService.isUserModerator(id);
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)

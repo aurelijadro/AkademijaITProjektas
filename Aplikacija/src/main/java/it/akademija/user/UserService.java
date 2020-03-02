@@ -1,6 +1,9 @@
 package it.akademija.user;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import it.akademija.doctype.DoctypeEntity;
+import it.akademija.group.GroupEntity;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -80,6 +86,46 @@ public class UserService implements UserDetailsService {
 		existingUser.setRole(newUser.getRole());
 
 		return existingUser;
+	}
+
+	@Transactional
+	public Set<DoctypeEntity> getDoctypesUserCreates(Long id) {
+		User user = userRepository.findUserById(id);
+		if (user == null) {
+			return null;
+		}
+		Set<GroupEntity> userGroups = user.getGroups();
+		Set<DoctypeEntity> doctypesUserCreates = new HashSet<DoctypeEntity>();
+		for (GroupEntity group : userGroups) {
+			doctypesUserCreates.addAll(group.getDoctypesToCreate());
+		}
+
+		return doctypesUserCreates;
+
+	}
+
+	@Transactional
+	public Set<DoctypeEntity> getDoctypesUserModerates(Long id) {
+		User user = userRepository.findUserById(id);
+		if (user == null) {
+			return null;
+		}
+		Set<GroupEntity> userGroups = user.getGroups();
+		Set<DoctypeEntity> doctypesUserModerates = new HashSet<DoctypeEntity>();
+		for (GroupEntity group : userGroups) {
+			doctypesUserModerates.addAll(group.getDoctypesToModerate());
+		}
+
+		return doctypesUserModerates;
+
+	}
+
+	@Transactional
+	public Boolean isUserModerator(Long id) {
+		if (getDoctypesUserModerates(id).isEmpty() || getDoctypesUserModerates(id) == null) {
+			return false;
+		}
+		return true;
 	}
 
 }
