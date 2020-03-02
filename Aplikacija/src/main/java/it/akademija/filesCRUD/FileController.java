@@ -63,8 +63,13 @@ public class FileController {
 	}
 
 	@DeleteMapping("{userId}/{documentId}/delete")
-	public void deleteFile(@PathVariable Long userId, @PathVariable Long documentId) throws IOException {
-		fileService.deleteAllFilesFromFolder(userId, documentId);
+	public void deleteDocumentFolder(@PathVariable Long userId, @PathVariable Long documentId) throws IOException {
+		fileService.deleteDocumentFolder(userId, documentId);
+	}
+
+	@DeleteMapping("{userId}/{documentId}/documentsDelete")
+	public void deleteFilesInFolder(@PathVariable Long userId, @PathVariable Long documentId) throws IOException {
+		fileService.deleteFilesInFolder(userId, documentId);
 	}
 
 	@GetMapping("{userId}/{documentId}/downloadZip")

@@ -24,24 +24,26 @@ class NewDocumentContainer extends Component {
 
     componentDidMount() {
         axios
-            .get(`${ApiUrl}doctypes`)
-            .then(response => {
-                this.setState({ doctypes: response.data })
-            })
-            .then()
-            .catch(error => {
-
-            });
-        axios
             .get(`${ApiUrl}loggedUserId`)
             .then(response => {
                 console.log(response)
                 this.setState({ userId: response.data });
+                axios
+                    .get(`${ApiUrl}users/${this.state.userId}/doctypesusercreates`)
+                    .then(response => {
+                        this.setState({ doctypes: response.data })
+                    })
+                    .then()
+                    .catch(error => {
+
+                    });
             })
             .catch(error => {
                 alert("Tokio vartotojo nera arba jis neprisijunges.")
-            })
+            });
+
     }
+
 
     handleDoctypesChange = e => {
         this.setState({ doctypeItem: e.target.value });
@@ -98,7 +100,42 @@ class NewDocumentContainer extends Component {
             })
     }
 
+    handleClick = (e) => {
+        e.preventDefault();
+        axios.delete(`${ApiUrl}files/${this.state.userId}/${this.state.id}/documentsDelete`)
+            .then(response => {
+                axios.get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`)
+                    .then(response => {
+                        this.setState({ results: response.data });
+                        alert("You have deleted all files successfully. \nYou can upload new files.")
+                    })
+                    .catch(error => {
+                    });
+            })
+            .catch(error => { });
+    }
 
+    downloadFiles = (e) => {
+        fetch(`${ApiUrl}files/${this.state.userId}/${this.state.id}/downloadZip`)
+            .then(response => {
+                response.blob().then(blob => {
+                    let url = window.URL.createObjectURL(blob);
+                    let a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'Results.zip';
+                    a.click();
+                });
+            });
+    }
+
+    saveDocument = (e) => {
+        e.preventDefault();
+        if (this.state.results && this.state.results.length > 0) {
+            this.props.history.push(`/Gentoo/user`);
+        } else {
+            alert("Prašau pridėti bent vieną bylą.")
+        }
+    }
 
     render() {
         const doctypeItem = this.state.doctypes.map((doctype) =>
@@ -135,34 +172,46 @@ class NewDocumentContainer extends Component {
                                         {doctypeItem}
                                     </select>
                                 </label>
+                                <button className="btn-dark" id="document" type="submit">Patvirtinti</button>
                             </div >
-
-                            <button className="btn-dark" type="submit">Patvirtinti</button>
 
                         </form>
 
+                    </div>
 
+
+                    <div className="panel-body">
+                        {/* {this.state.showResults ? */}
                         <div>
-                            {this.state.showResults ?
-                                <div>
-                                    <div className="row">
-                                        <form onSubmit={this.onFormSubmit} >
-                                            <div className="form-group" >
-                                                <label > Prisekite bylas </label>
-                                                <div className="row" > </div>
-                                                <input type="file" onChange={this.onFilesChange} />
-                                                <div >
-                                                    <button id="uploadButton" type="submit" > Įkelti </button>
-                                                </div >
-                                            </div>
-                                        </form >
-                                    </div>
-                                    <h4 id="upload"> Jūs pridėjote šias bylas: </h4>
+
+                            <form onSubmit={this.onFormSubmit} >
+                                <div className="form-group" >
+                                    <label > Jūsų prisegtos bylos: </label>
+                                    <button className="btn-dark" id="document" type="submit">Ištrinti bylas</button>
                                     {result}
-                                    <button className="btn btn-dark" type="submit" > Išsaugoti </button>
+
+                                    <div className="row" > </div>
+                                    <input type="file" onChange={this.onFilesChange} />
+                                    <div >
+                                        <button id="uploadButton" type="submit" > Įkelti </button>
+                                    </div >
                                 </div>
-                                : null}
+                            </form >
+
+                            {/* <div className="col-3">
+                                <button onClick={this.handleClick}>Delete present files</button>
+                            </div> */}
+
+                            <div>
+                                <h4 className="download">If you'd like to download files with the results, please press the download button below:</h4>
+                                <button className="download" onClick={this.downloadFiles}>Download</button>
+                            </div>
+
+                            <button className="btn btn-dark" type="submit" onClick={this.saveDocument}> Išsaugoti </button>
+
                         </div>
+                        {/* : null} */}
+
 
 
 

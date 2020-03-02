@@ -88,7 +88,7 @@ public class MainDocumentController {
 		logger.debug("Document was deleted.");
 
 		mainDocService.deleteDocument(documentId, userId);
-		fileService.deleteAllFilesFromFolder(userId, documentId);
+		fileService.deleteDocumentFolder(userId, documentId);
 		response.setStatus(200);
 	}
 

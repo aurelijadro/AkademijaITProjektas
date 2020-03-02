@@ -28,3 +28,12 @@ nav li a {
 .container-fluid {
   padding: 0;
 }
+
+.panel-body {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+#document {
+  float: right;
+}
