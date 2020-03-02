@@ -34,7 +34,7 @@ public class FileController {
 	@Autowired
 	MainDocumentService docService;
 
-	@PostMapping("{userId}/uploadFile")
+	@PostMapping("{userId}/{documentId}/uploadFile")
 	public FileEntity uploadFile(@PathVariable Long userId, @PathVariable Long documentId,
 			@RequestParam MultipartFile file) throws IOException {
 		String fileName = fileService.storeUploadedFile(file, userId, documentId);
@@ -50,7 +50,7 @@ public class FileController {
 		}
 	}
 
-	@GetMapping("{userId}/uploadedFilesNames")
+	@GetMapping("{userId}/{documentId}/uploadedFilesNames")
 	public List<String> getListOfFiles(@PathVariable Long userId, @PathVariable Long documentId) throws IOException {
 		if (fileService.getUploadedFilesNames(userId, documentId) == null) {
 			return null;

@@ -72,6 +72,7 @@ public class MainDocumentService {
 	public void deleteDocument(Long documentId, Long userId) {
 		User user = userRepo.findUserById(userId);
 		MainDocument document = findDocumentById(documentId);
+
 		mainDocRepository.delete(document);
 		userRepo.save(user);
 		logger.debug("Document (ID{}) was deleted.", document);

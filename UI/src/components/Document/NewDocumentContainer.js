@@ -3,6 +3,7 @@ import axios from "axios";
 import AddMainDocumentForm from './AddMainDocumentForm';
 import ApiUrl from "../../APIURL";
 import DoctypeSelect from './DoctypeSelect';
+import FileListComponent from './FileListComponent';
 
 class NewDocumentContainer extends Component {
     constructor() {
@@ -15,7 +16,9 @@ class NewDocumentContainer extends Component {
             ],
             userId: "",
             title: "",
-            summary: ""
+            summary: "",
+            id: "",
+            results: []
         }
     }
 
@@ -55,16 +58,44 @@ class NewDocumentContainer extends Component {
         axios
             .post(`${ApiUrl}documents/${this.state.userId}/${this.state.doctypeItem}`, data)
             .then(response => {
+                this.state.id = response.data.id;
+                return this.state.id;
+            })
+            .then(response => {
                 this.setState({ showResults: true });
                 alert('Prašau prisegti papildomas bylas.')
             })
             .catch(error => {
-
             });
     }
 
     show = (e) => {
         return { showResults: false };
+    }
+
+    onFilesChange = event => {
+        this.setState({ file: event.target.files[0] });
+    }
+
+    onFormSubmit = (e) => {
+        e.preventDefault();
+        const data = new FormData()
+        data.append("file", this.state.file)
+        axios
+            .post(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadFile`, data)
+            .then((response) => {
+                axios.get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`)
+                    .then(response => {
+                        this.setState({ results: response.data });
+                        console.log(this.state.results)
+                    })
+                    .catch(error => {
+                        alert("Kuriant dokumentą būtina pridėti bent vieną bylą.")
+                    });
+            })
+            .catch((error) => {
+                alert("You haven't uploaded any files, please try again.")
+            })
     }
 
 
@@ -76,7 +107,10 @@ class NewDocumentContainer extends Component {
                 value={doctype.id}>
                 {doctype.title}
             </option>
-        )
+        );
+        const result = this.state.results.map((result, index) => {
+            return <FileListComponent key={index} result={result} />;
+        });
         return (
             <div className="container my-4" >
                 <div className="panel panel-default" >
@@ -110,20 +144,27 @@ class NewDocumentContainer extends Component {
 
                         <div>
                             {this.state.showResults ?
-                                <div className="row">
-                                    <form onSubmit={this.onFormSubmit} >
-                                        <div className="form-group" >
-                                            <label > Prisekite bylas </label>
-                                            <div className="row" > </div>
-                                            <input type="file" onChange={this.onFilesChange} />
-                                            <div >
-                                                <button id="uploadButton" type="submit" > Įkelti </button>
-                                            </div >
-                                        </div>
-                                    </form >
+                                <div>
+                                    <div className="row">
+                                        <form onSubmit={this.onFormSubmit} >
+                                            <div className="form-group" >
+                                                <label > Prisekite bylas </label>
+                                                <div className="row" > </div>
+                                                <input type="file" onChange={this.onFilesChange} />
+                                                <div >
+                                                    <button id="uploadButton" type="submit" > Įkelti </button>
+                                                </div >
+                                            </div>
+                                        </form >
+                                    </div>
+                                    <h4 id="upload"> Jūs pridėjote šias bylas: </h4>
+                                    {result}
+                                    <button className="btn btn-dark" type="submit" > Išsaugoti </button>
                                 </div>
                                 : null}
                         </div>
+
+
 
 
 
