@@ -19,6 +19,16 @@ const AddMainDocumentForm = props => {
                             <label > Trumpas aprašymas </label>
                             <textarea className="form-control" name="summary" rows="3" > </textarea>
                         </div >
+                        <div className="form-group" >
+                            <label > Pasirinkite dokumento tipą:
+                        <select
+                                    onChange={props.onChange} value={props.doctypes}>
+
+                                    <option value={props.doctypes.title}>{props.doctypes.title}</option>;
+
+                                </select>
+                            </label>
+                        </div >
 
                     </form>
 
