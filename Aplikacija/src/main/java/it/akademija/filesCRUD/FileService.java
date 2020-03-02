@@ -16,6 +16,8 @@ import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +25,12 @@ import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import it.akademija.document.MainDocumentService;
+
 @Service
 public class FileService {
 
+	private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 	private Path fileStorageLocation;
 
 	@Transactional
@@ -72,8 +77,12 @@ public class FileService {
 		return results;
 	}
 
-	public void deleteAllFilesFromFolder(Long userId, Long documentId) throws IOException {
-		FileUtils.cleanDirectory(new File("/tmp/Uploads/" + userId + "/" + documentId));
+	public void deleteAllFilesFromFolder(Long userId, Long documentId) {
+		try {
+			FileUtils.cleanDirectory(new File("/tmp/Uploads/" + userId + "/" + documentId));
+		} catch (IOException e) {
+			logger.error(e.toString());
+		}
 	}
 
 	@Transactional

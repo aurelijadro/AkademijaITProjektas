@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.akademija.user.User;
+import it.akademija.user.UserRepository;
 import it.akademija.user.UserService;
 
 @RestController
@@ -16,7 +17,7 @@ import it.akademija.user.UserService;
 public class AppController {
 
 	@Autowired
-	UserService userService;
+	UserRepository userRepository;
 
 	@RequestMapping(path = "/loggedUsername", method = RequestMethod.GET)
 	public String getLoggedInUsername() {
@@ -34,11 +35,11 @@ public class AppController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			String currentUserName = authentication.getName();
-			User user = userService.findByUsername(currentUserName);
+			User user = userRepository.findByUsername(currentUserName);
 			if (user == null) {
 				return -1l;
 			}
-			return userService.findByUsername(currentUserName).getId();
+			return userRepository.findByUsername(currentUserName).getId();
 		}
 		return -1l;
 	}

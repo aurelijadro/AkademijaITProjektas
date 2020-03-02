@@ -35,10 +35,14 @@ public class FileController {
 	@Autowired
 	MainDocumentService docService;
 
+<<<<<<< HEAD
+	@PostMapping("{userId}/{documentId}/uploadFile")
+=======
 	@Autowired
 	UserRepository userRepository;
 
-	@PostMapping("{userId}/{documentId}/uploadFile")
+	@PostMapping("{userId}/uploadFile")
+>>>>>>> 89c1329c8f29f76ee0639fcca3f32afdd8c3fef6
 	public FileEntity uploadFile(@PathVariable Long userId, @PathVariable Long documentId,
 			@RequestParam MultipartFile file) throws IOException {
 		String fileName = fileService.storeUploadedFile(file, userId, documentId);
