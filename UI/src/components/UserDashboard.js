@@ -10,22 +10,21 @@ class UserDashboard extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { userId: -2, isModerator:false };
-
+    this.state = { userId: -2, isModerator: "" };
   }
 
   componentDidMount() {
-    this.getUserId();
+    this.getDataFromServer();
   }
 
-  getIsModerator(){
-    axios.get(`${ApiUrl}`)
-  }
+  getDataFromServer() {
+    axios.get(`${ApiUrl}loggedUserId`).then(resp => {
+      this.setState({ userId: resp.data });
 
-  getUserId() {
-    axios
-      .get(`${ApiUrl}loggedUserId`)
-      .then(resp => this.setState({ userId: resp.data }));
+      axios
+        .get(`${ApiUrl}users/${this.state.userId}/ismoderator`)
+        .then(resp => this.setState({ isModerator: resp.data }));
+    });
   }
 
   render() {
@@ -34,7 +33,7 @@ class UserDashboard extends Component {
     }
     return (
       <div>
-        <NavigationForUser />
+        <NavigationForUser isModerator={this.state.isModerator} />
         <div className="container my-4">
           <CreatedDocuments id={this.state.userId} />
         </div>
