@@ -25,8 +25,6 @@ import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import it.akademija.document.MainDocumentService;
-
 @Service
 public class FileService {
 
@@ -77,7 +75,17 @@ public class FileService {
 		return results;
 	}
 
-	public void deleteAllFilesFromFolder(Long userId, Long documentId) {
+	@Transactional
+	public void deleteDocumentFolder(Long userId, Long documentId) {
+		try {
+			FileUtils.deleteDirectory(new File("/tmp/Uploads/" + userId + "/" + documentId));
+		} catch (IOException e) {
+			logger.error(e.toString());
+		}
+	}
+
+	@Transactional
+	public void deleteFilesInFolder(Long userId, Long documentId) {
 		try {
 			FileUtils.cleanDirectory(new File("/tmp/Uploads/" + userId + "/" + documentId));
 		} catch (IOException e) {
