@@ -21,7 +21,7 @@ const CreatedDocuments = props => {
     `).then(setSubmittedDocuments);
   };
 
-  useEffect(function() {
+  useEffect(function () {
     updateCachedData();
     // const timer = setInterval(updateCachedData, 2000);
     // return () => clearInterval(timer);
@@ -64,7 +64,7 @@ const CreatedDocuments = props => {
         <div className="row my-1">
           <div className="col-3">{document.title}</div>
           <div className="col-2">{document.doctypes.title}</div>
-          <Link className="col-2 mx-3" to={`/Gentoo/user`}>
+          <Link className="col-2 mx-3" to={`/Gentoo/user/documents/${document.id}`}>
             <button type="button" className="btn btn-dark ">
               Peržiūrėti/Redaguoti
             </button>

@@ -11,12 +11,9 @@ import CreateUserForm from "./components/User/CreateUserForm";
 import EditFormContainer from "./components/User/EditFormContainer";
 import EditDoctypeFormContainer from "./components/Doctype/EditDoctypeFormContainer";
 import AddDoctypeFormContainer from "./components/Doctype/AddDoctypeFormContainer";
-
 import AddGroupFormContainer from "./components/Group/AddGroupFormContainer";
 import EditGroupFormContainer from "./components/Group/EditGroupFormContainer";
-
 import UserDashboard from "./components/UserDashboard";
-import MainDocumentList from "./components/Document/MainDocumentList";
 import { Route } from "react-router-dom";
 import UserGroupsManager from "./components/User/UserGroupsManager";
 import { AppDataContext } from "./context";
@@ -28,6 +25,7 @@ import ApiUrl from "./APIURL";
 import DoctypesToCreateGroupsManager from "./components/Doctype/DoctypesToCreateGroupsManager";
 import DoctypesToModerateGroupsManager from "./components/Doctype/DoctypesToModerateGroupsManager";
 import NewDocumentContainer from "./components/Document/NewDocumentContainer";
+import EditDocumentContainer from "./components/Document/EditDocumentContainer";
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
@@ -95,12 +93,6 @@ function App() {
               path="/Gentoo/admin/doctypes/edit/:doctypeid"
               component={EditDoctypeFormContainer}
             />
-            <Route exact path="/Gentoo/user" component={UserDashboard} />
-            <Route
-              exact
-              path="/Gentoo/user/documents/non-submited"
-              component={MainDocumentList}
-            />
             <Route
               exact
               path="/Gentoo/admin/users/manageusergroups/:userid"
@@ -132,7 +124,9 @@ function App() {
               path="/Gentoo/admin/managemoderatabledoctypegroups/:doctypeid"
               component={DoctypesToModerateGroupsManager}
             />
+            <Route exact path="/Gentoo/user" component={UserDashboard} />
             <Route exact path="/Gentoo/user/documents/add" component={NewDocumentContainer} />
+            <Route exact path="/Gentoo/user/documents/:id" component={EditDocumentContainer} />
           </Switch>
         </div>
       </div>

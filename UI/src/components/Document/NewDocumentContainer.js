@@ -16,7 +16,8 @@ class NewDocumentContainer extends Component {
             title: "",
             summary: "",
             id: "",
-            results: []
+            results: [],
+            file: null
         }
     }
 
@@ -82,7 +83,6 @@ class NewDocumentContainer extends Component {
     }
 
     onFormSubmit = (e) => {
-        e.preventDefault();
         const data = new FormData()
         data.append("file", this.state.file)
         axios
