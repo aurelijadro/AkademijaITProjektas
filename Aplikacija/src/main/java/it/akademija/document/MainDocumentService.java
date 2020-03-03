@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import it.akademija.doctype.DoctypeEntityRepo;
 import it.akademija.user.User;
 import it.akademija.user.UserRepository;
+import it.akademija.document.MainDocumentService;
+import it.akademija.document.MainDocument;
+import it.akademija.doctype.DoctypeEntity;
 
 @Service
 public class MainDocumentService {
