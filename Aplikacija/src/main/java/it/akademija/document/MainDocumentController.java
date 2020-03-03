@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import it.akademija.doctype.DoctypeEntity;
 import it.akademija.doctype.DoctypeEntityRepo;
 import it.akademija.filesCRUD.FileService;
 
@@ -62,19 +63,28 @@ public class MainDocumentController {
 		return mainDocService.addDocument(newDocument, userId, doctypeId);
 	}
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+	@RequestMapping(path = "/{documentId}/{doctypeId}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Update existing document", notes = "Returns document with new info")
-	public MainDocument updateDocument(@PathVariable Long id, @RequestBody final NewMainDocument newDocument,
-			HttpServletResponse response) {
-		MainDocument document = mainDocService.findDocumentById(id);
+	public MainDocument updateDocument(@PathVariable Long documentId, @PathVariable Long doctypeId,
+			@RequestBody final NewMainDocument newDocument, HttpServletResponse response) {
+		MainDocument document = mainDocService.findDocumentById(documentId);
 		if (document == null) {
-			logger.debug("Document (ID{}) failed to update.", id);
+			logger.debug("Document (ID{}) failed to update.", documentId);
 			response.setStatus(404);
 			return null;
+		} else {
+			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
+			if (doctype == null) {
+				logger.debug("Document (ID{}) failed to update.", documentId);
+				response.setStatus(404);
+				return null;
+			} else {
+				logger.debug("Document (ID{}) was updated.", document.getId());
+				response.setStatus(200);
+				return mainDocService.updateDocument(documentId, newDocument, doctypeId);
+			}
 		}
-		logger.debug("Document (ID{}) was updated.", document.getId());
-		response.setStatus(200);
-		return mainDocService.updateDocument(id, newDocument);
+
 	}
 
 	@RequestMapping(path = "{userId}/{documentId}", method = RequestMethod.DELETE)

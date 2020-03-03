@@ -25,7 +25,7 @@ class EditDocumentContainer extends Component {
 
 
 
-    getDocument = () => {
+    getDocument = (e) => {
         axios
             .get(`${ApiUrl}documents/${this.props.match.params.id}`)
             .then(response => {
@@ -94,7 +94,7 @@ class EditDocumentContainer extends Component {
             doctypeItem: this.state.doctypeItem
         }
         axios
-            .put(`${ApiUrl}documents/${this.props.match.params.id}`, data)
+            .put(`${ApiUrl}documents/${this.props.match.params.id}/${this.state.value}`, data)
             .then(response => {
                 alert("Jūs sėkmingai pakeitėte dokumento duomenis.");
                 this.props.history.push("/Gentoo/user");
@@ -105,9 +105,6 @@ class EditDocumentContainer extends Component {
 
 
     render() {
-        // const item = this.state.doctypes.map(doc =>
-        //     <option>{doc.title}</option>
-        // )
         const result = this.state.results.map((result, index) => {
             return <FileListComponent key={index} result={result} />;
         });

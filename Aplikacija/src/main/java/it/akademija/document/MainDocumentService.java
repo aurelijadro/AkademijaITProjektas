@@ -59,11 +59,13 @@ public class MainDocumentService {
 	}
 
 	@Transactional
-	public MainDocument updateDocument(Long documentId, NewMainDocument newDocument) {
+	public MainDocument updateDocument(Long documentId, NewMainDocument newDocument, Long doctypeId) {
+		DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
 		MainDocument existingDocument = findDocumentById(documentId);
 		existingDocument.getDocumentStatus();
 		existingDocument.setTitle(newDocument.getTitle());
 		existingDocument.setSummary(newDocument.getSummary());
+		existingDocument.setDoctypes(doctype);
 		logger.debug("Document (ID{}) was updated.", existingDocument.getId());
 		return existingDocument;
 	}
