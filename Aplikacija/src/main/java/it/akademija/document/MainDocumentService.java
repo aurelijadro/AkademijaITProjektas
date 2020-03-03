@@ -139,4 +139,10 @@ public class MainDocumentService {
 		return submittedDocuments;
 	}
 
+	@Transactional
+	public List<MainDocument> getDocumentsByDoctype(DoctypeEntity doctype) {
+
+		return mainDocRepository.findAllByDoctypes(doctype);
+	}
+
 }

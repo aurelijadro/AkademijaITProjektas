@@ -1,6 +1,8 @@
 package it.akademija.document;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,6 +21,7 @@ import io.swagger.annotations.ApiParam;
 import it.akademija.doctype.DoctypeEntity;
 import it.akademija.doctype.DoctypeEntityRepo;
 import it.akademija.filesCRUD.FileService;
+import it.akademija.user.UserService;
 
 @RestController
 @Api(value = "document")
@@ -35,6 +38,9 @@ public class MainDocumentController {
 
 	@Autowired
 	private FileService fileService;
+
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping(path = "/{id}/documents", method = RequestMethod.GET)
 	@ApiOperation(value = "Get documents", notes = "Returns all documents")
@@ -170,7 +176,7 @@ public class MainDocumentController {
 	}
 
 	@RequestMapping(path = "/{id}/submittedDocuments", method = RequestMethod.GET)
-	@ApiOperation(value = "Get documents", notes = "Returns all documents")
+	@ApiOperation(value = "Get submitted documents", notes = "Returns all submitted documents")
 	public List<MainDocument> getSubmittedDocuments(@PathVariable Long id, HttpServletResponse response) {
 		List<MainDocument> documentList = mainDocService.submittedDocumentsList(id);
 		if (documentList == null) {
@@ -178,5 +184,22 @@ public class MainDocumentController {
 			return null;
 		}
 		return documentList;
+	}
+
+	@RequestMapping(path = "/{id}/documentstomoderate", method = RequestMethod.GET)
+	@ApiOperation(value = "Get documents to moderate by user id")
+	public List<MainDocument> getDocumentsToModerate(@PathVariable Long id, HttpServletResponse response) {
+		Set<DoctypeEntity> doctypesUserModerates = userService.getDoctypesUserModerates(id);
+		if (doctypesUserModerates == null) {
+			response.setStatus(404);
+			return null;
+		}
+		List<MainDocument> documentsToModerate = new ArrayList();
+		for (DoctypeEntity doctype : doctypesUserModerates) {
+			documentsToModerate.addAll(mainDocService.getDocumentsByDoctype(doctype));
+		}
+		response.setStatus(200);
+		return documentsToModerate;
+
 	}
 }

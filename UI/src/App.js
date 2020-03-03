@@ -25,6 +25,7 @@ import ApiUrl from "./APIURL";
 import DoctypesToCreateGroupsManager from "./components/Doctype/DoctypesToCreateGroupsManager";
 import DoctypesToModerateGroupsManager from "./components/Doctype/DoctypesToModerateGroupsManager";
 import NewDocumentContainer from "./components/Document/NewDocumentContainer";
+import ModeratorDashboard from "./components/Moderator/ModeratorDashboard";
 import EditDocumentContainer from "./components/Document/EditDocumentContainer";
 
 function App() {
@@ -125,8 +126,17 @@ function App() {
               component={DoctypesToModerateGroupsManager}
             />
             <Route exact path="/Gentoo/user" component={UserDashboard} />
-            <Route exact path="/Gentoo/user/documents/add" component={NewDocumentContainer} />
+            <Route
+              exact
+              path="/Gentoo/user/documents/add"
+              component={NewDocumentContainer}
+            />
             <Route exact path="/Gentoo/user/documents/:id" component={EditDocumentContainer} />
+            <Route
+              exact
+              path="/Gentoo/user/moderate"
+              component={ModeratorDashboard}
+            />
           </Switch>
         </div>
       </div>
