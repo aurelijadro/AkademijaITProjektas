@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import NavigationForUser from "../NavigationForUser";
 import ApiUrl from "../../APIURL";
 import Axios from "axios";
@@ -9,16 +10,23 @@ const ModeratorDashboard = () => {
   // get list of documents to moderate
 
   const [documentsToModerate, setDocumentsToModerate] = useState("loading");
+  const [userId, setUserId] = useState("loading");
 
-  // useEffect(){
-  //   function getDocumentsToModerate(){
+  useEffect(function getUserId() {
+    Axios.get(`${ApiUrl}loggedUserId`).then(resp => setUserId(resp.data));
+  }, []);
 
-  //   }
-  // }
+  useEffect(
+    function getDocumentsToModerate() {
+      Axios.get(
+        `${ApiUrl}documents/${userId}/documentstomoderate
+      `
+      ).then(resp => setDocumentsToModerate(resp.data));
+    },
+    [userId]
+  );
 
-  // button to review document
-
-  if (documentsToModerate === "loading") {
+  if (documentsToModerate === "loading" || userId === "loading") {
     return (
       <div>
         <h4>Loading...</h4>
@@ -26,11 +34,58 @@ const ModeratorDashboard = () => {
     );
   }
 
+  const documentsList = documentsToModerate.map((document, index) => {
+    return (
+      <li className="list-group-item list-group-item-dark" key={document.id}>
+        <div className="row my-1">
+          <div className="col-1">{index + 1}</div>
+          <div className="col-3">{document.title}</div>
+          <div className="col-2">{document.submissionDate}</div>
+          <div className="col-3">{document.doctypes.title}</div>
+          <Link className="col-2" to={`Gentoo/user/moderate/${document.id}`}>
+            <button className="btn btn-dark">Peržiūrėti</button>
+          </Link>
+        </div>
+      </li>
+    );
+  });
+
+  // const doctypeGroupsList = doctypeGroups.map((group, index) => {
+  //   function removeDoctypeGroup() {
+  //     groupChange(() =>
+  //       axios.delete(
+  //         `${ApiUrl}groups/${group.id}/doctypesToCreate/${doctypeId}`
+  //       )
+  //     );
+  //   }
+  //   return (
+  //     <li className="list-group-item list-group-item-dark" key={group.id}>
+  //       <div className="row my-1">
+  //         <div className="col-3">{index + 1}</div>
+  //         <div className="col-6">{group.title}</div>
+  //         <button className="col-3 btn btn-dark" onClick={removeDoctypeGroup}>
+  //           Pašalinti grupę
+  //         </button>
+  //       </div>
+  //     </li>
+  //   );
+  // });
+
   return (
     <div>
       <NavigationForUser />
-      <div className="container">
+      <div className="container my-4">
         <h1>Moderatoriaus langas!</h1>
+        <li className="list-group-item list-group-item-dark">
+          <div className="row my-2">
+            <div className="col-1 font-weight-bold">#</div>
+            <div className="col-3 font-weight-bold">Pavadinimas</div>
+            <div className="col-2 font-weight-bold">Pateikimo data</div>
+            <div className="col-3 font-weight-bold">Tipas</div>
+            <div className="col-2 font-weight-bold"></div>
+          </div>
+        </li>
+        <div>{documentsList}</div>
       </div>
     </div>
   );

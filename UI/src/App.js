@@ -143,6 +143,11 @@ function App() {
               path="/Gentoo/user/moderate"
               component={ModeratorDashboard}
             />
+            <Route
+              exact
+              path="/Gentoo/user/moderate/:docId"
+              component={ModeratorDashboard} // pakeisti komponente!!!
+            />
           </Switch>
         </div>
       </div>
