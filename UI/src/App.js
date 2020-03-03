@@ -28,6 +28,7 @@ import ApiUrl from "./APIURL";
 import DoctypesToCreateGroupsManager from "./components/Doctype/DoctypesToCreateGroupsManager";
 import DoctypesToModerateGroupsManager from "./components/Doctype/DoctypesToModerateGroupsManager";
 import NewDocumentContainer from "./components/Document/NewDocumentContainer";
+import ModeratorDashboard from "./components/Moderator/ModeratorDashboard";
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
@@ -38,7 +39,7 @@ function App() {
     });
   }
 
-  useEffect(function () {
+  useEffect(function() {
     updateUserInformation();
     const timer = setInterval(updateUserInformation, 60000);
     return () => clearInterval(timer);
@@ -132,7 +133,16 @@ function App() {
               path="/Gentoo/admin/managemoderatabledoctypegroups/:doctypeid"
               component={DoctypesToModerateGroupsManager}
             />
-            <Route exact path="/Gentoo/user/documents/add" component={NewDocumentContainer} />
+            <Route
+              exact
+              path="/Gentoo/user/documents/add"
+              component={NewDocumentContainer}
+            />
+            <Route
+              exact
+              path="/Gentoo/user/moderate"
+              component={ModeratorDashboard}
+            />
           </Switch>
         </div>
       </div>
