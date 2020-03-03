@@ -78,7 +78,7 @@ class EditDocumentContainer extends Component {
     }
 
     handleDoctypesChange = e => {
-        this.setState({ doctypeItem: e.target.value });
+        this.setState({ value: e.target.value });
         console.log("Astos", e.target.value)
     };
 
@@ -130,8 +130,7 @@ class EditDocumentContainer extends Component {
                             </div >
                             <div className="form-group" >
                                 <label > Pasirinkite dokumento tipą:
-                            <select onChange={this.handleDoctypesChange}>
-                                        <option value={this.state.doctypes.id}>{this.state.doctypes.title}</option>
+                            <select value={this.state.doctypes.title} onChange={this.handleDoctypesChange} >
                                         {this.state.doctypeItem}
                                     </select>
                                 </label>
