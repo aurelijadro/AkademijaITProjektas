@@ -10,13 +10,13 @@ class NewDocumentContainer extends Component {
             doctypes: [{
                 id: "",
                 title: ""
-            }
-            ],
+            }],
             userId: "",
             title: "",
             summary: "",
             id: "",
-            results: []
+            results: [],
+            file: null
         }
     }
 
@@ -24,7 +24,6 @@ class NewDocumentContainer extends Component {
         axios
             .get(`${ApiUrl}loggedUserId`)
             .then(response => {
-                console.log(response)
                 this.setState({ userId: response.data });
                 axios
                     .get(`${ApiUrl}users/${this.state.userId}/doctypesusercreates`)
@@ -44,7 +43,6 @@ class NewDocumentContainer extends Component {
 
     handleDoctypesChange = e => {
         this.setState({ doctypeItem: e.target.value });
-        console.log("Astos", e.target.value)
     };
 
     onChange = (event) => {
@@ -67,7 +65,7 @@ class NewDocumentContainer extends Component {
             })
             .then(response => {
                 this.setState({ showResults: true });
-                alert('Prašau prisegti papildomas bylas.')
+                alert('Prisekite papildomas bylas.')
             })
             .catch(error => {
             });
@@ -78,11 +76,11 @@ class NewDocumentContainer extends Component {
     }
 
     onFilesChange = event => {
+        event.preventDefault();
         this.setState({ file: event.target.files[0] });
     }
 
     onFormSubmit = (e) => {
-        e.preventDefault();
         const data = new FormData()
         data.append("file", this.state.file)
         axios
@@ -91,14 +89,13 @@ class NewDocumentContainer extends Component {
                 axios.get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`)
                     .then(response => {
                         this.setState({ results: response.data });
-                        console.log("sekme sekme")
                     })
                     .catch(error => {
                         alert("Kuriant dokumentą būtina pridėti bent vieną bylą.")
                     });
             })
             .catch((error) => {
-                alert("You haven't uploaded any files, please try again.")
+                alert("Pasirinkite bylą, kurią norite pridėti.")
             })
     }
 
@@ -109,7 +106,7 @@ class NewDocumentContainer extends Component {
                 axios.get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`)
                     .then(response => {
                         this.setState({ results: response.data });
-                        alert("You have deleted all files successfully. \nYou can upload new files.")
+                        alert("Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.")
                     })
                     .catch(error => {
                     });
@@ -125,7 +122,7 @@ class NewDocumentContainer extends Component {
                         let url = window.URL.createObjectURL(blob);
                         let a = document.createElement('a');
                         a.href = url;
-                        a.download = 'Results.zip';
+                        a.download = 'Bylos.zip';
                         a.click();
                     });
                 } else {
@@ -165,7 +162,6 @@ class NewDocumentContainer extends Component {
                             <div className="form-group" >
                                 <label > Pavadinimas: </label>
                                 <input type="text" className="form-control" name="title" onChange={this.onChange} placeholder="Pavadinimas" required />
-
                             </div>
                             <div className="form-group" >
                                 <label > Trumpas aprašymas </label>
@@ -180,22 +176,17 @@ class NewDocumentContainer extends Component {
                                 </label>
                                 <button className="btn-dark" id="document" type="submit">Patvirtinti</button>
                             </div >
-
                         </form>
-
                     </div>
-
 
                     <div className="panel-body">
                         {this.state.showResults ?
                             <div>
-
                                 <form onSubmit={this.onFormSubmit} >
                                     <div className="form-group" >
                                         <label > Jūsų prisegtos bylos: </label>
                                         <button className="btn-dark" id="document" onClick={this.handleClick}>Ištrinti bylas</button>
                                         {result}
-
                                         <div className="row" > </div>
                                         <input type="file" onChange={this.onFilesChange} />
                                         <div >
@@ -203,15 +194,12 @@ class NewDocumentContainer extends Component {
                                         </div >
                                     </div>
                                 </form >
-
                                 <div className="panel-body">
                                     <label>Parsisiųsti bylas peržiūrai:</label>
                                     <div className="row" > </div>
-                                    <button className="download" onClick={this.downloadFiles}>Download</button>
+                                    <button className="download" onClick={this.downloadFiles}>Atsisiųsti</button>
                                 </div>
-
                                 <button className="btn btn-dark" type="submit" onClick={this.saveDocument}> Išsaugoti </button>
-
                             </div>
                             : null}
 
@@ -220,7 +208,6 @@ class NewDocumentContainer extends Component {
             </div >
         );
     }
-
 }
 
 export default NewDocumentContainer;

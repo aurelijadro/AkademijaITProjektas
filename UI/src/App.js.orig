@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Login from "./components/Login";
 import "./App.css";
 import { Switch } from "react-router";
@@ -11,90 +11,143 @@ import CreateUserForm from "./components/User/CreateUserForm";
 import EditFormContainer from "./components/User/EditFormContainer";
 import EditDoctypeFormContainer from "./components/Doctype/EditDoctypeFormContainer";
 import AddDoctypeFormContainer from "./components/Doctype/AddDoctypeFormContainer";
-import UserDashboard from "./components/UserDashboard";
-import MainDocumentList from "./components/Document/MainDocumentList";
-<<<<<<< HEAD
 import AddGroupFormContainer from "./components/Group/AddGroupFormContainer";
-import { HashRouter as Router, Route, BrowserRouter } from "react-router-dom";
 import EditGroupFormContainer from "./components/Group/EditGroupFormContainer";
-=======
+import UserDashboard from "./components/UserDashboard";
 import { Route } from "react-router-dom";
->>>>>>> 7f5277e0bfbe907e008fd1438d8fdcb08a1cc1c9
+import UserGroupsManager from "./components/User/UserGroupsManager";
+import { AppDataContext } from "./context";
+import Axios from "axios";
+import GroupUsersManager from "./components/Group/GroupUsersManager";
+import GroupDocsToCreateManager from "./components/Group/GroupDoctypeToCreateManager";
+import GroupDocsToModerateManager from "./components/Group/GroupDoctypeToModerateManager";
+import ApiUrl from "./APIURL";
+import DoctypesToCreateGroupsManager from "./components/Doctype/DoctypesToCreateGroupsManager";
+import DoctypesToModerateGroupsManager from "./components/Doctype/DoctypesToModerateGroupsManager";
+import NewDocumentContainer from "./components/Document/NewDocumentContainer";
+<<<<<<< HEAD
+import EditDocumentContainer from "./components/Document/EditDocumentContainer";
+=======
+import ModeratorDashboard from "./components/Moderator/ModeratorDashboard";
+>>>>>>> 64c0c175fd794d61d9dc82873123e588b7226aa8
 
 function App() {
-  return (
-    <div>
-      <Header />
+  const [currentUsername, setCurrentUsername] = useState("loading");
 
+  function updateUserInformation() {
+    Axios.get(`${ApiUrl}loggedUsername`).then(resp => {
+      setCurrentUsername(resp.data);
+    });
+  }
+
+  useEffect(function() {
+    updateUserInformation();
+    const timer = setInterval(updateUserInformation, 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const appData = {
+    currentUsername: currentUsername,
+    updateUserInformation: updateUserInformation
+  };
+
+  return (
+    <AppDataContext.Provider value={appData}>
+      <div>
+        <Header />
+
+        <div className="container-fluid mx-auto">
+          <Switch>
+            <Route exact path="/Gentoo/" component={Login} />
+            <Route exact path="/Gentoo/admin" component={AdminDashboard} />
+            <Route exact path="/Gentoo/admin/users" component={UserList} />
+            <Route
+              exact
+              path="/Gentoo/admin/users/add"
+              component={CreateUserForm}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/users/edit/:userid"
+              component={EditFormContainer}
+            />
+            <Route exact path="/Gentoo/admin/groups" component={GroupList} />
+            <Route
+              exact
+              path="/Gentoo/admin/doctypes"
+              component={DocTypeList}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/groups/add"
+              component={AddGroupFormContainer}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/groups/edit/:id"
+              component={EditGroupFormContainer}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/doctypes/add"
+              component={AddDoctypeFormContainer}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/doctypes/edit/:doctypeid"
+              component={EditDoctypeFormContainer}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/users/manageusergroups/:userid"
+              component={UserGroupsManager}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/managegroupusers/:groupid"
+              component={GroupUsersManager}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/managegroupcreatedocs/:groupid"
+              component={GroupDocsToCreateManager}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/managegroupmoderatedocs/:groupid"
+              component={GroupDocsToModerateManager}
+            />
+
+            <Route
+              exact
+              path="/Gentoo/admin/managecreatabledoctypegroups/:doctypeid"
+              component={DoctypesToCreateGroupsManager}
+            />
+            <Route
+              exact
+              path="/Gentoo/admin/managemoderatabledoctypegroups/:doctypeid"
+              component={DoctypesToModerateGroupsManager}
+            />
 <<<<<<< HEAD
-          <div className="container-fluid mx-auto">
-            <Switch>
-              <Route exact path="/admin" component={AdminDashboard} />
-              <Route exact path="/admin/users" component={UserList} />
-              <Route exact path="/admin/users/add" component={CreateUserForm} />
-              <Route
-                exact
-                path="/admin/users/edit/:username"
-                component={EditFormContainer}
-              />
-              <Route exact path="/admin/groups" component={GroupList} />
-              <Route exact path="/admin/groups/add" component={AddGroupFormContainer} />
-              <Route exact path="/admin/groups/edit/:title" component={EditGroupFormContainer} />
-              <Route exact path="/admin/doctypes" component={DocTypeList} />
-              <Route
-                exact
-                path="/admin/doctypes/add"
-                component={AddDoctypeFormContainer}
-              />
-              <Route
-                exact
-                path="/admin/doctypes/edit/:title"
-                component={EditDoctypeFormContainer}
-              />
-              <Route exact path="/user" component={UserDashboard} />
-              <Route
-                exact
-                path="/user/documents/non-submited"
-                component={MainDocumentList}
-              />
-            </Switch>
-          </div>
-        </Router>
-      </BrowserRouter>
+            <Route exact path="/Gentoo/user" component={UserDashboard} />
+            <Route exact path="/Gentoo/user/documents/add" component={NewDocumentContainer} />
+            <Route exact path="/Gentoo/user/documents/:id" component={EditDocumentContainer} />
 =======
-      <div className="container-fluid mx-auto">
-        <Switch>
-          <Route exact path="/" component={Login} />
-          <Route exact path="/admin" component={AdminDashboard} />
-          <Route exact path="/admin/users" component={UserList} />
-          <Route exact path="/admin/users/add" component={CreateUserForm} />
-          <Route
-            exact
-            path="/admin/users/edit/:username"
-            component={EditFormContainer}
-          />
-          <Route exact path="/admin/groups" component={GroupList} />
-          <Route exact path="/admin/doctypes" component={DocTypeList} />
-          <Route
-            exact
-            path="/admin/doctypes/add"
-            component={AddDoctypeFormContainer}
-          />
-          <Route
-            exact
-            path="/admin/doctypes/edit/:title"
-            component={EditDoctypeFormContainer}
-          />
-          <Route exact path="/user" component={UserDashboard} />
-          <Route
-            exact
-            path="/user/documents/non-submited"
-            component={MainDocumentList}
-          />
-        </Switch>
+            <Route
+              exact
+              path="/Gentoo/user/documents/add"
+              component={NewDocumentContainer}
+            />
+            <Route
+              exact
+              path="/Gentoo/user/moderate"
+              component={ModeratorDashboard}
+            />
+>>>>>>> 64c0c175fd794d61d9dc82873123e588b7226aa8
+          </Switch>
+        </div>
       </div>
->>>>>>> 7f5277e0bfbe907e008fd1438d8fdcb08a1cc1c9
-    </div>
+    </AppDataContext.Provider>
   );
 }
 
