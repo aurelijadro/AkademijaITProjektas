@@ -54,7 +54,7 @@ const ModeratorDashboard = () => {
           <div className="col-3">{document.title}</div>
           <div className="col-2">{document.submissionDate}</div>
           <div className="col-3">{document.doctypes.title}</div>
-          <Link className="col-2" to={`Gentoo/user/moderate/${document.id}`}>
+          <Link className="col-2" to={`/Gentoo/user/moderate/${document.id}`}>
             <button className="btn btn-dark">Peržiūrėti</button>
           </Link>
         </div>

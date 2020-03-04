@@ -75,9 +75,9 @@ public class UserController {
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Find user by id", notes = "Returns user by id")
-	public User getUserById(@ApiParam(value = "user id", required = true) @PathVariable Long id,
+	public UserDTO getUserById(@ApiParam(value = "user id", required = true) @PathVariable Long id,
 			HttpServletResponse response) {
-		User user = userRepository.findUserById(id);
+		UserDTO user = userService.findById(id);
 		if (user == null) {
 			logger.debug("User [{}] was  not found by controller", id);
 			response.setStatus(404);
