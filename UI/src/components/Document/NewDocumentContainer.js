@@ -77,10 +77,15 @@ class NewDocumentContainer extends Component {
 
     onFilesChange = event => {
         event.preventDefault();
-        this.setState({ file: event.target.files[0] });
+        if (event.target.files[0].size < 10000000) {
+            this.setState({ file: event.target.files[0] });
+        } else {
+            alert("Pasirinkta byla per didelė.")
+        }
     }
 
     onFormSubmit = (e) => {
+        e.preventDefault();
         const data = new FormData()
         data.append("file", this.state.file)
         axios

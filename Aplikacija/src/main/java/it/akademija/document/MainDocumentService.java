@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.akademija.doctype.DoctypeEntity;
 import it.akademija.doctype.DoctypeEntityRepo;
 import it.akademija.user.User;
 import it.akademija.user.UserRepository;
-import it.akademija.document.MainDocumentService;
-import it.akademija.document.MainDocument;
-import it.akademija.doctype.DoctypeEntity;
 
 @Service
 public class MainDocumentService {
@@ -76,17 +74,10 @@ public class MainDocumentService {
 	public void deleteDocument(Long documentId, Long userId) {
 		User user = userRepo.findUserById(userId);
 		MainDocument document = findDocumentById(documentId);
-
 		mainDocRepository.delete(document);
 		userRepo.save(user);
 		logger.debug("Document (ID{}) was deleted.", document);
 	}
-
-//	@Transactional
-//	public void addDoctypeToDocument(MainDocument document, DoctypeEntity doctype) {
-//		document.setDoctypes(doctype);
-//		mainDocRepository.save(document);
-//	}
 
 	@Transactional
 	public void changeDocumentToSubmitted(Long creatorId, MainDocument document) {

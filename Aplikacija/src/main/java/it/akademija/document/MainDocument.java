@@ -35,8 +35,6 @@ public class MainDocument {
 
 	private String documentStatus = "Sukurtas";
 
-	private String afterSubmissionStatus;
-
 	private LocalDate submissionDate = null;
 
 	private LocalDate approvalDate = null;
@@ -134,28 +132,20 @@ public class MainDocument {
 		this.documentStatus = documentStatus;
 	}
 
-	public String getAfterSubmissionStatus() {
-		return afterSubmissionStatus;
-	}
-
-	public void setAfterSubmissionStatus(String afterSubmissionStatus) {
-		this.afterSubmissionStatus = afterSubmissionStatus;
-	}
-
 	public String updateDocumentStatusToSubmitted() {
 		return this.documentStatus = "Pateiktas";
 	}
 
 	public String updateDocumentStatusToPending() {
-		return this.afterSubmissionStatus = "Laukiantis";
+		return this.documentStatus = "Laukiantis";
 	}
 
 	public String updateDocumentStatusToApproved() {
-		return this.afterSubmissionStatus = "Patvirtintas";
+		return this.documentStatus = "Patvirtintas";
 	}
 
 	public String updateDocumentStatusToDenied() {
-		return this.afterSubmissionStatus = "Atmestas";
+		return this.documentStatus = "Atmestas";
 	}
 
 	public LocalDate getSubmissionDate() {
@@ -204,6 +194,10 @@ public class MainDocument {
 
 	public void setApproverId(Long approverId) {
 		this.approverId = approverId;
+	}
+
+	public void addFile(FileEntity someFile) {
+		this.filesForDocuments.add(someFile);
 	}
 
 }

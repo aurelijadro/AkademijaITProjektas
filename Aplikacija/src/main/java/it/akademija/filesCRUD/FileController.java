@@ -41,6 +41,8 @@ public class FileController {
 	@PostMapping("{userId}/{documentId}/uploadFile")
 	public FileEntity uploadFile(@PathVariable Long userId, @PathVariable Long documentId,
 			@RequestParam MultipartFile file) throws IOException {
+
+		MainDocument document = docService.findDocumentById(documentId);
 		String fileName = fileService.storeUploadedFile(file, userId, documentId);
 
 		if (fileName.isEmpty()) {
@@ -50,7 +52,7 @@ public class FileController {
 			String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
 					.path(fileName).toUriString();
 
-			return new FileEntity(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+			return new FileEntity(fileName, fileDownloadUri, file.getContentType(), file.getSize(), document);
 		}
 	}
 

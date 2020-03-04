@@ -29,11 +29,16 @@ public class FileEntity {
 	public FileEntity() {
 	}
 
-	public FileEntity(String fileName, String fileDownloadUri, String fileType, Long size) {
+	public FileEntity(Long id) {
+		this.id = id;
+	}
+
+	public FileEntity(String fileName, String fileDownloadUri, String fileType, Long size, MainDocument mainDocument) {
 		this.fileName = fileName;
 		this.fileDownloadUri = fileDownloadUri;
 		this.fileType = fileType;
 		this.size = size;
+		this.mainDocument = mainDocument;
 	}
 
 	public Long getId() {

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,11 +26,35 @@ import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import it.akademija.document.MainDocument;
+import it.akademija.document.MainDocumentRepository;
+import it.akademija.user.UserRepository;
+
 @Service
 public class FileService {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 	private Path fileStorageLocation;
+
+	@Autowired
+	FileRepository fileRepo;
+
+	@Autowired
+	UserRepository userRepo;
+
+	@Autowired
+	MainDocumentRepository mainDocRepo;
+
+	@Transactional
+	public FileEntity createNew(NewFile newFile, Long documentId) {
+		MainDocument document = mainDocRepo.findMainDocumentById(documentId);
+		FileEntity someFile = new FileEntity(newFile.getFileName(), newFile.getFileDownloadUri(), newFile.getFileType(),
+				newFile.getSize(), document);
+		someFile.setDocument(document);
+		document.addFile(someFile);
+		someFile.setDocument(document);
+		return fileRepo.save(someFile);
+	}
 
 	@Transactional
 	public String storeUploadedFile(MultipartFile file, Long userId, Long documentId) throws IOException {

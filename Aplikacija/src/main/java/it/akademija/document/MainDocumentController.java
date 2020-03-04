@@ -108,26 +108,6 @@ public class MainDocumentController {
 		response.setStatus(200);
 	}
 
-//	@RequestMapping(path = "/{documentId}/doctypes/{doctypeId}", method = RequestMethod.POST)
-//	@ApiOperation(value = "Adds doctype to document", notes = "Adds doctype by id to document by its id")
-//	public void addDoctypeByIdToDocument(@PathVariable Long documentId, @PathVariable Long doctypeId,
-//			HttpServletResponse response) {
-//		MainDocument document = mainDocService.findDocumentById(documentId);
-//		if (document == null) {
-//			response.setStatus(404);
-//			return;
-//		} else {
-//			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
-//			if (doctype == null) {
-//				response.setStatus(404);
-//				return;
-//			} else {
-//				response.setStatus(200);
-//				mainDocService.addDoctypeToDocument(document, doctype);
-//			}
-//		}
-//	}
-
 	@RequestMapping(path = "{userId}/{documentId}/submittedStatusUpdate", method = RequestMethod.POST)
 	@ApiOperation(value = "Changes document status", notes = "Changes status from created to submitted")
 	public void updateDocumentStatusToSubmitted(@PathVariable Long userId, @PathVariable Long documentId,
