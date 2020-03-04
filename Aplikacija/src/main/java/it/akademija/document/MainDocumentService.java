@@ -119,16 +119,17 @@ public class MainDocumentService {
 
 	@Transactional
 	public List<MainDocument> submittedDocumentsList(Long id) {
-		User user = userRepo.findUserById(id);
-		List<MainDocument> submittedDocuments = new ArrayList<MainDocument>();
-		List<MainDocument> usersDocuments = user.getDocuments();
-		for (MainDocument mainDocument : usersDocuments) {
-			if (mainDocument.getDocumentStatus().contains("Pateiktas")) {
-				mainDocument.setCreatorId(id);
-				submittedDocuments.add(mainDocument);
-			}
-		}
-		return submittedDocuments;
+//		User user = userRepo.findUserById(id);
+//		List<MainDocument> submittedDocuments = new ArrayList<MainDocument>();
+//		List<MainDocument> usersDocuments = user.getDocuments();
+//		for (MainDocument mainDocument : usersDocuments) {
+//			if (mainDocument.getDocumentStatus().contains("Pateiktas")) {
+//				mainDocument.setCreatorId(id);
+//				submittedDocuments.add(mainDocument);
+//			}
+//		}
+//		return submittedDocuments;
+		return mainDocRepository.findAllByCreatorIdAndDocumentStatus(id, "Pateiktas");
 	}
 
 	@Transactional
