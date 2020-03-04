@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import ApiUrl from "../../APIURL";
-import FileListComponent from './FileListComponent';
 
 class NewDocumentContainer extends Component {
     constructor() {
@@ -16,7 +15,7 @@ class NewDocumentContainer extends Component {
             summary: "",
             id: "",
             results: [],
-            file: null
+            file: null,
         }
     }
 
@@ -154,7 +153,12 @@ class NewDocumentContainer extends Component {
             </option>
         );
         const result = this.state.results.map((result, index) => {
-            return <FileListComponent key={index} result={result} />;
+            return <li className="list-group-item list-group-item-dark" key={index}>
+                <div className="row my-1">
+                    <div className="col-2">{index + 1}</div>
+                    <div className="col-10">{result}</div>
+                </div>
+            </li>
         });
         return (
             <div className="container my-4" >
@@ -190,8 +194,14 @@ class NewDocumentContainer extends Component {
                                 <form onSubmit={this.onFormSubmit} >
                                     <div className="form-group" >
                                         <label > Jūsų prisegtos bylos: </label>
-                                        <button className="btn-dark" id="document" onClick={this.handleClick}>Ištrinti bylas</button>
-                                        {result}
+                                        <button className="btn-dark" id="document" onClick={(e) => { if (window.confirm('Ar tikrai norite ištrinti įkeltas bylas?')) this.handleClick(e) }}>Ištrinti bylas</button>
+                                        <li className="list-group-item list-group-item-dark" id="mylist">
+                                            <div className="row my-2">
+                                                <div className="col-2 font-weight-bold">#</div>
+                                                <div className="col-10 font-weight-bold">Bylos pavadinimas</div>
+                                            </div>
+                                        </li>
+                                        <div>{result}</div>
                                         <div className="row" > </div>
                                         <input type="file" onChange={this.onFilesChange} />
                                         <div >

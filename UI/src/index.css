@@ -37,3 +37,26 @@ nav li a {
 #document {
   float: right;
 }
+
+#mylist {
+  margin-top: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+#mylist2 {
+  padding-top: 3px;
+  padding-bottom: 5px;
+}
+
+#chooseFile {
+  margin-top: 25px;
+}
+
+#uploadButton {
+  margin-top: 3px;
+}
+
+#saveButton {
+  margin-right: 5px;
+}

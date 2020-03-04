@@ -84,7 +84,6 @@ public class MainDocumentService {
 		document.setCreatorId(creatorId);
 		document.setSubmissionDate();
 		document.updateDocumentStatusToSubmitted();
-		document.updateDocumentStatusToPending();
 		mainDocRepository.save(document);
 	}
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import ApiUrl from "../../APIURL";
-import FileListComponent from './FileListComponent';
 
 class EditDocumentContainer extends Component {
     constructor() {
@@ -79,6 +78,7 @@ class EditDocumentContainer extends Component {
     };
 
     onFormSubmit = (e) => {
+        e.preventDefault();
         const data = new FormData()
         data.append("file", this.state.file)
         axios
@@ -150,12 +150,21 @@ class EditDocumentContainer extends Component {
 
     goBack = e => {
         e.preventDefault();
-        this.props.history.push(`/Gentoo/user`);
+        if (this.state.results && this.state.results.length > 0) {
+            this.props.history.push(`/Gentoo/user`);
+        } else {
+            alert("Pridėkite bent vieną bylą.")
+        }
     }
 
     render() {
         const result = this.state.results.map((result, index) => {
-            return <FileListComponent key={index} result={result} />;
+            return <li className="list-group-item list-group-item-dark" id="mylist2" key={index}>
+                <div className="row my-1">
+                    <div className="col-2">{index + 1}</div>
+                    <div className="col-10">{result}</div>
+                </div>
+            </li>
         });
         return (
             <div className="container my-4" >
@@ -184,10 +193,16 @@ class EditDocumentContainer extends Component {
                         <form onSubmit={this.onFormSubmit} >
                             <div className="form-group" >
                                 <label > Jūsų prisegtos bylos: </label>
-                                <button className="btn-dark" id="document" onClick={this.handleClick}>Ištrinti bylas</button>
-                                {result}
+                                <button className="btn-dark" id="document" onClick={(e) => { if (window.confirm('Ar tikrai norite ištrinti įkeltas bylas? \nŠis pakeitimas negalės būti atšauktas.')) this.handleClick(e) }}>Ištrinti bylas</button>
+                                <li className="list-group-item list-group-item-dark" id="mylist">
+                                    <div className="row my-2">
+                                        <div className="col-2 font-weight-bold">#</div>
+                                        <div className="col-10 font-weight-bold">Bylos pavadinimas</div>
+                                    </div>
+                                </li>
+                                <div>{result}</div>
                                 <div className="row" > </div>
-                                <input type="file" onChange={this.onFilesChange} />
+                                <input id="chooseFile" type="file" onChange={this.onFilesChange} />
                                 <div >
                                     <button id="uploadButton" type="submit" > Įkelti </button>
                                 </div >
@@ -198,8 +213,8 @@ class EditDocumentContainer extends Component {
                             <div className="row" > </div>
                             <button className="download" onClick={this.downloadFiles}>Atsisiųsti</button>
                         </div>
-                        <button className="btn btn-dark" type="submit" onClick={this.updateDocument}> Išsaugoti </button>
-                        <button className="btn btn-dark" type="submit" onClick={this.goBack}> Atšaukti pakeitimus </button>
+                        <button className="btn btn-dark" id="saveButton" type="submit" onClick={this.updateDocument}> Išsaugoti </button>
+                        <button className="btn btn-dark" id="saveButton" type="submit" onClick={this.goBack}> Atšaukti pakeitimus </button>
                     </div>
                 </div>
             </div>
