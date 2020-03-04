@@ -10,7 +10,8 @@ public interface MainDocumentRepository extends JpaRepository<MainDocument, Long
 
 	MainDocument findMainDocumentById(Long id);
 
-	List<MainDocument> findAllByDoctypesAndDocumentStatus(DoctypeEntity doctypes, String documentStatus);
+	List<MainDocument> findAllByDoctypesAndDocumentStatusOrderBySubmissionDateDesc(DoctypeEntity doctypes,
+			String documentStatus);
 
 	List<MainDocument> findAllByCreatorIdAndDocumentStatus(Long creatorId, String documentStatus);
 

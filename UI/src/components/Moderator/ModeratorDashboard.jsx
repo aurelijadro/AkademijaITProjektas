@@ -7,10 +7,9 @@ import Axios from "axios";
 const ModeratorDashboard = () => {
   // solve a riddle of how to correctly show users menu bar
 
-  // get list of documents to moderate
-
   const [documentsToModerate, setDocumentsToModerate] = useState("loading");
   const [userId, setUserId] = useState("loading");
+  const [isModerator, setIsModerator] = useState("loading");
 
   useEffect(function getUserId() {
     Axios.get(`${ApiUrl}loggedUserId`).then(resp => setUserId(resp.data));
@@ -26,7 +25,20 @@ const ModeratorDashboard = () => {
     [userId]
   );
 
-  if (documentsToModerate === "loading" || userId === "loading") {
+  useEffect(
+    function getIsModerator() {
+      Axios.get(`${ApiUrl}users/${userId}/ismoderator`).then(resp =>
+        setIsModerator(resp.data)
+      );
+    },
+    [userId]
+  );
+
+  if (
+    documentsToModerate === "loading" ||
+    userId === "loading" ||
+    isModerator === "loading"
+  ) {
     return (
       <div>
         <h4>Loading...</h4>
@@ -73,9 +85,9 @@ const ModeratorDashboard = () => {
 
   return (
     <div>
-      <NavigationForUser />
+      <NavigationForUser isModerator={isModerator} />
       <div className="container my-4">
-        <h1>Moderatoriaus langas!</h1>
+        <h4>Dokumentai, laukiantys patvirtinimo:</h4>
         <li className="list-group-item list-group-item-dark">
           <div className="row my-2">
             <div className="col-1 font-weight-bold">#</div>

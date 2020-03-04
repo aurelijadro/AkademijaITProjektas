@@ -135,7 +135,7 @@ public class MainDocumentService {
 	@Transactional
 	public List<MainDocument> getSubmittedDocumentsByDoctype(DoctypeEntity doctype) {
 
-		return mainDocRepository.findAllByDoctypesAndDocumentStatus(doctype, "Pateiktas");
+		return mainDocRepository.findAllByDoctypesAndDocumentStatusOrderBySubmissionDateDesc(doctype, "Pateiktas");
 	}
 
 }
