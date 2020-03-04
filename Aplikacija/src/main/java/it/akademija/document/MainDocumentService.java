@@ -133,9 +133,9 @@ public class MainDocumentService {
 	}
 
 	@Transactional
-	public List<MainDocument> getDocumentsByDoctype(DoctypeEntity doctype) {
+	public List<MainDocument> getSubmittedDocumentsByDoctype(DoctypeEntity doctype) {
 
-		return mainDocRepository.findAllByDoctypes(doctype);
+		return mainDocRepository.findAllByDoctypesAndDocumentStatus(doctype, "Pateiktas");
 	}
 
 }
