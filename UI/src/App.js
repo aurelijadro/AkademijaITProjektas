@@ -28,6 +28,7 @@ import NewDocumentContainer from "./components/Document/NewDocumentContainer";
 import ModeratorDashboard from "./components/Moderator/ModeratorDashboard";
 import EditDocumentContainer from "./components/Document/EditDocumentContainer";
 import ReviewDocument from "./components/Moderator/ReviewDocument";
+import Default from "./Default"
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
@@ -137,6 +138,7 @@ function App() {
               path="/Gentoo/user/documents/:id"
               component={EditDocumentContainer}
             />
+            
             <Route
               exact
               path="/Gentoo/user/moderate"
@@ -147,6 +149,12 @@ function App() {
               path="/Gentoo/user/moderate/:docId"
               component={ReviewDocument}
             />
+
+            <Route
+              
+              component={Default}
+            />
+
           </Switch>
         </div>
       </div>
