@@ -32,7 +32,7 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
 
   useEffect(function getModeratorId() {
     Axios.get(`${ApiUrl}loggedUserId`).then(resp => setModeratorId(resp.data));
-  });
+  }, []);
 
   function approveDocument() {
     Axios.post(
