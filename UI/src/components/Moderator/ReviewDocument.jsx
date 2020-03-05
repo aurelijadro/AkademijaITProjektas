@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import ApiUrl from "../../APIURL";
 import Axios from "axios";
+import { withRouter } from "react-router-dom";
 
-const ReviewDocument = props => {
+const ReviewDocument = withRouter(({ history, ...props }) => {
   const docId = props.match.params.docId;
   const [document, setDocument] = useState("loading");
   const [author, setAuthor] = useState("loading");
   const [moderatorId, setModeratorId] = useState("loading");
+  const [denialReason, setDenialReason] = useState("");
+  const [decide, setDecide] = useState("choose"); //choose / approve / deny
 
   useEffect(
     function getDocument() {
       Axios.get(
         `${ApiUrl}documents/${docId}
-    `
+      `
       ).then(resp => setDocument(resp.data));
     },
     [docId]
@@ -34,13 +37,24 @@ const ReviewDocument = props => {
   function approveDocument() {
     Axios.post(
       `${ApiUrl}documents/${moderatorId}/${docId}/approvedStatusUpdate`
-    );
+    )
+      .then(alert("Dokumentas sėkmingai patvirtintas"))
+      .then(history.push("/Gentoo/user/moderate"));
   }
 
   function denyDocument() {
     Axios.post(
-      `${ApiUrl}documents/${moderatorId}/${docId}/rejectedStatusUpdate`
-    );
+      `${ApiUrl}documents/${moderatorId}/${docId}/rejectedStatusUpdate`,
+      denialReason,
+      { headers: { "Content-Type": "text/plain" } }
+    )
+      .then(alert("Dokumentas atmestas"))
+      .then(history.push("/Gentoo/user/moderate"));
+  }
+
+  function chooseDeny(e) {
+    e.preventDefault();
+    setDecide("deny");
   }
 
   // insert navbar with moderator status
@@ -66,10 +80,12 @@ const ReviewDocument = props => {
     );
   }
 
+  const handleChange = e => {
+    setDenialReason(e.target.value);
+  };
+
   const summary =
     document.summary === "" ? "Autorius nepateikė aprašymo." : document.summary;
-
-  console.log(summary);
 
   return (
     <div>
@@ -93,9 +109,45 @@ const ReviewDocument = props => {
         <div className="row">
           <div className="col-12">{summary}</div>
         </div>
+        {decide === "choose" ? (
+          <div className="row my-4">
+            <div className="col-2"> </div>
+            <div className="col-4">
+              <button className="btn btn-dark" onClick={approveDocument}>
+                Patvirtinti dokumentą
+              </button>
+            </div>
+            <div className="col-4">
+              <button className="btn btn-dark" onClick={chooseDeny}>
+                Atmesti dokumentą
+              </button>
+            </div>
+            <div className="col-2"> </div>
+          </div>
+        ) : null}
+        <div>
+          {decide === "deny" ? (
+            <div className="my-4">
+              <form onSubmit={denyDocument}>
+                <div className="form-group">
+                  <label className="font-weight-bold">
+                    Įveskite atmetimo priežastį:
+                  </label>
+                  <textarea
+                    className="form-control"
+                    onChange={handleChange}
+                  ></textarea>
+                  <button type="submit" className="btn btn-dark my-4">
+                    Atmesti
+                  </button>
+                </div>
+              </form>
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   );
-};
+});
 
 export default ReviewDocument;
