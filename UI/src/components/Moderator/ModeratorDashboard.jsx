@@ -7,10 +7,9 @@ import Axios from "axios";
 const ModeratorDashboard = () => {
   // solve a riddle of how to correctly show users menu bar
 
-  // get list of documents to moderate
-
   const [documentsToModerate, setDocumentsToModerate] = useState("loading");
   const [userId, setUserId] = useState("loading");
+  const [isModerator, setIsModerator] = useState("loading");
 
   useEffect(function getUserId() {
     Axios.get(`${ApiUrl}loggedUserId`).then(resp => setUserId(resp.data));
@@ -26,7 +25,20 @@ const ModeratorDashboard = () => {
     [userId]
   );
 
-  if (documentsToModerate === "loading" || userId === "loading") {
+  useEffect(
+    function getIsModerator() {
+      Axios.get(`${ApiUrl}users/${userId}/ismoderator`).then(resp =>
+        setIsModerator(resp.data)
+      );
+    },
+    [userId]
+  );
+
+  if (
+    documentsToModerate === "loading" ||
+    userId === "loading" ||
+    isModerator === "loading"
+  ) {
     return (
       <div>
         <h4>Loading...</h4>
@@ -42,7 +54,7 @@ const ModeratorDashboard = () => {
           <div className="col-3">{document.title}</div>
           <div className="col-2">{document.submissionDate}</div>
           <div className="col-3">{document.doctypes.title}</div>
-          <Link className="col-2" to={`Gentoo/user/moderate/${document.id}`}>
+          <Link className="col-2" to={`/Gentoo/user/moderate/${document.id}`}>
             <button className="btn btn-dark">Peržiūrėti</button>
           </Link>
         </div>
@@ -73,9 +85,9 @@ const ModeratorDashboard = () => {
 
   return (
     <div>
-      <NavigationForUser />
+      <NavigationForUser isModerator={isModerator} />
       <div className="container my-4">
-        <h1>Moderatoriaus langas!</h1>
+        <h4>Dokumentai, laukiantys patvirtinimo:</h4>
         <li className="list-group-item list-group-item-dark">
           <div className="row my-2">
             <div className="col-1 font-weight-bold">#</div>

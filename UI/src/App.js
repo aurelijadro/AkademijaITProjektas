@@ -27,7 +27,8 @@ import DoctypesToModerateGroupsManager from "./components/Doctype/DoctypesToMode
 import NewDocumentContainer from "./components/Document/NewDocumentContainer";
 import ModeratorDashboard from "./components/Moderator/ModeratorDashboard";
 import EditDocumentContainer from "./components/Document/EditDocumentContainer";
-import ReviewDocumentContainer from "./components/Document/ReviewDocumentContainer";
+import ReviewDocument from "./components/Moderator/ReviewDocument";
+import Default from "./Default"
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
@@ -38,7 +39,7 @@ function App() {
     });
   }
 
-  useEffect(function () {
+  useEffect(function() {
     updateUserInformation();
     const timer = setInterval(updateUserInformation, 60000);
     return () => clearInterval(timer);
@@ -132,8 +133,12 @@ function App() {
               path="/Gentoo/user/documents/add"
               component={NewDocumentContainer}
             />
-            <Route exact path="/Gentoo/user/documents/:id" component={EditDocumentContainer} />
-            <Route exact path="/Gentoo/user/review/:id" component={ReviewDocumentContainer} />
+            <Route
+              exact
+              path="/Gentoo/user/documents/:id"
+              component={EditDocumentContainer}
+            />
+            
             <Route
               exact
               path="/Gentoo/user/moderate"
@@ -142,8 +147,14 @@ function App() {
             <Route
               exact
               path="/Gentoo/user/moderate/:docId"
-              component={ModeratorDashboard} // pakeisti komponente!!!
+              component={ReviewDocument}
             />
+
+            <Route
+              
+              component={Default}
+            />
+
           </Switch>
         </div>
       </div>

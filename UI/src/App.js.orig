@@ -25,11 +25,14 @@ import ApiUrl from "./APIURL";
 import DoctypesToCreateGroupsManager from "./components/Doctype/DoctypesToCreateGroupsManager";
 import DoctypesToModerateGroupsManager from "./components/Doctype/DoctypesToModerateGroupsManager";
 import NewDocumentContainer from "./components/Document/NewDocumentContainer";
-<<<<<<< HEAD
-import EditDocumentContainer from "./components/Document/EditDocumentContainer";
-=======
 import ModeratorDashboard from "./components/Moderator/ModeratorDashboard";
->>>>>>> 64c0c175fd794d61d9dc82873123e588b7226aa8
+import EditDocumentContainer from "./components/Document/EditDocumentContainer";
+<<<<<<< HEAD
+import ReviewDocumentContainer from "./components/Document/ReviewDocumentContainer";
+=======
+import ReviewDocument from "./components/Moderator/ReviewDocument";
+import Default from "./Default"
+>>>>>>> b9a0b420e451240e5b189f3d89c122c29d70f779
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
@@ -128,22 +131,39 @@ function App() {
               path="/Gentoo/admin/managemoderatabledoctypegroups/:doctypeid"
               component={DoctypesToModerateGroupsManager}
             />
-<<<<<<< HEAD
             <Route exact path="/Gentoo/user" component={UserDashboard} />
-            <Route exact path="/Gentoo/user/documents/add" component={NewDocumentContainer} />
-            <Route exact path="/Gentoo/user/documents/:id" component={EditDocumentContainer} />
-=======
             <Route
               exact
               path="/Gentoo/user/documents/add"
               component={NewDocumentContainer}
             />
+<<<<<<< HEAD
+            <Route exact path="/Gentoo/user/documents/:id" component={EditDocumentContainer} />
+            <Route exact path="/Gentoo/user/review/:id" component={ReviewDocumentContainer} />
+=======
+            <Route
+              exact
+              path="/Gentoo/user/documents/:id"
+              component={EditDocumentContainer}
+            />
+            
+>>>>>>> b9a0b420e451240e5b189f3d89c122c29d70f779
             <Route
               exact
               path="/Gentoo/user/moderate"
               component={ModeratorDashboard}
             />
->>>>>>> 64c0c175fd794d61d9dc82873123e588b7226aa8
+            <Route
+              exact
+              path="/Gentoo/user/moderate/:docId"
+              component={ReviewDocument}
+            />
+
+            <Route
+              
+              component={Default}
+            />
+
           </Switch>
         </div>
       </div>
