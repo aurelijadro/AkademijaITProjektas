@@ -135,13 +135,13 @@ public class MainDocumentController {
 	@RequestMapping(path = "{approverId}/{documentId}/rejectedStatusUpdate", method = RequestMethod.POST)
 	@ApiOperation(value = "Changes document status", notes = "Changes status from created to submitted")
 	public void updateDocumentStatusToDenied(@PathVariable Long approverId, @PathVariable Long documentId,
-			HttpServletResponse response) {
+			@RequestBody String rejectionReason, HttpServletResponse response) {
 		MainDocument document = mainDocService.findDocumentById(documentId);
 		if (document == null) {
 			response.setStatus(404);
 			return;
 		}
-		mainDocService.changeDocumentToDenied(approverId, document);
+		mainDocService.changeDocumentToDenied(approverId, rejectionReason, document);
 	}
 
 	@RequestMapping(path = "/{id}/createdDocuments", method = RequestMethod.GET)

@@ -88,7 +88,7 @@ const CreatedDocuments = props => {
           <div className="col-2">{document.doctypes.title}</div>
           <div className="col-2">{document.afterSubmissionStatus}</div>
           <div className="col-2">{document.submissionDate}</div>
-          <Link className="col-2 mx-3" to={`/Gentoo/user`}>
+          <Link className="col-2 mx-3" to={`/Gentoo/user/review/${document.id}`}>
             <button type="button" className="btn btn-dark ">
               Peržiūrėti
             </button>

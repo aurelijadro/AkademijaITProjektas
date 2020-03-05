@@ -153,7 +153,7 @@ class NewDocumentContainer extends Component {
             </option>
         );
         const result = this.state.results.map((result, index) => {
-            return <li className="list-group-item list-group-item-dark" key={index}>
+            return <li className="list-group-item list-group-item-dark" id="mylist2" key={index}>
                 <div className="row my-1">
                     <div className="col-2">{index + 1}</div>
                     <div className="col-10">{result}</div>
@@ -203,7 +203,7 @@ class NewDocumentContainer extends Component {
                                         </li>
                                         <div>{result}</div>
                                         <div className="row" > </div>
-                                        <input type="file" onChange={this.onFilesChange} />
+                                        <input id="chooseFile" type="file" onChange={this.onFilesChange} />
                                         <div >
                                             <button id="uploadButton" type="submit" > Įkelti </button>
                                         </div >

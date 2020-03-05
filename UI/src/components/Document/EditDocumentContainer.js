@@ -74,7 +74,11 @@ class EditDocumentContainer extends Component {
 
     onFilesChange = event => {
         event.preventDefault();
-        this.setState({ file: event.target.files[0] });
+        if (event.target.files[0].size < 10000000) {
+            this.setState({ file: event.target.files[0] });
+        } else {
+            alert("Pasirinkta byla per didelė.")
+        }
     };
 
     onFormSubmit = (e) => {
@@ -170,7 +174,7 @@ class EditDocumentContainer extends Component {
             <div className="container my-4" >
                 <div className="panel panel-default" >
                     <div className="panel-heading" >
-                        <h3 className="panel-title" > Naujo dokumento kūrimas </h3>
+                        <h3 className="panel-title" > Dokumento peržiūra </h3>
                     </div>
                     <div className="panel-body" >
                         <form >
@@ -183,7 +187,7 @@ class EditDocumentContainer extends Component {
                                 <textarea className="form-control" name="summary" onChange={this.onChange} value={this.state.summary} rows="3" > </textarea>
                             </div >
                             <div className="form-group" >
-                                <label > Pasirinkite dokumento tipą:
+                                <label> Pasirinkite dokumento tipą:
                             <select value={this.state.doctypes.title} onChange={this.handleDoctypesChange} >
                                         {this.state.doctypeItem}
                                     </select>

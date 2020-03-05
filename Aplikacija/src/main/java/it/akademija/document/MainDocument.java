@@ -80,6 +80,21 @@ public class MainDocument {
 		this.submissionDate = submissionDate;
 	}
 
+	public MainDocument(Long id, Long creatorId, String title, String summary, String documentStatus,
+			LocalDate submissionDate, LocalDate approvalDate, LocalDate rejectionDate, Long approverId,
+			String rejectionReason) {
+		this.id = id;
+		this.creatorId = creatorId;
+		this.title = title;
+		this.summary = summary;
+		this.documentStatus = documentStatus;
+		this.submissionDate = submissionDate;
+		this.approvalDate = approvalDate;
+		this.rejectionDate = rejectionDate;
+		this.approverId = approverId;
+		this.rejectionReason = rejectionReason;
+	}
+
 	public Long getId() {
 		return id;
 	}

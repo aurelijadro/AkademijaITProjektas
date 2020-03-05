@@ -33,9 +33,11 @@ public class MainDocumentService {
 	public List<MainDocument> getMainDocuments(Long userId) {
 		User user = userRepo.findUserById(userId);
 
-		return user
-				.getDocuments().stream().map((document) -> new MainDocument(document.getId(), document.getTitle(),
-						document.getSummary(), document.getDocumentStatus(), document.getSubmissionDate()))
+		return user.getDocuments().stream()
+				.map((document) -> new MainDocument(document.getId(), document.getCreatorId(), document.getTitle(),
+						document.getSummary(), document.getDocumentStatus(), document.getSubmissionDate(),
+						document.getApprovalDate(), document.getRejectionDate(), document.getApproverId(),
+						document.getRejectionReason()))
 				.collect(Collectors.toList());
 	}
 
@@ -96,11 +98,11 @@ public class MainDocumentService {
 	}
 
 	@Transactional
-	public void changeDocumentToDenied(Long userId, MainDocument document) {
+	public void changeDocumentToDenied(Long userId, String rejectionReason, MainDocument document) {
 		document.setRejectionDate();
 		document.updateDocumentStatusToDenied();
 		document.setApproverId(userId);
-		document.getRejectionReason();
+		document.setRejectionReason(rejectionReason);
 		mainDocRepository.save(document);
 	}
 

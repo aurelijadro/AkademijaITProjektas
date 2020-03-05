@@ -27,6 +27,7 @@ import DoctypesToModerateGroupsManager from "./components/Doctype/DoctypesToMode
 import NewDocumentContainer from "./components/Document/NewDocumentContainer";
 import ModeratorDashboard from "./components/Moderator/ModeratorDashboard";
 import EditDocumentContainer from "./components/Document/EditDocumentContainer";
+import ReviewDocumentContainer from "./components/Document/ReviewDocumentContainer";
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
@@ -132,6 +133,7 @@ function App() {
               component={NewDocumentContainer}
             />
             <Route exact path="/Gentoo/user/documents/:id" component={EditDocumentContainer} />
+            <Route exact path="/Gentoo/user/review/:id" component={ReviewDocumentContainer} />
             <Route
               exact
               path="/Gentoo/user/moderate"
