@@ -33,7 +33,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.akademija.document.MainDocumentRepository;
 import it.akademija.user.UserRepository;
-import it.akademija.filesCRUD.FileDTO;
 
 @Service
 public class FileService {
@@ -212,27 +211,69 @@ public class FileService {
 	}
 
 	@Transactional
-	public void sqlToCSV() {
-		String filename = "Desktop:test.csv";
+	public void sqlToCSV(Long userId) throws IOException {
+		String filename = "csvFile";
+		File file = Paths.get(("/tmp/Uploads/" + userId), filename + ".csv").toFile();
 		try {
-			FileWriter fw = new FileWriter(filename);
+			FileWriter fw = new FileWriter(file);
 			Class.forName("org.h2.Driver").newInstance();
 			Connection conn = DriverManager.getConnection("jdbc:h2:file:~/home/gentoo5.db", "sa", "");
-			String query = "SELECT * FROM USER";
+			String query = "SELECT * FROM MAIN_DOCUMENT";
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
+			fw.write("ID");
+			fw.append(",");
+			fw.write("AFTER_SUBMISSION_STATUS");
+			fw.append(",");
+			fw.write("APPROVAL_DATE");
+			fw.append(",");
+			fw.write(" APPROVER_ID");
+			fw.append(",");
+			fw.write("CREATOR_ID");
+			fw.append(",");
+			fw.write("DOCUMENT_STATUS");
+			fw.append(",");
+			fw.write("REJECTION_DATE ");
+			fw.append(",");
+			fw.write("REJECTION_REASON");
+			fw.append(",");
+			fw.write("SUBMISSION_DATE");
+			fw.append(",");
+			fw.write("SUMMARY");
+			fw.append(",");
+			fw.write("TITLE");
+			fw.append(",");
+			fw.write("DOCTYPE_ID");
+			fw.append("\n");
 			while (rs.next()) {
 				fw.append(rs.getString(1));
 				fw.append(',');
 				fw.append(rs.getString(2));
 				fw.append(',');
 				fw.append(rs.getString(3));
+				fw.append(',');
+				fw.append(rs.getString(4));
+				fw.append(',');
+				fw.append(rs.getString(5));
+				fw.append(',');
+				fw.append(rs.getString(6));
+				fw.append(',');
+				fw.append(rs.getString(7));
+				fw.append(',');
+				fw.append(rs.getString(8));
+				fw.append(',');
+				fw.append(rs.getString(9));
+				fw.append(',');
+				fw.append(rs.getString(10));
+				fw.append(',');
+				fw.append(rs.getString(11));
+				fw.append(',');
+				fw.append(rs.getString(12));
 				fw.append('\n');
 			}
 			fw.flush();
 			fw.close();
 			conn.close();
-			System.out.println("CSV File is created successfully.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

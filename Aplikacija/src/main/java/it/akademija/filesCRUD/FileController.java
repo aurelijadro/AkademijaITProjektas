@@ -107,9 +107,9 @@ public class FileController {
 
 	}
 
-	@RequestMapping(path = "csvFile", method = RequestMethod.POST)
-	public void csvFile() {
-		fileService.sqlToCSV();
+	@RequestMapping(path = "{userId}/csvFile", method = RequestMethod.POST)
+	public void csvFile(@PathVariable Long userId) throws IOException {
+		fileService.sqlToCSV(userId);
 	}
 
 }
