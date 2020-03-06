@@ -58,10 +58,14 @@ public class FileController {
 
 	@GetMapping("{userId}/{documentId}/uploadedFilesNames")
 	public List<String> getListOfFiles(@PathVariable Long userId, @PathVariable Long documentId) throws IOException {
-		if (fileService.getUploadedFilesNames(userId, documentId) == null) {
-			return null;
-		}
 		return fileService.getUploadedFilesNames(userId, documentId);
+	}
+
+	@GetMapping("{userId}/{documentId}/uploadedFilesData")
+	public List<FileDTO> getListOfFilesData(@PathVariable Long userId, @PathVariable Long documentId)
+			throws IOException {
+
+		return fileService.getUploadedFilesData(userId, documentId);
 	}
 
 	@DeleteMapping("{userId}/{documentId}/delete")

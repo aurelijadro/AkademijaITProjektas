@@ -26,9 +26,9 @@ import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import it.akademija.document.MainDocument;
 import it.akademija.document.MainDocumentRepository;
 import it.akademija.user.UserRepository;
+import it.akademija.filesCRUD.FileDTO;
 
 @Service
 public class FileService {
@@ -45,16 +45,16 @@ public class FileService {
 	@Autowired
 	MainDocumentRepository mainDocRepo;
 
-	@Transactional
-	public FileEntity createNew(NewFile newFile, Long documentId) {
-		MainDocument document = mainDocRepo.findMainDocumentById(documentId);
-		FileEntity someFile = new FileEntity(newFile.getFileName(), newFile.getFileDownloadUri(), newFile.getFileType(),
-				newFile.getSize(), document);
-		someFile.setDocument(document);
-		document.addFile(someFile);
-		someFile.setDocument(document);
-		return fileRepo.save(someFile);
-	}
+//	@Transactional
+//	public FileEntity createNew(NewFile newFile, Long documentId) {
+//		MainDocument document = mainDocRepo.findMainDocumentById(documentId);
+//		FileEntity someFile = new FileEntity(newFile.getFileName(), newFile.getFileDownloadUri(), newFile.getFileType(),
+//				newFile.getSize(), document);
+//		someFile.setDocument(document);
+//		document.addFile(someFile);
+//		someFile.setDocument(document);
+//		return fileRepo.save(someFile);
+//	}
 
 	@Transactional
 	public String storeUploadedFile(MultipartFile file, Long userId, Long documentId) throws IOException {
@@ -81,7 +81,7 @@ public class FileService {
 			if (file.isFile()) {
 				results.add(file.getName());
 			} else {
-				results = null;
+				continue;
 			}
 		}
 		return results;
@@ -96,6 +96,21 @@ public class FileService {
 			results = result;
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		return results;
+	}
+
+	@Transactional
+	public List<FileDTO> getUploadedFilesData(Long userId, Long documentId) {
+		List<FileDTO> results = new ArrayList<FileDTO>();
+		File[] files = new File("/tmp/Uploads/" + userId + "/" + documentId).listFiles();
+
+		for (File file : files) {
+			if (file.isFile()) {
+				results.add(new FileDTO(file.getName(), file.getAbsolutePath()));
+			} else {
+				continue;
+			}
 		}
 		return results;
 	}
