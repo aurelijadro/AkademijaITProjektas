@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -89,6 +90,22 @@ public class FileController {
 			}
 		}
 
+	}
+
+	@GetMapping("{userId}/downloadZip")
+	public void downloadZipWithUserDocuments(@PathVariable Long userId, HttpServletResponse response) throws Exception {
+		User user = userRepository.findUserById(userId);
+		if (user == null) {
+			response.setStatus(404);
+		} else {
+			fileService.downloadAllUserFiles(userId, response);
+		}
+
+	}
+
+	@RequestMapping(path = "csvFile", method = RequestMethod.POST)
+	public void csvFile() {
+		fileService.sqlToCSV();
 	}
 
 }

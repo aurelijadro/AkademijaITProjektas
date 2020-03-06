@@ -1,11 +1,16 @@
 package it.akademija.filesCRUD;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -101,6 +106,19 @@ public class FileService {
 	}
 
 	@Transactional
+	public List<String> getUploadedFiles(Long userId) {
+		List<String> results = new ArrayList<String>();
+		try (Stream<Path> walk = Files.walk(Paths.get("/tmp/Uploads/" + userId))) {
+			List<String> result = walk.filter(Files::isRegularFile).map(x -> x.toString()).collect(Collectors.toList());
+
+			results = result;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
+
+	@Transactional
 	public void deleteDocumentFolder(Long userId, Long documentId) {
 		try {
 			FileUtils.deleteDirectory(new File("/tmp/Uploads/" + userId + "/" + documentId));
@@ -144,7 +162,64 @@ public class FileService {
 			} catch (Exception e) {
 				throw e;
 			}
+		}
 
+	}
+
+	@Transactional
+	public void downloadAllUserFiles(Long userId, HttpServletResponse response) throws Exception {
+
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment;filename=download.zip");
+		response.setStatus(HttpServletResponse.SC_OK);
+
+		List<String> fileNames = getUploadedFiles(userId);
+
+		{
+
+			try (ZipOutputStream zippedOut = new ZipOutputStream(response.getOutputStream())) {
+				for (String file : fileNames) {
+					FileSystemResource resource = new FileSystemResource(file);
+
+					ZipEntry e = new ZipEntry(resource.getFilename());
+					e.setSize(resource.contentLength());
+					e.setTime(System.currentTimeMillis());
+					zippedOut.putNextEntry(e);
+					StreamUtils.copy(resource.getInputStream(), zippedOut);
+					zippedOut.closeEntry();
+				}
+				zippedOut.finish();
+			} catch (Exception e) {
+				throw e;
+			}
+
+		}
+	}
+
+	@Transactional
+	public void sqlToCSV() {
+		String filename = "Desktop:test.csv";
+		try {
+			FileWriter fw = new FileWriter(filename);
+			Class.forName("org.h2.Driver").newInstance();
+			Connection conn = DriverManager.getConnection("jdbc:h2:file:~/home/gentoo5.db", "sa", "");
+			String query = "SELECT * FROM USER";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				fw.append(rs.getString(1));
+				fw.append(',');
+				fw.append(rs.getString(2));
+				fw.append(',');
+				fw.append(rs.getString(3));
+				fw.append('\n');
+			}
+			fw.flush();
+			fw.close();
+			conn.close();
+			System.out.println("CSV File is created successfully.");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
