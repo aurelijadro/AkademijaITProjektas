@@ -33,7 +33,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.akademija.document.MainDocumentRepository;
 import it.akademija.user.UserRepository;
-import it.akademija.filesCRUD.FileDTO;
 
 @Service
 public class FileService {
@@ -106,6 +105,17 @@ public class FileService {
 	}
 
 	@Transactional
+	public List<String> getUploadedFiles(Long userId) {
+		List<String> results = new ArrayList<String>();
+		try (Stream<Path> walk = Files.walk(Paths.get("/tmp/Uploads/" + userId))) {
+			List<String> result = walk.filter(Files::isRegularFile).map(x -> x.toString()).collect(Collectors.toList());
+
+			results = result;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public List<FileDTO> getUploadedFilesData(Long userId, Long documentId) {
 		List<FileDTO> results = new ArrayList<FileDTO>();
 		File[] files = new File("/tmp/Uploads/" + userId + "/" + documentId).listFiles();
@@ -116,19 +126,6 @@ public class FileService {
 			} else {
 				continue;
 			}
-		}
-		return results;
-	}
-
-	@Transactional
-	public List<String> getUploadedFiles(Long userId) {
-		List<String> results = new ArrayList<String>();
-		try (Stream<Path> walk = Files.walk(Paths.get("/tmp/Uploads/" + userId))) {
-			List<String> result = walk.filter(Files::isRegularFile).map(x -> x.toString()).collect(Collectors.toList());
-
-			results = result;
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return results;
 	}

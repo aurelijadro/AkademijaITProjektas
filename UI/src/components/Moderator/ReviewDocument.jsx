@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 const ReviewDocument = withRouter(({ history, ...props }) => {
   const docId = props.match.params.docId;
   const [document, setDocument] = useState("loading");
+  const [fileList, setFileList] = useState("loading");
   const [author, setAuthor] = useState("loading");
   const [moderatorId, setModeratorId] = useState("loading");
   const [denialReason, setDenialReason] = useState("");
@@ -33,6 +34,15 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
   useEffect(function getModeratorId() {
     Axios.get(`${ApiUrl}loggedUserId`).then(resp => setModeratorId(resp.data));
   }, []);
+
+  useEffect(
+    function getFileList() {
+      Axios.get(
+        `${ApiUrl}files/${document.creatorId}/${document.id}/uploadedFilesNames`
+      ).then(resp => setFileList(resp.data));
+    },
+    [document]
+  );
 
   function approveDocument() {
     Axios.post(

@@ -174,7 +174,7 @@ public class MainDocumentController {
 			response.setStatus(404);
 			return null;
 		}
-		List<MainDocument> documentsToModerate = new ArrayList();
+		List<MainDocument> documentsToModerate = new ArrayList<MainDocument>();
 		for (DoctypeEntity doctype : doctypesUserModerates) {
 			documentsToModerate.addAll(mainDocService.getSubmittedDocumentsByDoctype(doctype));
 		}
