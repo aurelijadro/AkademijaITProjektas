@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 const ReviewDocument = withRouter(({ history, ...props }) => {
   const docId = props.match.params.docId;
   const [document, setDocument] = useState("loading");
-  const [fileList, setFileList] = useState("loading");
+  const [files, setFiles] = useState("loading");
   const [author, setAuthor] = useState("loading");
   const [moderatorId, setModeratorId] = useState("loading");
   const [denialReason, setDenialReason] = useState("");
@@ -38,8 +38,8 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
   useEffect(
     function getFileList() {
       Axios.get(
-        `${ApiUrl}files/${document.creatorId}/${document.id}/uploadedFilesNames`
-      ).then(resp => setFileList(resp.data));
+        `${ApiUrl}files/${document.creatorId}/${document.id}/uploadedFilesData`
+      ).then(resp => setFiles(resp.data));
     },
     [document]
   );
@@ -81,7 +81,8 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
   if (
     document === "loading" ||
     author === "loading" ||
-    moderatorId === "loading"
+    moderatorId === "loading" ||
+    files === "loading"
   ) {
     return (
       <div>
@@ -96,6 +97,22 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
 
   const summary =
     document.summary === "" ? "Autorius nepateikė aprašymo." : document.summary;
+
+  const fileList = files.map((file, index) => {
+    return (
+      <li className="list-group-item list-group-item-dark" key={index}>
+        <div className="row my-1">
+          <div className="col-1">{index + 1}</div>
+          <div className="col-7">{file.fileName}</div>
+          <div className="col-4 text-right">
+            <a className="btn btn-dark" href="someLink" target="_blank">
+              Peržiūrėti dokumentą
+            </a>
+          </div>
+        </div>
+      </li>
+    );
+  });
 
   return (
     <div>
@@ -119,6 +136,7 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
         <div className="row">
           <div className="col-12">{summary}</div>
         </div>
+        <div>{fileList}</div>
         {decide === "choose" ? (
           <div className="row my-4">
             <div className="col-2"> </div>

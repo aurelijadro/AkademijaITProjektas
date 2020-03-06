@@ -62,27 +62,6 @@ const ModeratorDashboard = () => {
     );
   });
 
-  // const doctypeGroupsList = doctypeGroups.map((group, index) => {
-  //   function removeDoctypeGroup() {
-  //     groupChange(() =>
-  //       axios.delete(
-  //         `${ApiUrl}groups/${group.id}/doctypesToCreate/${doctypeId}`
-  //       )
-  //     );
-  //   }
-  //   return (
-  //     <li className="list-group-item list-group-item-dark" key={group.id}>
-  //       <div className="row my-1">
-  //         <div className="col-3">{index + 1}</div>
-  //         <div className="col-6">{group.title}</div>
-  //         <button className="col-3 btn btn-dark" onClick={removeDoctypeGroup}>
-  //           Pašalinti grupę
-  //         </button>
-  //       </div>
-  //     </li>
-  //   );
-  // });
-
   return (
     <div>
       <NavigationForUser isModerator={isModerator} />
