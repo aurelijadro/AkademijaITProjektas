@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 
 const ReviewDocument = withRouter(({ history, ...props }) => {
   const docId = props.match.params.docId;
-  const [document, setDocument] = useState("loading");
+  const [submittedDocument, setsubmittedDocument] = useState("loading");
   const [files, setFiles] = useState("loading");
   const [author, setAuthor] = useState("loading");
   const [moderatorId, setModeratorId] = useState("loading");
@@ -13,22 +13,22 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
   const [decide, setDecide] = useState("choose"); //choose / approve / deny
 
   useEffect(
-    function getDocument() {
+    function getsubmittedDocument() {
       Axios.get(
         `${ApiUrl}documents/${docId}
       `
-      ).then(resp => setDocument(resp.data));
+      ).then(resp => setsubmittedDocument(resp.data));
     },
     [docId]
   );
 
   useEffect(
     function getAuhor() {
-      Axios.get(`${ApiUrl}users/${document.creatorId}`).then(resp =>
+      Axios.get(`${ApiUrl}users/${submittedDocument.creatorId}`).then(resp =>
         setAuthor(resp.data)
       );
     },
-    [document.creatorId]
+    [submittedDocument.creatorId]
   );
 
   useEffect(function getModeratorId() {
@@ -38,13 +38,13 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
   useEffect(
     function getFileList() {
       Axios.get(
-        `${ApiUrl}files/${document.creatorId}/${document.id}/uploadedFilesData`
+        `${ApiUrl}files/${submittedDocument.creatorId}/${submittedDocument.id}/uploadedFilesData`
       ).then(resp => setFiles(resp.data));
     },
-    [document]
+    [submittedDocument]
   );
 
-  function approveDocument() {
+  function approvesubmittedDocument() {
     Axios.post(
       `${ApiUrl}documents/${moderatorId}/${docId}/approvedStatusUpdate`
     )
@@ -52,7 +52,7 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
       .then(history.push("/Gentoo/user/moderate"));
   }
 
-  function denyDocument() {
+  function denysubmittedDocument() {
     Axios.post(
       `${ApiUrl}documents/${moderatorId}/${docId}/rejectedStatusUpdate`,
       denialReason,
@@ -69,17 +69,17 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
 
   // insert navbar with moderator status
 
-  // get document data from server
+  // get submittedDocument data from server
 
-  // show document title, submitting, date, type, author, summary and attached pdf files
+  // show submittedDocument title, submitting, date, type, author, summary and attached pdf files
 
   // allow moderator download files attached
 
-  // approve document functionality
-  // deny document functioanlity
+  // approve submittedDocument functionality
+  // deny submittedDocument functioanlity
 
   if (
-    document === "loading" ||
+    submittedDocument === "loading" ||
     author === "loading" ||
     moderatorId === "loading" ||
     files === "loading"
@@ -96,18 +96,52 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
   };
 
   const summary =
-    document.summary === "" ? "Autorius nepateikė aprašymo." : document.summary;
+    submittedDocument.summary === ""
+      ? "Autorius nepateikė aprašymo."
+      : submittedDocument.summary;
+
+  // .then(response => {
+  //   if (this.state.results && this.state.results.length > 0) {
+  //       response.blob().then(blob => {
+  //           let url = window.URL.createObjectURL(blob);
+  //           let a = submittedDocument.createElement('a');
+  //           a.href = url;
+  //           a.download = 'Bylos.zip';
+  //           a.click();
+  //       });
 
   const fileList = files.map((file, index) => {
+    function download() {
+      fetch(`${ApiUrl}files/download`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify({
+          fileName: file.fileName,
+          fileDownloadUri: file.fileDownloadUri
+        })
+      }).then(resp => {
+        resp.blob().then(blob => {
+          let url = window.URL.createObjectURL(blob);
+          let a = document.createElement("a");
+          a.href = url;
+          a.download = "prikabintas dokumentas";
+          a.click();
+        });
+      });
+    }
+
     return (
       <li className="list-group-item list-group-item-dark" key={index}>
         <div className="row my-1">
           <div className="col-1">{index + 1}</div>
           <div className="col-7">{file.fileName}</div>
           <div className="col-4 text-right">
-            <a className="btn btn-dark" href="someLink" target="_blank">
-              Peržiūrėti dokumentą
-            </a>
+            <button className="btn btn-dark" onClick={download}>
+              Atsisiųsti failą
+            </button>
           </div>
         </div>
       </li>
@@ -127,8 +161,8 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
           <div className="col-4">
             {author.name} {author.surname}
           </div>
-          <div className="col-4">{document.doctypes.title}</div>
-          <div className="col-4">{document.submissionDate}</div>
+          <div className="col-4">{submittedDocument.doctypes.title}</div>
+          <div className="col-4">{submittedDocument.submissionDate}</div>
         </div>
         <div className="row my-2">
           <div className="col-12 font-weight-bold">Aprašymas: </div>
@@ -141,7 +175,10 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
           <div className="row my-4">
             <div className="col-2"> </div>
             <div className="col-4">
-              <button className="btn btn-dark" onClick={approveDocument}>
+              <button
+                className="btn btn-dark"
+                onClick={approvesubmittedDocument}
+              >
                 Patvirtinti dokumentą
               </button>
             </div>
@@ -156,7 +193,7 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
         <div>
           {decide === "deny" ? (
             <div className="my-4">
-              <form onSubmit={denyDocument}>
+              <form onSubmit={denysubmittedDocument}>
                 <div className="form-group">
                   <label className="font-weight-bold">
                     Įveskite atmetimo priežastį:
