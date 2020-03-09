@@ -120,15 +120,17 @@ public class FileController {
 
 	@RequestMapping(value = "download", method = RequestMethod.POST)
 	public void downloadPDFResource(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody final FileDTO fileData) {
+			@RequestBody FileDTO fileData) {
 //If user is not authorized - he should be thrown out from here itself
 
 //Authorized user will download the file
-		Path file = Paths.get(fileData.getFileDownloadUri());
+
+		Path file = Paths.get(
+				"/tmp/Uploads/" + fileData.getUserId() + "/" + fileData.getDocumentId() + "/" + fileData.getFileName());
 		if (Files.exists(file)) {
 			response.setContentType("application/OCTET-STREAM");
 			response.addHeader("Content-Disposition", "attachment; filename=" + fileData.getFileName());
-			response.setStatus(HttpServletResponse.SC_OK);
+
 			try {
 				Files.copy(file, response.getOutputStream());
 				response.getOutputStream().flush();
