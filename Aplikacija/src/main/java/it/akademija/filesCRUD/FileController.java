@@ -1,5 +1,6 @@
 package it.akademija.filesCRUD;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,10 +46,10 @@ public class FileController {
 	UserRepository userRepository;
 
 	@PostMapping("{userId}/{documentId}/uploadFile")
-	public FileEntity uploadFile(@PathVariable Long userId, @PathVariable Long documentId,
-			@RequestParam MultipartFile file) throws IOException {
+	public File uploadFile(@PathVariable Long userId, @PathVariable Long documentId, @RequestParam MultipartFile file)
+			throws IOException {
 
-		MainDocument document = docService.findDocumentById(documentId);
+//		MainDocument document = docService.findDocumentById(documentId);
 		String fileName = fileService.storeUploadedFile(file, userId, documentId);
 
 		if (fileName.isEmpty()) {
@@ -59,7 +59,7 @@ public class FileController {
 			String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
 					.path(fileName).toUriString();
 
-			return new FileEntity(fileName, fileDownloadUri, file.getContentType(), file.getSize(), document);
+			return new File(fileName, fileDownloadUri);
 		}
 	}
 

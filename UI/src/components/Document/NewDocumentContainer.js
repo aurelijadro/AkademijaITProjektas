@@ -32,7 +32,7 @@ class NewDocumentContainer extends Component {
             this.setState({ doctypes: response.data });
           })
           .then()
-          .catch(error => {});
+          .catch(error => { });
       })
       .catch(error => {
         alert("Tokio vartotojo nera arba jis neprisijunges.");
@@ -61,14 +61,14 @@ class NewDocumentContainer extends Component {
         data
       )
       .then(response => {
-        this.state.id = response.data.id;
+        this.setState({ id: response.data.id });
         return this.state.id;
       })
       .then(response => {
         this.setState({ showResults: true });
         alert("Prisekite papildomas bylas.");
       })
-      .catch(error => {});
+      .catch(error => { });
   };
 
   show = e => {
@@ -125,9 +125,9 @@ class NewDocumentContainer extends Component {
             this.setState({ results: response.data });
             alert("Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.");
           })
-          .catch(error => {});
+          .catch(error => { });
       })
-      .catch(error => {});
+      .catch(error => { });
   };
 
   downloadFiles = e => {

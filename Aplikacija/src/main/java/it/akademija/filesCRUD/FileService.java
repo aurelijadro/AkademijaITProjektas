@@ -219,31 +219,33 @@ public class FileService {
 			Class.forName("org.h2.Driver").newInstance();
 			Connection conn = DriverManager.getConnection("jdbc:h2:file:~/home/gentoo5.db", "sa", "");
 			String query = "SELECT * FROM MAIN_DOCUMENT";
+//			String query = "SELECT MAIN_DOCUMENT.ID, USERNAME, DOCTYPES.TITLE, MAIN_DOCUMENT.TITLE, SUMMARY,"
+//					+ "SUBMISSION_DATE, DOCUMENT_STATUS,  APPROVAL_DATE,"
+//					+ "REJECTION_DATE, APPROVER_ID, REJECTION_REASON  FROM MAIN_DOCUMENT JOIN USER ON MAIN_DOCUMENT.USER_ID=USER.ID"
+//					+ "JOIN DOCTYPES ON MAIN_DOCUMENT.DOCTYPE_ID=DOCTYPES.ID WHERE USER.ID = 1";
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			fw.write("ID");
 			fw.append(",");
-			fw.write("AFTER_SUBMISSION_STATUS");
+			fw.write("Autorius");
 			fw.append(",");
-			fw.write("APPROVAL_DATE");
+			fw.write("Dokumento tipas");
 			fw.append(",");
-			fw.write(" APPROVER_ID");
+			fw.write("Pavadinimas");
 			fw.append(",");
-			fw.write("CREATOR_ID");
+			fw.write("Aprašymas");
 			fw.append(",");
-			fw.write("DOCUMENT_STATUS");
+			fw.write("Pateikimo data");
 			fw.append(",");
-			fw.write("REJECTION_DATE ");
+			fw.write("Dokumento statusas");
 			fw.append(",");
-			fw.write("REJECTION_REASON");
+			fw.write("Patvirtinimo data");
 			fw.append(",");
-			fw.write("SUBMISSION_DATE");
+			fw.write("Atmetimo data");
 			fw.append(",");
-			fw.write("SUMMARY");
+			fw.write("Priėmėjas");
 			fw.append(",");
-			fw.write("TITLE");
-			fw.append(",");
-			fw.write("DOCTYPE_ID");
+			fw.write("Atmetimo priežastis");
 			fw.append("\n");
 			while (rs.next()) {
 				fw.append(rs.getString(1));
@@ -267,8 +269,6 @@ public class FileService {
 				fw.append(rs.getString(10));
 				fw.append(',');
 				fw.append(rs.getString(11));
-				fw.append(',');
-				fw.append(rs.getString(12));
 				fw.append('\n');
 			}
 			fw.flush();

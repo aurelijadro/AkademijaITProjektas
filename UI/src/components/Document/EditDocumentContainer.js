@@ -7,26 +7,32 @@ class EditDocumentContainer extends Component {
         super();
         this.state = {
             doctypes: [{
-                id: "",
-                title: ""
             }],
             userId: "",
-            title: "",
-            summary: "",
+            document: {
+                title: "",
+                summary: "",
+            },
             results: [],
             file: null,
+            loading: true,
         }
     }
 
     componentDidMount() {
-        this.getDocument();
+        this.getDocument()
     }
 
     getDocument = (e) => {
         axios
             .get(`${ApiUrl}documents/${this.props.match.params.id}`)
             .then(response => {
-                this.setState(response.data);
+                this.setState({
+                    title: response.data.title,
+                    summary: response.data.summary,
+                    doctypeItemTitle: response.data.doctypes.title,
+                    doctypeItemId: response.data.doctypes.id
+                });
                 axios
                     .get(`${ApiUrl}loggedUserId`)
                     .then(response => {
@@ -36,21 +42,11 @@ class EditDocumentContainer extends Component {
                             .then(response => {
                                 this.setState({ doctypes: response.data })
                             })
-                            .then(response => {
-                                this.setState({
-                                    doctypeItem: this.state.doctypes.map((doctype) =>
-                                        <option
-                                            key={doctype.id}
-                                            value={doctype.id}>
-                                            {doctype.title}
-                                        </option>
-                                    )
-                                })
-                            });
                         axios.get(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesNames`)
                             .then(response => {
                                 this.setState({ results: response.data });
                             })
+                            .then(this.setState({ loading: false }))
                             .catch(error => {
                                 alert("Dokumentas turi turėti bent vieną bylą.")
                             });
@@ -64,12 +60,16 @@ class EditDocumentContainer extends Component {
             });
     }
 
-    onChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
+    onTitleChange = event => {
+        this.setState({ title: event.target.value });
+    }
+
+    onSummaryChange = event => {
+        this.setState({ summary: event.target.value });
     }
 
     handleDoctypesChange = e => {
-        this.setState({ value: e.target.value });
+        this.setState({ doctypeItemId: e.target.value });
     };
 
     onFilesChange = event => {
@@ -86,9 +86,9 @@ class EditDocumentContainer extends Component {
         const data = new FormData()
         data.append("file", this.state.file)
         axios
-            .post(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadFile`, data)
+            .post(`${ApiUrl}files/${this.state.userId}/${this.state.document.id}/uploadFile`, data)
             .then((response) => {
-                axios.get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`)
+                axios.get(`${ApiUrl}files/${this.state.userId}/${this.state.document.id}/uploadedFilesNames`)
                     .then(response => {
                         this.setState({ results: response.data });
                     })
@@ -103,9 +103,9 @@ class EditDocumentContainer extends Component {
 
     handleClick = (e) => {
         e.preventDefault();
-        axios.delete(`${ApiUrl}files/${this.state.userId}/${this.state.id}/documentsDelete`)
+        axios.delete(`${ApiUrl}files/${this.state.userId}/${this.state.document.id}/documentsDelete`)
             .then(response => {
-                axios.get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`)
+                axios.get(`${ApiUrl}files/${this.state.userId}/${this.state.document.id}/uploadedFilesNames`)
                     .then(response => {
                         this.setState({ results: response.data });
                         alert("Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.")
@@ -117,7 +117,7 @@ class EditDocumentContainer extends Component {
     }
 
     downloadFiles = (e) => {
-        fetch(`${ApiUrl}files/${this.state.userId}/${this.state.id}/downloadZip`)
+        fetch(`${ApiUrl}files/${this.state.userId}/${this.state.document.id}/downloadZip`)
             .then(response => {
                 if (this.state.results && this.state.results.length > 0) {
                     response.blob().then(blob => {
@@ -138,9 +138,10 @@ class EditDocumentContainer extends Component {
         const data = {
             title: this.state.title,
             summary: this.state.summary,
+            doctypeItemId: this.state.doctypeItemId
         }
         axios
-            .put(`${ApiUrl}documents/${this.props.match.params.id}/${this.state.value}`, data)
+            .put(`${ApiUrl}documents/${this.props.match.params.id}/${this.state.doctypeItemId}`, data)
             .then(response => {
                 if (this.state.results && this.state.results.length > 0) {
                     alert("Jūs sėkmingai pakeitėte dokumento duomenis.");
@@ -162,6 +163,16 @@ class EditDocumentContainer extends Component {
     }
 
     render() {
+        if (this.state.loading) {
+            return (
+                <div>Loading!!!!!!</div>
+            )
+        }
+        const doctype = this.state.doctypes.filter(doctype => doctype.title !== this.state.doctypeItemTitle).map((doctype, index) => {
+            return (<option key={index} value={doctype.id}>
+                {doctype.title}
+            </option>)
+        })
         const result = this.state.results.map((result, index) => {
             return <li className="list-group-item list-group-item-dark" id="mylist2" key={index}>
                 <div className="row my-1">
@@ -180,21 +191,24 @@ class EditDocumentContainer extends Component {
                         <form >
                             <div className="form-group" >
                                 <label > Pavadinimas: </label>
-                                <input type="text" className="form-control" name="title" onChange={this.onChange} value={this.state.title} placeholder="Pavadinimas" required />
+                                <input type="text" className="form-control" name="title" onChange={this.onTitleChange} value={this.state.title} placeholder="Pavadinimas" required />
                             </div>
                             <div className="form-group" >
                                 <label > Trumpas aprašymas </label>
-                                <textarea className="form-control" name="summary" onChange={this.onChange} value={this.state.summary} rows="3" > </textarea>
+                                <textarea className="form-control" name="summary" onChange={this.onSummaryChange} value={this.state.summary} rows="3" > </textarea>
                             </div >
                             <div className="form-group" >
                                 <label> Pasirinkite dokumento tipą:
-                            <select value={this.state.doctypes.title} onChange={this.handleDoctypesChange} >
-                                        {this.state.doctypeItem}
+                            <select onChange={this.handleDoctypesChange} >
+                                        <option value={this.state.doctypeItemId}>{this.state.doctypeItemTitle}</option>
+                                        {doctype}
                                     </select>
                                 </label>
                             </div >
                         </form>
                         <form onSubmit={this.onFormSubmit} >
+                            <button className="btn btn-dark" id="saveButton" type="submit" onClick={this.updateDocument}> Išsaugoti </button>
+                            <button className="btn btn-dark" id="saveButton" type="submit" onClick={this.goBack}> Atšaukti pakeitimus </button>
                             <div className="form-group" >
                                 <label > Jūsų prisegtos bylos: </label>
                                 <button className="btn-dark" id="document" onClick={(e) => { if (window.confirm('Ar tikrai norite ištrinti įkeltas bylas? \nŠis pakeitimas negalės būti atšauktas.')) this.handleClick(e) }}>Ištrinti bylas</button>
@@ -217,8 +231,6 @@ class EditDocumentContainer extends Component {
                             <div className="row" > </div>
                             <button className="download" onClick={this.downloadFiles}>Atsisiųsti</button>
                         </div>
-                        <button className="btn btn-dark" id="saveButton" type="submit" onClick={this.updateDocument}> Išsaugoti </button>
-                        <button className="btn btn-dark" id="saveButton" type="submit" onClick={this.goBack}> Atšaukti pakeitimus </button>
                     </div>
                 </div>
             </div>
