@@ -157,9 +157,21 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
         <div className="row my-2">
           <div className="col-12 font-weight-bold">Aprašymas: </div>
         </div>
-        <div className="row">
+        <div className="row my-2">
           <div className="col-12">{summary}</div>
         </div>
+        <div className="row my-2">
+          <div className="col-12 font-weight-bold">Pridėti dokumentai: </div>
+        </div>
+        <li className="list-group-item list-group-item-dark">
+          <div className="row my-2">
+            <div className="col-1 font-weight-bold">#</div>
+            <div className="col-7 font-weight-bold">Failo pavadinimas</div>
+            <div className="col-4 font-weight-bold text-right">
+              Atsisiųsti failą
+            </div>
+          </div>
+        </li>
         <div>{fileList}</div>
         {decide === "choose" ? (
           <div className="row my-4">
@@ -191,6 +203,8 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
                   <textarea
                     className="form-control"
                     onChange={handleChange}
+                    required
+                    placeholder="Norint atmesti dokumentą būtina nurodyti atmetimo priežastį."
                   ></textarea>
                   <button type="submit" className="btn btn-dark my-4">
                     Atmesti
