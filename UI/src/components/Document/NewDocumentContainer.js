@@ -80,7 +80,7 @@ class NewDocumentContainer extends Component {
     if (event.target.files[0].size < 10000000) {
       this.setState({ file: event.target.files[0] });
     } else {
-      alert("Pasirinkta byla per didelė.");
+      alert("Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb.");
     }
   };
 
@@ -234,13 +234,18 @@ class NewDocumentContainer extends Component {
                       className="btn-dark"
                       id="document"
                       onClick={e => {
-                        if (
-                          window.confirm(
-                            "Ar tikrai norite ištrinti įkeltas bylas?"
+                        if (this.state.results && this.state.results.length <= 0) {
+                          alert("Nepridėjote nei vienos bylos.")
+                        } else {
+                          if (
+                            window.confirm(
+                              "Ar tikrai norite ištrinti įkeltas bylas?"
+                            )
                           )
-                        )
-                          this.handleClick(e);
-                      }}
+                            this.handleClick(e);
+                        }
+                      }
+                      }
                     >
                       Ištrinti bylas
                     </button>

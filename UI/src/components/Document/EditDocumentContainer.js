@@ -10,6 +10,7 @@ class EditDocumentContainer extends Component {
       }],
       userId: "",
       document: {
+        id: "",
         title: "",
         summary: "",
       },
@@ -28,6 +29,7 @@ class EditDocumentContainer extends Component {
       .get(`${ApiUrl}documents/${this.props.match.params.id}`)
       .then(response => {
         this.setState({
+          // id: response.data.id,
           title: response.data.title,
           summary: response.data.summary,
           doctypeItemTitle: response.data.doctypes.title,
@@ -86,9 +88,9 @@ class EditDocumentContainer extends Component {
     const data = new FormData()
     data.append("file", this.state.file)
     axios
-      .post(`${ApiUrl}files/${this.state.userId}/${this.state.document.id}/uploadFile`, data)
+      .post(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadFile`, data)
       .then((response) => {
-        axios.get(`${ApiUrl}files/${this.state.userId}/${this.state.document.id}/uploadedFilesNames`)
+        axios.get(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesNames`)
           .then(response => {
             this.setState({ results: response.data });
           })
@@ -103,9 +105,9 @@ class EditDocumentContainer extends Component {
 
   handleClick = (e) => {
     e.preventDefault();
-    axios.delete(`${ApiUrl}files/${this.state.userId}/${this.state.document.id}/documentsDelete`)
+    axios.delete(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/documentsDelete`)
       .then(response => {
-        axios.get(`${ApiUrl}files/${this.state.userId}/${this.state.document.id}/uploadedFilesNames`)
+        axios.get(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesNames`)
           .then(response => {
             this.setState({ results: response.data });
             alert("Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.")
@@ -117,7 +119,7 @@ class EditDocumentContainer extends Component {
   }
 
   downloadFiles = (e) => {
-    fetch(`${ApiUrl}files/${this.state.userId}/${this.state.document.id}/downloadZip`)
+    fetch(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/downloadZip`)
       .then(response => {
         if (this.state.results && this.state.results.length > 0) {
           response.blob().then(blob => {
