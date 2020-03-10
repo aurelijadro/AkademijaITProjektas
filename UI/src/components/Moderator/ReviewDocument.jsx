@@ -154,7 +154,7 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
           <div className="col-7">{file.fileName}</div>
           <div className="col-4 text-right">
             <button className="btn btn-dark" onClick={download}>
-              Atsisiųsti failą
+              Atsisiųsti bylą
             </button>
           </div>
         </div>
@@ -186,18 +186,18 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
           <div className="col-12">{summary}</div>
         </div>
         <div className="row my-2">
-          <div className="col-12 font-weight-bold">Pridėti dokumentai: </div>
+          <div className="col-12 font-weight-bold">Pridėtos bylos: </div>
         </div>
         <li className="list-group-item list-group-item-dark">
           <div className="row my-2">
             <div className="col-1 font-weight-bold">#</div>
-            <div className="col-7 font-weight-bold">Failo pavadinimas</div>
+            <div className="col-7 font-weight-bold">Bylos pavadinimas</div>
             <div className="col-4 font-weight-bold text-right">
               <button
                 className="btn btn-dark"
                 onClick={downloadAllDocumentFiles}
               >
-                Atsisiųsti prikabintus failus
+                Atsisiųsti prikabintas bylas
               </button>
             </div>
           </div>
