@@ -86,28 +86,32 @@ class NewDocumentContainer extends Component {
 
   onFormSubmit = e => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("file", this.state.file);
-    axios
-      .post(
-        `${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadFile`,
-        data
-      )
-      .then(response => {
-        axios
-          .get(
-            `${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`
-          )
-          .then(response => {
-            this.setState({ results: response.data });
-          })
-          .catch(error => {
-            alert("Kuriant dokumentą būtina pridėti bent vieną bylą.");
-          });
-      })
-      .catch(error => {
-        alert("Pasirinkite bylą, kurią norite pridėti.");
-      });
+    if (this.state.file.type.match("application/pdf")) {
+      const data = new FormData();
+      data.append("file", this.state.file);
+      axios
+        .post(
+          `${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadFile`,
+          data
+        )
+        .then(response => {
+          axios
+            .get(
+              `${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`
+            )
+            .then(response => {
+              this.setState({ results: response.data });
+            })
+            .catch(error => {
+              alert("Kuriant dokumentą būtina pridėti bent vieną bylą.");
+            });
+        })
+        .catch(error => {
+          alert("Pasirinkite bylą, kurią norite pridėti.");
+        });
+    } else {
+      alert("Galite prisegti tik PDF tipo bylas.")
+    }
   };
 
   handleClick = e => {
@@ -205,12 +209,10 @@ class NewDocumentContainer extends Component {
                   onChange={this.onChange}
                   rows="3"
                 >
-                  {" "}
                 </textarea>
               </div>
               <div className="form-group">
                 <label>
-                  {" "}
                   Pasirinkite dokumento tipą:
                   <select onChange={this.handleDoctypesChange}>
                     <option value="Default">Pasirinkite dokumento tipą</option>
@@ -269,8 +271,7 @@ class NewDocumentContainer extends Component {
                     />
                     <div>
                       <button id="uploadButton" type="submit">
-                        {" "}
-                        Įkelti{" "}
+                        Įkelti
                       </button>
                     </div>
                   </div>
@@ -287,8 +288,7 @@ class NewDocumentContainer extends Component {
                   type="submit"
                   onClick={this.saveDocument}
                 >
-                  {" "}
-                  Išsaugoti{" "}
+                  Išsaugoti
                 </button>
               </div>
             ) : null}
