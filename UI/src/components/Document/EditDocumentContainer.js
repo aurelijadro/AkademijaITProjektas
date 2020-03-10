@@ -108,6 +108,12 @@ class EditDocumentContainer extends Component {
               .catch(error => {
                 alert("Dokumentas turi turėti bent vieną bylą.");
               });
+            axios
+              .get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesData`)
+              .then(resp => {
+                this.setState({ files: resp.data });
+              })
+              .catch(error => { });
           })
           .catch(error => {
             alert("Įkelkite bent vieną bylą.");
@@ -137,9 +143,9 @@ class EditDocumentContainer extends Component {
             this.setState({ results: response.data });
             alert("Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.");
           })
-          .catch(error => {});
+          .catch(error => { });
       })
-      .catch(error => {});
+      .catch(error => { });
   };
 
   downloadFiles = e => {
@@ -180,7 +186,7 @@ class EditDocumentContainer extends Component {
           alert("Pridėkite bent vieną bylą.");
         }
       })
-      .catch(error => {});
+      .catch(error => { });
   };
 
   goBack = e => {
@@ -191,6 +197,46 @@ class EditDocumentContainer extends Component {
       alert("Pridėkite bent vieną bylą.");
     }
   };
+
+  downloadOneFile = e => {
+    this.state.files.map((file) => {
+      return (
+        fetch(`${ApiUrl}files/download`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            fileName: file.fileName,
+            documentId: this.state.id,
+            userId: this.state.userId
+          })
+        }).then(resp => {
+          resp.blob().then(blob => {
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement("a");
+            a.href = url;
+            a.download = file.fileName;
+            a.click();
+          });
+        })
+      )
+    }
+    )
+  }
+
+  // deleteOneFile = e => {
+  //   this.state.files.map((file) => {
+  //     return (
+  //       axios
+  //         .delete(
+  //           `${ApiUrl}files/deleteOneFile`
+  //         )
+  //         .then(response => { })
+  //         .catch(error => { })
+  //     )
+  //   })
+  // }
 
   render() {
     if (this.state.loading) {
@@ -207,17 +253,27 @@ class EditDocumentContainer extends Component {
       });
     const result = this.state.results.map((result, index) => {
       return (
-        <li
-          className="list-group-item list-group-item-dark"
-          id="mylist2"
-          key={index}
-        >
+        <li className="list-group-item list-group-item-dark" key={index}>
           <div className="row my-1">
-            <div className="col-2">{index + 1}</div>
-            <div className="col-10">{result}</div>
+            <div className="col-1">{index + 1}</div>
+            <div className="col-7">{result}</div>
+            <div className="col-2 text-right">
+              <button className="btn btn-dark"
+                onClick={this.downloadOneFile}
+              >
+                Atsisiųsti bylą
+              </button>
+            </div>
+            <div className="col-2 text-right">
+              <button className="btn btn-dark"
+              // onClick={this.deleteOneFile}
+              >
+                Ištrinti bylą
+              </button>
+            </div>
           </div>
         </li>
-      );
+      )
     });
     return (
       <div>
@@ -287,28 +343,22 @@ class EditDocumentContainer extends Component {
                 </button>
                 <div className="form-group">
                   <label> Jūsų prisegtos bylos: </label>
-                  <button
-                    className="btn-dark"
-                    id="document"
-                    onClick={e => {
-                      if (
-                        window.confirm(
-                          "Ar tikrai norite ištrinti įkeltas bylas? \nŠis pakeitimas negalės būti atšauktas."
-                        )
-                      )
-                        this.handleClick(e);
-                    }}
-                  >
-                    Ištrinti bylas
-                  </button>
-                  <li
-                    className="list-group-item list-group-item-dark"
-                    id="mylist"
-                  >
+                  <li className="list-group-item list-group-item-dark">
                     <div className="row my-2">
-                      <div className="col-2 font-weight-bold">#</div>
-                      <div className="col-10 font-weight-bold">
-                        Bylos pavadinimas
+                      <div className="col-1 font-weight-bold">#</div>
+                      <div className="col-7 font-weight-bold">Failo pavadinimas</div>
+                      <div className="col-4 font-weight-bold text-right">
+                        <button className="btn-dark" id="document"
+                          onClick={e => {
+                            if (this.state.results && this.state.results.length <= 0) {
+                              alert("Nepridėjote nei vienos bylos.");
+                            } else {
+                              if (window.confirm("Ar tikrai norite ištrinti įkeltas bylas?"))
+                                this.handleClick(e);
+                            }
+                          }}>
+                          Ištrinti bylas
+                            </button>
                       </div>
                     </div>
                   </li>
@@ -327,13 +377,13 @@ class EditDocumentContainer extends Component {
                   </div>
                 </div>
               </form>
-              <div className="panel-body">
+              {/* <div className="panel-body">
                 <label>Parsisiųsti bylas peržiūrai:</label>
                 <div className="row"> </div>
                 <button className="download" onClick={this.downloadFiles}>
                   Atsisiųsti
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
