@@ -21,7 +21,7 @@ const CreatedDocuments = props => {
     `).then(setSubmittedDocuments);
   };
 
-  useEffect(function () {
+  useEffect(function() {
     updateCachedData();
     // const timer = setInterval(updateCachedData, 2000);
     // return () => clearInterval(timer);
@@ -49,9 +49,24 @@ const CreatedDocuments = props => {
   const createdDocumentsList = createdDocuments.map((document, index) => {
     function submitDocument() {
       manageChanges(() =>
-        axios.post(
-          `${ApiUrl}documents/${userId}/${document.id}/submittedStatusUpdate`
-        )
+        axios
+          .get(`${ApiUrl}files/${userId}/${document.id}/uploadedFilesNames`)
+          .then(response => {
+            if (response.data.length > 0) {
+              axios.post(
+                `${ApiUrl}documents/${userId}/${document.id}/submittedStatusUpdate`
+              );
+            } else {
+              alert(
+                "Norit pateikti dokumentą būtina prikabinti bent vieną pdf bylą"
+              );
+            }
+          })
+          .catch(error =>
+            alert(
+              "Norit pateikti dokumentą būtina prikabinti bent vieną pdf bylą"
+            )
+          )
       );
     }
     function deleteDocumet() {
@@ -64,7 +79,10 @@ const CreatedDocuments = props => {
         <div className="row my-1">
           <div className="col-3">{document.title}</div>
           <div className="col-2">{document.doctypes.title}</div>
-          <Link className="col-2 mx-3" to={`/Gentoo/user/documents/${document.id}`}>
+          <Link
+            className="col-2 mx-3"
+            to={`/Gentoo/user/documents/${document.id}`}
+          >
             <button type="button" className="btn btn-dark ">
               Peržiūrėti/Redaguoti
             </button>
@@ -88,7 +106,10 @@ const CreatedDocuments = props => {
           <div className="col-2">{document.doctypes.title}</div>
           <div className="col-2">{document.afterSubmissionStatus}</div>
           <div className="col-2">{document.submissionDate}</div>
-          <Link className="col-2 mx-3" to={`/Gentoo/user/review/${document.id}`}>
+          <Link
+            className="col-2 mx-3"
+            to={`/Gentoo/user/review/${document.id}`}
+          >
             <button type="button" className="btn btn-dark ">
               Peržiūrėti
             </button>
