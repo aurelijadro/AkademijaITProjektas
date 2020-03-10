@@ -76,32 +76,32 @@ class EditDocumentContainer extends Component {
 
   onFilesChange = event => {
     event.preventDefault();
-    if (event.target.files[0].size < 10000000) {
-      this.setState({ file: event.target.files[0] });
-    } else {
-      alert("Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb.")
-    }
+    this.setState({ file: event.target.files[0] });
   };
 
   onFormSubmit = (e) => {
     e.preventDefault();
     if (this.state.file.type.match("application/pdf")) {
-      const data = new FormData()
-      data.append("file", this.state.file)
-      axios
-        .post(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadFile`, data)
-        .then((response) => {
-          axios.get(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesNames`)
-            .then(response => {
-              this.setState({ results: response.data });
-            })
-            .catch(error => {
-              alert("Dokumentas turi turėti bent vieną bylą.")
-            });
-        })
-        .catch((error) => {
-          alert("Įkelkite bent vieną bylą.")
-        });
+      if (this.state.file.size < 10000000) {
+        const data = new FormData()
+        data.append("file", this.state.file)
+        axios
+          .post(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadFile`, data)
+          .then((response) => {
+            axios.get(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesNames`)
+              .then(response => {
+                this.setState({ results: response.data });
+              })
+              .catch(error => {
+                alert("Dokumentas turi turėti bent vieną bylą.")
+              });
+          })
+          .catch((error) => {
+            alert("Įkelkite bent vieną bylą.")
+          });
+      } else {
+        alert("Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb.")
+      }
     } else {
       alert("Galite prisegti tik PDF tipo bylas.")
     }

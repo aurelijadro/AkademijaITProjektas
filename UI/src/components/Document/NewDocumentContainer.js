@@ -77,38 +77,38 @@ class NewDocumentContainer extends Component {
 
   onFilesChange = event => {
     event.preventDefault();
-    if (event.target.files[0].size < 10000000) {
-      this.setState({ file: event.target.files[0] });
-    } else {
-      alert("Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb.");
-    }
+    this.setState({ file: event.target.files[0] });
   };
 
   onFormSubmit = e => {
     e.preventDefault();
     if (this.state.file.type.match("application/pdf")) {
-      const data = new FormData();
-      data.append("file", this.state.file);
-      axios
-        .post(
-          `${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadFile`,
-          data
-        )
-        .then(response => {
-          axios
-            .get(
-              `${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`
-            )
-            .then(response => {
-              this.setState({ results: response.data });
-            })
-            .catch(error => {
-              alert("Kuriant dokumentą būtina pridėti bent vieną bylą.");
-            });
-        })
-        .catch(error => {
-          alert("Pasirinkite bylą, kurią norite pridėti.");
-        });
+      if (this.state.file.size < 10000000) {
+        const data = new FormData();
+        data.append("file", this.state.file);
+        axios
+          .post(
+            `${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadFile`,
+            data
+          )
+          .then(response => {
+            axios
+              .get(
+                `${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`
+              )
+              .then(response => {
+                this.setState({ results: response.data });
+              })
+              .catch(error => {
+                alert("Kuriant dokumentą būtina pridėti bent vieną bylą.");
+              });
+          })
+          .catch(error => {
+            alert("Pasirinkite bylą, kurią norite pridėti.");
+          });
+      } else {
+        alert("Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb.")
+      }
     } else {
       alert("Galite prisegti tik PDF tipo bylas.")
     }

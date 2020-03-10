@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import it.akademija.PagingData;
 import it.akademija.doctype.DoctypeEntity;
 import it.akademija.group.GroupEntity;
 
@@ -34,9 +35,13 @@ public class UserController {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	PagingData paging;
+
 	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get users", notes = "Returns all users")
 	public List<User> getUsers() {
+		paging.setLimit(10);
 		return userService.getUsers();
 	}
 
