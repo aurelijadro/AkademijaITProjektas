@@ -10,7 +10,9 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
   const [author, setAuthor] = useState("loading");
   const [moderatorId, setModeratorId] = useState("loading");
   const [denialReason, setDenialReason] = useState("");
-  const [decide, setDecide] = useState("choose"); //choose / approve / deny
+  const [decide, setDecide] = useState("choose");
+  const [denyError, setDenyError] = useState("Pateikite atmetimo priežastį");
+  const [canDeny, setCanDeny] = useState(true);
 
   useEffect(
     function getsubmittedDocument() {
@@ -62,8 +64,21 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
       .then(history.push("/Gentoo/user/moderate"));
   }
 
+  function downloadAllDocumentFiles() {
+    fetch(`${ApiUrl}files/${author.id}/${docId}/downloadZip`).then(response => {
+      response.blob().then(blob => {
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = "Bylos.zip";
+        a.click();
+      });
+    });
+  }
+
   function chooseDeny(e) {
     e.preventDefault();
+    setCanDeny(false);
     setDecide("deny");
   }
 
@@ -93,7 +108,15 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
 
   const handleChange = e => {
     setDenialReason(e.target.value);
+    validateDenyReason();
   };
+
+  function validateDenyReason() {
+    if (denialReason.length >= 5) {
+      setDenyError(null);
+      setCanDeny(true);
+    }
+  }
 
   const summary =
     submittedDocument.summary === ""
@@ -168,7 +191,12 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
             <div className="col-1 font-weight-bold">#</div>
             <div className="col-7 font-weight-bold">Failo pavadinimas</div>
             <div className="col-4 font-weight-bold text-right">
-              Atsisiųsti failą
+              <button
+                className="btn btn-dark"
+                onClick={downloadAllDocumentFiles}
+              >
+                Atsisiųsti prikabintus failus
+              </button>
             </div>
           </div>
         </li>
@@ -201,14 +229,35 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
                     Įveskite atmetimo priežastį:
                   </label>
                   <textarea
-                    className="form-control"
+                    className={`form-control ${denyError ? "is-invalid" : ""}`}
                     onChange={handleChange}
                     required
                     placeholder="Norint atmesti dokumentą būtina nurodyti atmetimo priežastį."
+                    onBlur={validateDenyReason}
                   ></textarea>
-                  <button type="submit" className="btn btn-dark my-4">
-                    Atmesti
-                  </button>
+                  <div className="invalid-feedback">{denyError}</div>
+
+                  <div className="row my-4">
+                    <div className="col-2"> </div>
+                    <div className="col-4">
+                      <button
+                        className="btn btn-dark"
+                        onClick={approvesubmittedDocument}
+                      >
+                        Patvirtinti dokumentą
+                      </button>
+                    </div>
+                    <div className="col-4">
+                      <button
+                        className="btn btn-dark"
+                        disabled={!canDeny}
+                        type="submit"
+                      >
+                        Atmesti dokumentą
+                      </button>
+                    </div>
+                    <div className="col-2"> </div>
+                  </div>
                 </div>
               </form>
             </div>
