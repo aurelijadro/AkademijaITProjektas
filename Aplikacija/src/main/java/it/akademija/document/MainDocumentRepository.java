@@ -15,4 +15,7 @@ public interface MainDocumentRepository extends JpaRepository<MainDocument, Long
 
 	List<MainDocument> findAllByCreatorIdAndDocumentStatus(Long creatorId, String documentStatus);
 
+	List<MainDocument> findAllByCreatorIdAndDocumentStatusNotOrderBySubmissionDateDesc(Long creatorId,
+			String documentStatus);
+
 }

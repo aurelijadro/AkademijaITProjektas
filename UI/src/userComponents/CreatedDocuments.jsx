@@ -48,26 +48,26 @@ const CreatedDocuments = props => {
 
   const createdDocumentsList = createdDocuments.map((document, index) => {
     function submitDocument() {
-      manageChanges(() =>
-        axios
-          .get(`${ApiUrl}files/${userId}/${document.id}/uploadedFilesNames`)
-          .then(response => {
-            if (response.data.length > 0) {
+      axios
+        .get(`${ApiUrl}files/${userId}/${document.id}/uploadedFilesNames`)
+        .then(response => {
+          if (response.data.length > 0) {
+            manageChanges(() =>
               axios.post(
                 `${ApiUrl}documents/${userId}/${document.id}/submittedStatusUpdate`
-              );
-            } else {
-              alert(
-                "Norit pateikti dokumentą būtina prikabinti bent vieną pdf bylą"
-              );
-            }
-          })
-          .catch(error =>
+              )
+            );
+          } else {
             alert(
               "Norit pateikti dokumentą būtina prikabinti bent vieną pdf bylą"
-            )
+            );
+          }
+        })
+        .catch(error =>
+          alert(
+            "Norit pateikti dokumentą būtina prikabinti bent vieną pdf bylą"
           )
-      );
+        );
     }
     function deleteDocumet() {
       manageChanges(() =>
@@ -100,11 +100,22 @@ const CreatedDocuments = props => {
 
   const submittedDocumentsList = submittedDocuments.map((document, index) => {
     return (
-      <li className="list-group-item list-group-item-dark" key={document.id}>
+      <li
+        className={`list-group-item ${
+          document.documentStatus === "Atmestas" ? "list-group-item-danger" : ""
+        }
+       ${document.documentStatus === "Pateiktas" ? "list-group-item-dark" : ""} 
+       ${
+         document.documentStatus === "Patvirtintas"
+           ? "list-group-item-success"
+           : ""
+       }`}
+        key={document.id}
+      >
         <div className="row my-1">
           <div className="col-3">{document.title}</div>
           <div className="col-2">{document.doctypes.title}</div>
-          <div className="col-2">{document.afterSubmissionStatus}</div>
+          <div className="col-2">{document.documentStatus}</div>
           <div className="col-2">{document.submissionDate}</div>
           <Link
             className="col-2 mx-3"
