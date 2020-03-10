@@ -158,7 +158,8 @@ public class MainDocumentController {
 	@RequestMapping(path = "/{id}/submittedDocuments", method = RequestMethod.GET)
 	@ApiOperation(value = "Get submitted documents", notes = "Returns all submitted documents")
 	public List<MainDocument> getSubmittedDocuments(@PathVariable Long id, HttpServletResponse response) {
-		List<MainDocument> documentList = mainDocService.submittedDocumentsList(id);
+		// List<MainDocument> documentList = mainDocService.submittedDocumentsList(id);
+		List<MainDocument> documentList = mainDocService.getAllNotCreatedDocuments(id);
 		if (documentList == null) {
 			response.setStatus(404);
 			return null;
