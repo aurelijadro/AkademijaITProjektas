@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import ApiUrl from "../../APIURL";
+import NavigationForUSer from "../NavigationForUser";
 
 class NewDocumentContainer extends Component {
   constructor() {
@@ -17,7 +18,8 @@ class NewDocumentContainer extends Component {
       summary: "",
       id: "",
       results: [],
-      file: null
+      file: null,
+      isModerator: false
     };
   }
 
@@ -31,8 +33,12 @@ class NewDocumentContainer extends Component {
           .then(response => {
             this.setState({ doctypes: response.data });
           })
-          .then()
-          .catch(error => { });
+          .then(
+            axios
+              .get(`${ApiUrl}users/${this.state.userId}/ismoderator`)
+              .then(resp => this.setState({ isModerator: resp.data }))
+          )
+          .catch(error => {});
       })
       .catch(error => {
         alert("Tokio vartotojo nera arba jis neprisijunges.");
@@ -68,7 +74,7 @@ class NewDocumentContainer extends Component {
         this.setState({ showResults: true });
         alert("Prisekite papildomas bylas.");
       })
-      .catch(error => { });
+      .catch(error => {});
   };
 
   show = e => {
@@ -107,10 +113,12 @@ class NewDocumentContainer extends Component {
             alert("Pasirinkite bylą, kurią norite pridėti.");
           });
       } else {
-        alert("Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb.")
+        alert(
+          "Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb."
+        );
       }
     } else {
-      alert("Galite prisegti tik PDF tipo bylas.")
+      alert("Galite prisegti tik PDF tipo bylas.");
     }
   };
 
@@ -129,16 +137,15 @@ class NewDocumentContainer extends Component {
             this.setState({ results: response.data });
             alert("Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.");
           })
-          .catch(error => { });
+          .catch(error => {});
       })
-      .catch(error => { });
+      .catch(error => {});
   };
 
   downloadFiles = e => {
     fetch(
       `${ApiUrl}files/${this.state.userId}/${this.state.id}/downloadZip`
     ).then(response => {
-      console.log(response);
       if (this.state.results && this.state.results.length > 0) {
         response.blob().then(blob => {
           let url = window.URL.createObjectURL(blob);
@@ -183,115 +190,121 @@ class NewDocumentContainer extends Component {
       );
     });
     return (
-      <div className="container my-4">
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <h3 className="panel-title"> Naujo dokumento kūrimas </h3>
-          </div>
-          <div className="panel-body">
-            <form onSubmit={this.addNewDocument}>
-              <div className="form-group">
-                <label> Pavadinimas: </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="title"
-                  onChange={this.onChange}
-                  placeholder="Pavadinimas"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label> Trumpas aprašymas </label>
-                <textarea
-                  className="form-control"
-                  name="summary"
-                  onChange={this.onChange}
-                  rows="3"
-                >
-                </textarea>
-              </div>
-              <div className="form-group">
-                <label>
-                  Pasirinkite dokumento tipą:
-                  <select onChange={this.handleDoctypesChange}>
-                    <option value="Default">Pasirinkite dokumento tipą</option>
-                    {doctypeItem}
-                  </select>
-                </label>
-                <button className="btn-dark" id="document" type="submit">
-                  Patvirtinti
-                </button>
-              </div>
-            </form>
-          </div>
-
-          <div className="panel-body">
-            {this.state.showResults ? (
-              <div>
-                <form onSubmit={this.onFormSubmit}>
-                  <div className="form-group">
-                    <label> Jūsų prisegtos bylos: </label>
-                    <button
-                      className="btn-dark"
-                      id="document"
-                      onClick={e => {
-                        if (this.state.results && this.state.results.length <= 0) {
-                          alert("Nepridėjote nei vienos bylos.")
-                        } else {
-                          if (
-                            window.confirm(
-                              "Ar tikrai norite ištrinti įkeltas bylas?"
-                            )
-                          )
-                            this.handleClick(e);
-                        }
-                      }
-                      }
-                    >
-                      Ištrinti bylas
-                    </button>
-                    <li
-                      className="list-group-item list-group-item-dark"
-                      id="mylist"
-                    >
-                      <div className="row my-2">
-                        <div className="col-2 font-weight-bold">#</div>
-                        <div className="col-10 font-weight-bold">
-                          Bylos pavadinimas
-                        </div>
-                      </div>
-                    </li>
-                    <div>{result}</div>
-                    <div className="row"> </div>
-                    <input
-                      id="chooseFile"
-                      type="file"
-                      onChange={this.onFilesChange}
-                    />
-                    <div>
-                      <button id="uploadButton" type="submit">
-                        Įkelti
-                      </button>
-                    </div>
-                  </div>
-                </form>
-                <div className="panel-body">
-                  <label>Parsisiųsti bylas peržiūrai:</label>
-                  <div className="row"> </div>
-                  <button className="download" onClick={this.downloadFiles}>
-                    Atsisiųsti
+      <div>
+        <NavigationForUSer isModerator={this.state.isModerator} />
+        <div className="container my-4">
+          <div className="panel panel-default">
+            <div className="panel-heading">
+              <h3 className="panel-title"> Naujo dokumento kūrimas </h3>
+            </div>
+            <div className="panel-body">
+              <form onSubmit={this.addNewDocument}>
+                <div className="form-group">
+                  <label> Pavadinimas: </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="title"
+                    onChange={this.onChange}
+                    placeholder="Pavadinimas"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label> Trumpas aprašymas </label>
+                  <textarea
+                    className="form-control"
+                    name="summary"
+                    onChange={this.onChange}
+                    rows="3"
+                  ></textarea>
+                </div>
+                <div className="form-group">
+                  <label>
+                    Pasirinkite dokumento tipą:
+                    <select onChange={this.handleDoctypesChange}>
+                      <option value="Default">
+                        Pasirinkite dokumento tipą
+                      </option>
+                      {doctypeItem}
+                    </select>
+                  </label>
+                  <button className="btn-dark" id="document" type="submit">
+                    Patvirtinti
                   </button>
                 </div>
-                <button
-                  className="btn btn-dark"
-                  type="submit"
-                  onClick={this.saveDocument}
-                >
-                  Išsaugoti
-                </button>
-              </div>
-            ) : null}
+              </form>
+            </div>
+
+            <div className="panel-body">
+              {this.state.showResults ? (
+                <div>
+                  <form onSubmit={this.onFormSubmit}>
+                    <div className="form-group">
+                      <label> Jūsų prisegtos bylos: </label>
+                      <button
+                        className="btn-dark"
+                        id="document"
+                        onClick={e => {
+                          if (
+                            this.state.results &&
+                            this.state.results.length <= 0
+                          ) {
+                            alert("Nepridėjote nei vienos bylos.");
+                          } else {
+                            if (
+                              window.confirm(
+                                "Ar tikrai norite ištrinti įkeltas bylas?"
+                              )
+                            )
+                              this.handleClick(e);
+                          }
+                        }}
+                      >
+                        Ištrinti bylas
+                      </button>
+                      <li
+                        className="list-group-item list-group-item-dark"
+                        id="mylist"
+                      >
+                        <div className="row my-2">
+                          <div className="col-2 font-weight-bold">#</div>
+                          <div className="col-10 font-weight-bold">
+                            Bylos pavadinimas
+                          </div>
+                        </div>
+                      </li>
+                      <div>{result}</div>
+                      <div className="row"> </div>
+                      <input
+                        id="chooseFile"
+                        type="file"
+                        onChange={this.onFilesChange}
+                      />
+                      <div>
+                        <button id="uploadButton" type="submit">
+                          Įkelti
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  <div className="panel-body">
+                    <label>Parsisiųsti bylas peržiūrai:</label>
+                    <div className="row"> </div>
+                    <button className="download" onClick={this.downloadFiles}>
+                      Atsisiųsti
+                    </button>
+                  </div>
+                  <button
+                    className="btn btn-dark"
+                    type="submit"
+                    onClick={this.saveDocument}
+                  >
+                    Išsaugoti
+                  </button>
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
       </div>
