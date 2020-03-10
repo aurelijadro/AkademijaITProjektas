@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ApiUrl from "../../APIURL";
 import Axios from "axios";
 import { withRouter } from "react-router-dom";
+import NavigationForUSer from "../NavigationForUser";
 
 const ReviewDocument = withRouter(({ history, ...props }) => {
   const docId = props.match.params.docId;
@@ -163,6 +164,7 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
 
   return (
     <div>
+      <NavigationForUSer isModerator={moderatorId !== "loading"} />
       <div className="container my-4">
         <h4> Dokumento peržiūra</h4>
         <div className="row">
