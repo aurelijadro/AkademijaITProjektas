@@ -150,6 +150,22 @@ public class FileService {
 		}
 	}
 
+//	@Transactional
+//	public void deleteOneFile(Long userId, Long documentId, String fileName) {
+//		try {
+//			String fileName = storeUploadedFile(fileData, userId, documentId);
+//			String path = Paths.get("/tmp/Uploads/" + userId + "/" + documentId + "/" + fileName).toString();
+//
+//			File file = new File(path);
+//
+//			if (file != null) {
+//				file.delete();
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
+
 	@Transactional
 	public void downloadFile(Long userId, Long documentId, HttpServletResponse response) throws Exception {
 
