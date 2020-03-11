@@ -3,7 +3,7 @@ import NavigationForUser from "./NavigationForUser";
 import axios from "axios";
 import ApiUrl from "../APIURL";
 
-import CreatedDocuments from "../userComponents/CreatedDocuments";
+import CreatedDocuments from "../userComponents/AllUserDocumentsOverview";
 
 class UserDashboard extends Component {
   constructor(props) {

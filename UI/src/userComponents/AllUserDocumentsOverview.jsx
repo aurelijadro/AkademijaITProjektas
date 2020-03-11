@@ -10,7 +10,6 @@ const CreatedDocuments = props => {
   const [saving, setSaving] = useState(false);
 
   function fetchFromServer(path) {
-    console.log(props);
     return axios.get(ApiUrl + path).then(resp => resp.data);
   }
 
@@ -117,10 +116,7 @@ const CreatedDocuments = props => {
           <div className="col-2">{document.doctypes.title}</div>
           <div className="col-2">{document.documentStatus}</div>
           <div className="col-2">{document.submissionDate}</div>
-          <Link
-            className="col-2 mx-3"
-            to={`/Gentoo/user/review/${document.id}`}
-          >
+          <Link className="col-2 mx-3" to={`/Gentoo/user/view/${document.id}`}>
             <button type="button" className="btn btn-dark ">
               Peržiūrėti
             </button>
