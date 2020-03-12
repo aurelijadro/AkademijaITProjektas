@@ -115,7 +115,7 @@ class EditDocumentContainer extends Component {
         alert("Galite prisegti tik PDF tipo bylas.");
       }
     } else {
-      alert("Įkelkite bylą.")
+      alert("Prisekite nors vieną bylą.")
     }
   };
 
@@ -141,7 +141,7 @@ class EditDocumentContainer extends Component {
     fetch(
       `${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/downloadZip`)
       .then(response => {
-        if (this.state.files && this.state.files.length > 0) {
+        if (this.state.files !== null && this.state.files.length > 0) {
           response.blob().then(blob => {
             let url = window.URL.createObjectURL(blob);
             let a = document.createElement("a");
@@ -150,7 +150,6 @@ class EditDocumentContainer extends Component {
             a.click();
           });
         } else {
-          alert("Neprisegėte nei vienos bylos.");
         }
       });
   };
@@ -259,7 +258,7 @@ class EditDocumentContainer extends Component {
                         <button className="btn btn-dark" id="document"
                           onClick={e => {
                             if (this.state.files && this.state.files.length <= 0) {
-                              alert("Nepridėjote nei vienos bylos.");
+                              // alert("Nepridėjote nei vienos bylos.");
                             } else {
                               if (window.confirm("Ar tikrai norite ištrinti įkeltas bylas?"))
                                 this.handleClick(e);

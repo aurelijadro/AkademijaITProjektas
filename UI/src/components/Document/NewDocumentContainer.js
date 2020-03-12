@@ -112,7 +112,7 @@ class NewDocumentContainer extends Component {
         alert("Galite prisegti tik PDF tipo bylas.");
       }
     } else {
-      alert("Pasirinkite bylą.")
+      alert("Prisekite nors vieną bylą.")
     }
   };
 
@@ -144,7 +144,6 @@ class NewDocumentContainer extends Component {
             a.click();
           });
         } else {
-          alert("Neprisegėte nei vienos bylos.");
         }
       });
   };
@@ -227,7 +226,7 @@ class NewDocumentContainer extends Component {
                             <button className="btn btn-dark" id="document"
                               onClick={e => {
                                 if (this.state.files && this.state.files.length <= 0) {
-                                  alert("Nepridėjote nei vienos bylos.");
+
                                 } else {
                                   if (window.confirm("Ar tikrai norite ištrinti įkeltas bylas?"))
                                     this.handleClick(e);
