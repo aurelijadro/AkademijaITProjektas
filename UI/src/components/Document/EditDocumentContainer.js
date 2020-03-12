@@ -14,10 +14,11 @@ class EditDocumentContainer extends Component {
         title: "",
         summary: ""
       },
-      results: [],
+      // results: [],
       file: null,
       loading: true,
-      isModerator: false
+      isModerator: false,
+      files: []
     };
   }
 
@@ -48,13 +49,22 @@ class EditDocumentContainer extends Component {
               .then(response => {
                 this.setState({ doctypes: response.data });
               });
+            // axios
+            //   .get(
+            //     `${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesNames`
+            //   )
+            //   .then(response => {
+            //     console.log(response.data)
+            //     this.setState({ results: response.data });
+            //   })
             axios
-              .get(
-                `${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesNames`
-              )
-              .then(response => {
-                this.setState({ results: response.data });
+              .get(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesData`)
+              .then(resp => {
+                console.log(resp.data)
+                this.setState({ files: resp.data });
               })
+              //     .catch(error => { });
+              // })
               .then(this.setState({ loading: false }))
               .catch(error => {
                 alert("Dokumentas turi turėti bent vieną bylą.");
@@ -88,44 +98,45 @@ class EditDocumentContainer extends Component {
 
   onFormSubmit = e => {
     e.preventDefault();
-    if (this.state.file.type.match("application/pdf")) {
-      if (this.state.file.size < 10000000) {
-        const data = new FormData();
-        data.append("file", this.state.file);
-        axios
-          .post(
-            `${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadFile`,
-            data
-          )
-          .then(response => {
-            axios
-              .get(
-                `${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesNames`
-              )
-              .then(response => {
-                this.setState({ results: response.data });
-              })
-              .catch(error => {
-                alert("Dokumentas turi turėti bent vieną bylą.");
-              });
-            axios
-              .get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesData`)
-              .then(resp => {
-                this.setState({ files: resp.data });
-              })
-              .catch(error => { });
-          })
-          .catch(error => {
-            alert("Įkelkite bent vieną bylą.");
-          });
-      } else {
-        alert(
-          "Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb."
-        );
-      }
+    if (this.state.file.type.match("application/pdf") && this.state.file.size < 10000000) {
+      // if (this.state.file.size < 10000000) {
+      const data = new FormData();
+      data.append("file", this.state.file);
+      axios
+        .post(
+          `${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadFile`,
+          data
+        )
+        .then(response => {
+          // axios
+          //   .get(
+          //     `${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesNames`
+          //   )
+          //   .then(response => {
+          //     this.setState({ results: response.data });
+          //   })
+          //   .catch(error => {
+          //     alert("Dokumentas turi turėti bent vieną bylą.");
+          //   });
+          axios
+            .get(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesData`)
+            .then(resp => {
+              console.log(resp.data)
+              this.setState({ files: resp.data });
+            })
+            .catch(error => { });
+        })
+        .catch(error => {
+          alert("Įkelkite bent vieną bylą.");
+        });
     } else {
-      alert("Galite prisegti tik PDF tipo bylas.");
+      alert(
+        "Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb."
+      );
     }
+    // } else {
+    //   alert("Galite prisegti tik PDF tipo bylas.");
+    // }
   };
 
   handleClick = e => {
@@ -136,12 +147,10 @@ class EditDocumentContainer extends Component {
       )
       .then(response => {
         axios
-          .get(
-            `${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesNames`
-          )
-          .then(response => {
-            this.setState({ results: response.data });
-            alert("Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.");
+          .get(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesData`)
+          .then(resp => {
+            console.log(resp.data)
+            this.setState({ files: resp.data });
           })
           .catch(error => { });
       })
@@ -152,7 +161,7 @@ class EditDocumentContainer extends Component {
     fetch(
       `${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/downloadZip`
     ).then(response => {
-      if (this.state.results && this.state.results.length > 0) {
+      if (this.state.files && this.state.files.length > 0) {
         response.blob().then(blob => {
           let url = window.URL.createObjectURL(blob);
           let a = document.createElement("a");
@@ -179,7 +188,7 @@ class EditDocumentContainer extends Component {
         data
       )
       .then(response => {
-        if (this.state.results && this.state.results.length > 0) {
+        if (this.state.files && this.state.files.length > 0) {
           alert("Jūs sėkmingai pakeitėte dokumento duomenis.");
           this.props.history.push("/Gentoo/user");
         } else {
@@ -191,7 +200,7 @@ class EditDocumentContainer extends Component {
 
   goBack = e => {
     e.preventDefault();
-    if (this.state.results && this.state.results.length > 0) {
+    if (this.state.files && this.state.files.length > 0) {
       this.props.history.push(`/Gentoo/user`);
     } else {
       alert("Pridėkite bent vieną bylą.");
@@ -225,18 +234,23 @@ class EditDocumentContainer extends Component {
     )
   }
 
-  // deleteOneFile = e => {
-  //   this.state.files.map((file) => {
-  //     return (
-  //       axios
-  //         .delete(
-  //           `${ApiUrl}files/deleteOneFile`
-  //         )
-  //         .then(response => { })
-  //         .catch(error => { })
-  //     )
-  //   })
-  // }
+  deleteOneFile = e => {
+    this.state.files.map(file => {
+      return fetch(`${ApiUrl}files/deleteOneFile`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          fileName: file.fileName,
+          documentId: this.state.id,
+          userId: this.state.userId
+        })
+      })
+        .then(response => { })
+        .catch(error => { });
+    });
+  };
 
   render() {
     if (this.state.loading) {
@@ -251,29 +265,50 @@ class EditDocumentContainer extends Component {
           </option>
         );
       });
-    const result = this.state.results.map((result, index) => {
+    const result = this.state.files.map((result, index) => {
+      const removeFile = file => {
+        const data = {
+          documentId: this.props.match.params.id,
+          fileDownloadUri: result.fileDownloadUri,
+          fileName: result.fileName,
+          userId: this.state.userId
+        };
+        console.log("remove file data: ", data);
+        fetch(`${ApiUrl}files/deleteOneFile`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        })
+          .then(response => { })
+          .catch(error => { });
+
+        // axios
+        //   .delete(`${ApiUrl}files/deleteOneFile`, data)
+        //   .then(response => console.log("remove file response: ", response))
+        //   .catch(error => console.log("remove file error: ", error));
+      };
       return (
         <li className="list-group-item list-group-item-dark" key={index}>
           <div className="row my-1">
             <div className="col-1">{index + 1}</div>
-            <div className="col-7">{result}</div>
-            <div className="col-2 text-right">
-              <button className="btn btn-dark"
-                onClick={this.downloadOneFile}
-              >
-                Atsisiųsti bylą
-              </button>
+            <div className="col-7" onChange={this.onFilesChoice}>
+              {result.fileName}
             </div>
             <div className="col-2 text-right">
-              <button className="btn btn-dark"
-              // onClick={this.deleteOneFile}
-              >
+              <button className="btn btn-dark" onClick={this.downloadOneFile}>
+                Atsisiųsti bylą
+                </button>
+            </div>
+            <div className="col-2 text-right">
+              <button className="btn btn-dark" onClick={removeFile}>
                 Ištrinti bylą
-              </button>
+                </button>
             </div>
           </div>
         </li>
-      )
+      );
     });
     return (
       <div>
@@ -346,17 +381,37 @@ class EditDocumentContainer extends Component {
                   <li className="list-group-item list-group-item-dark">
                     <div className="row my-2">
                       <div className="col-1 font-weight-bold">#</div>
-                      <div className="col-7 font-weight-bold">Failo pavadinimas</div>
-                      <div className="col-4 font-weight-bold text-right">
-                        <button className="btn-dark" id="document"
+                      <div className="col-7 font-weight-bold">
+                        Failo pavadinimas
+                          </div>
+                      <div className="col-2 font-weight-bold text-right">
+                        <button
+                          className="btn btn-dark"
+                          onClick={this.downloadFiles}
+                        >
+                          Atsisiųsti bylas
+                            </button>
+                      </div>
+                      <div className="col-2 font-weight-bold text-right">
+                        <button
+                          className="btn btn-dark"
+                          id="document"
                           onClick={e => {
-                            if (this.state.results && this.state.results.length <= 0) {
+                            if (
+                              this.state.files &&
+                              this.state.files.length <= 0
+                            ) {
                               alert("Nepridėjote nei vienos bylos.");
                             } else {
-                              if (window.confirm("Ar tikrai norite ištrinti įkeltas bylas?"))
+                              if (
+                                window.confirm(
+                                  "Ar tikrai norite ištrinti įkeltas bylas?"
+                                )
+                              )
                                 this.handleClick(e);
                             }
-                          }}>
+                          }}
+                        >
                           Ištrinti bylas
                             </button>
                       </div>
@@ -377,13 +432,6 @@ class EditDocumentContainer extends Component {
                   </div>
                 </div>
               </form>
-              {/* <div className="panel-body">
-                <label>Parsisiųsti bylas peržiūrai:</label>
-                <div className="row"> </div>
-                <button className="download" onClick={this.downloadFiles}>
-                  Atsisiųsti
-                </button>
-              </div> */}
             </div>
           </div>
         </div>
@@ -391,5 +439,6 @@ class EditDocumentContainer extends Component {
     );
   }
 }
+
 
 export default EditDocumentContainer;
