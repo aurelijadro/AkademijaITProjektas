@@ -19,12 +19,15 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
       `
       ).then(resp => {
         setsubmittedDocument(resp.data);
-        if (submittedDocument.documentStatus !== "Pateiktas") {
-          getModerator();
+
+        if (resp.data.documentStatus !== "Pateiktas") {
+          Axios.get(
+            `${ApiUrl}users/${submittedDocument.approverId}`
+          ).then(resp => setModerator(resp.data));
         }
       });
     },
-    [docId, submittedDocument.documentStatus, getModerator]
+    [docId, submittedDocument.approverId]
   );
 
   useEffect(
@@ -51,14 +54,8 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
         `${ApiUrl}files/${submittedDocument.creatorId}/${submittedDocument.id}/uploadedFilesData`
       ).then(resp => setFiles(resp.data));
     },
-    [submittedDocument]
+    [submittedDocument.creatorId, submittedDocument.id]
   );
-
-  function getModerator() {
-    Axios.get(`${ApiUrl}users/${submittedDocument.approverId}`).then(resp =>
-      setModerator(resp.data)
-    );
-  }
 
   function downloadAllDocumentFiles() {
     fetch(`${ApiUrl}files/${author.id}/${docId}/downloadZip`).then(response => {
