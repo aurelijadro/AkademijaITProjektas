@@ -140,18 +140,4 @@ public class FileController {
 		}
 	}
 
-	@DeleteMapping("/deleteOneFile")
-	public void deleteOneFile(@RequestBody FileDTO fileData, HttpServletResponse response) {
-		Path file = Paths.get(
-				"/tmp/Uploads/" + fileData.getUserId() + "/" + fileData.getDocumentId() + "/" + fileData.getFileName());
-
-		if (Files.exists(file)) {
-			try {
-				Files.delete(file);
-				response.setStatus(200);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }

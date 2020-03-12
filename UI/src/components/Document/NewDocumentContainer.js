@@ -15,7 +15,6 @@ class NewDocumentContainer extends Component {
       title: "",
       summary: "",
       id: "",
-      results: [],
       files: [],
       file: null,
       isModerator: false
@@ -40,7 +39,7 @@ class NewDocumentContainer extends Component {
           .catch(error => { });
       })
       .catch(error => {
-        alert("Tokio vartotojo nera arba jis neprisijunges.");
+        alert("Tokio vartotojo nėra arba jis neprisijungęs.");
       });
   }
 
@@ -60,17 +59,21 @@ class NewDocumentContainer extends Component {
       summary: this.state.summary,
       doctypeItem: this.state.doctypeItem
     };
-    axios
-      .post(`${ApiUrl}documents/${this.state.userId}/${this.state.doctypeItem}`, data)
-      .then(response => {
-        this.setState({ id: response.data.id });
-        return this.state.id;
-      })
-      .then(response => {
-        this.setState({ showResults: true });
-        alert("Prisekite papildomas bylas.");
-      })
-      .catch(error => { });
+    if (this.state.doctypeItem !== undefined && this.state.doctypeItem !== "Default") {
+      axios
+        .post(`${ApiUrl}documents/${this.state.userId}/${this.state.doctypeItem}`, data)
+        .then(response => {
+          this.setState({ id: response.data.id });
+          return this.state.id;
+        })
+        .then(response => {
+          this.setState({ showResults: true });
+          alert("Prisekite papildomas bylas.");
+        })
+        .catch(error => { });
+    } else {
+      alert("Pasirinkite dokumento tipą.")
+    }
   };
 
   show = e => {
@@ -84,38 +87,32 @@ class NewDocumentContainer extends Component {
 
   onFormSubmit = e => {
     e.preventDefault();
-    if (this.state.file.type.match("application/pdf")) {
-      if (this.state.file.size < 10000000) {
-        const data = new FormData();
-        data.append("file", this.state.file);
-        axios
-          .post(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadFile`, data)
-          .then(response => {
-            axios
-              .get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`)
-              .then(response => {
-                this.setState({ results: response.data });
-              })
-              .catch(error => {
-                alert("Kuriant dokumentą būtina pridėti bent vieną bylą.");
-              });
-            axios
-              .get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesData`)
-              .then(resp => {
-                console.log("fileNames", resp.data);
-                this.setState({ files: resp.data });
-                console.log("second", this.state.files.fileName);
-              })
-              .catch(error => { });
-          })
-          .catch(error => {
-            alert("Pasirinkite bylą, kurią norite pridėti.");
-          });
+    if (this.state.file !== null) {
+      if (this.state.file.type.match("application/pdf")) {
+        if (this.state.file.size < 10000000) {
+          const data = new FormData();
+          data.append("file", this.state.file);
+          axios
+            .post(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadFile`, data)
+            .then(response => {
+              axios
+                .get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesData`)
+                .then(resp => {
+                  this.setState({ files: resp.data });
+                })
+                .catch(error => { });
+            })
+            .catch(error => {
+              alert("Pasirinkite bylą, kurią norite pridėti.");
+            });
+        } else {
+          alert("Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb.");
+        }
       } else {
-        alert("Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb.");
+        alert("Galite prisegti tik PDF tipo bylas.");
       }
     } else {
-      alert("Galite prisegti tik PDF tipo bylas.");
+      alert("Pasirinkite bylą.")
     }
   };
 
@@ -125,9 +122,9 @@ class NewDocumentContainer extends Component {
       .delete(`${ApiUrl}files/${this.state.userId}/${this.state.id}/documentsDelete`)
       .then(response => {
         axios
-          .get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesNames`)
-          .then(response => {
-            this.setState({ results: response.data });
+          .get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesData`)
+          .then(resp => {
+            this.setState({ files: resp.data });
             alert("Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.");
           })
           .catch(error => { });
@@ -138,7 +135,7 @@ class NewDocumentContainer extends Component {
   downloadFiles = e => {
     fetch(`${ApiUrl}files/${this.state.userId}/${this.state.id}/downloadZip`)
       .then(response => {
-        if (this.state.results && this.state.results.length > 0) {
+        if (this.state.files && this.state.files.length > 0) {
           response.blob().then(blob => {
             let url = window.URL.createObjectURL(blob);
             let a = document.createElement("a");
@@ -147,84 +144,19 @@ class NewDocumentContainer extends Component {
             a.click();
           });
         } else {
-          alert("Jūs neprisegėte nei vienos bylos.");
+          alert("Neprisegėte nei vienos bylos.");
         }
       });
   };
 
   saveDocument = e => {
     e.preventDefault();
-    if (this.state.results && this.state.results.length > 0) {
+    if (this.state.files && this.state.files.length > 0) {
       this.props.history.push(`/Gentoo/user`);
     } else {
-      alert("Prašau pridėti bent vieną bylą.");
+      alert("Pridėkiti bent vieną bylą.");
     }
   };
-
-  downloadOneFile = e => {
-    this.state.files.map((file) => {
-      return (
-        fetch(`${ApiUrl}files/download`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            fileName: file.fileName,
-            documentId: this.state.id,
-            userId: this.state.userId
-          })
-        }).then(resp => {
-          resp.blob().then(blob => {
-            let url = window.URL.createObjectURL(blob);
-            let a = document.createElement("a");
-            a.href = url;
-            a.download = file.fileName;
-            a.click();
-          });
-        })
-      )
-    }
-    )
-  }
-
-  deleteOneFile = e => {
-    this.state.files.map((file) => {
-      return (
-        fetch(`${ApiUrl}files/deleteOneFile`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            fileName: file.fileName,
-            documentId: this.state.id,
-            userId: this.state.userId
-          })
-        })
-          .then(response => { })
-          .catch(error => { })
-      )
-    })
-  }
-
-  removeFile = (file) => () => {
-    console.log("paduodamas failas", file)
-    const data = {
-      documentId: this.state.id,
-      fileDownloadUri: file.fileDownloadUri,
-      fileName: file.fileName,
-      userId: this.state.userId,
-    }
-    console.log(data)
-    axios
-      .delete(`${ApiUrl}files/deleteOneFile`, data)
-      .then(response => {
-
-      })
-      .catch(error => { })
-  }
-
 
   render() {
     const doctypeItem = this.state.doctypes.map(doctype => (
@@ -238,20 +170,6 @@ class NewDocumentContainer extends Component {
           <div className="row my-1">
             <div className="col-1">{index + 1}</div>
             <div className="col-7" onChange={this.onFilesChoice}>{result.fileName}</div>
-            <div className="col-2 text-right">
-              <button className="btn btn-dark"
-                onClick={this.downloadOneFile}
-              >
-                Atsisiųsti bylą
-            </button>
-            </div>
-            <div className="col-2 text-right">
-              <button className="btn btn-dark"
-                onClick={this.removeFile(result)}
-              >
-                Ištrinti bylą
-            </button>
-            </div>
           </div>
         </li>
       )
@@ -303,12 +221,12 @@ class NewDocumentContainer extends Component {
                           <div className="col-2 font-weight-bold text-right">
                             <button className="btn btn-dark" onClick={this.downloadFiles}>
                               Atsisiųsti bylas
-                    </button>
+                            </button>
                           </div>
                           <div className="col-2 font-weight-bold text-right">
                             <button className="btn btn-dark" id="document"
                               onClick={e => {
-                                if (this.state.results && this.state.results.length <= 0) {
+                                if (this.state.files && this.state.files.length <= 0) {
                                   alert("Nepridėjote nei vienos bylos.");
                                 } else {
                                   if (window.confirm("Ar tikrai norite ištrinti įkeltas bylas?"))
@@ -330,13 +248,6 @@ class NewDocumentContainer extends Component {
                       </div>
                     </div>
                   </form>
-                  {/* <div className="panel-body">
-                    <label>Parsisiųsti bylas peržiūrai:</label>
-                    <div className="row"> </div>
-                    <button className="download" onClick={this.downloadFiles}>
-                      Atsisiųsti
-                    </button>
-                  </div> */}
                   <button className="btn btn-dark" type="submit" onClick={this.saveDocument}>
                     Išsaugoti
                   </button>
