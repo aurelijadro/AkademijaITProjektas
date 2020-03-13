@@ -72,7 +72,8 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
   if (
     submittedDocument === "loading" ||
     author === "loading" ||
-    files === "loading"
+    files === "loading" ||
+    (submittedDocument.documentStatus !== "Pateiktas" && moderator === null)
   ) {
     return (
       <div>
@@ -96,6 +97,26 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
     submittedDocument.summary === ""
       ? "Autorius nepateikė aprašymo."
       : submittedDocument.summary;
+
+  const moderatingInfo =
+    submittedDocument.documentStatus === "Pateiktas" ? null : (
+      <div>
+        <div className="row">
+          <div className="col-4 font-weight-bold">Dokumentą priėmė:</div>
+          <div className="col-4 font-weight-bold">Priėmimo data:</div>
+        </div>
+        <div className="row">
+          <div className="col-4">
+            {moderator.name} {moderator.surname}
+          </div>
+          <div className="col-4">
+            {submittedDocument.documentStatus === "Patvirtintas"
+              ? submittedDocument.approvalDate
+              : submittedDocument.rejectionDate}
+          </div>
+        </div>
+      </div>
+    );
 
   const fileList = files.map((file, index) => {
     function download() {
@@ -139,14 +160,11 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
     <div>
       <NavigationForUSer isModerator={isModerator} />
       <div className="container my-4">
-        <h4> Dokumento peržiūra</h4>
-        <div>{heading}</div>
-        {document.documentStatus === "Pateiktas" ? null : (
-          <div className="row">
-            <div className="col-4 font-weight-bold">Dokumentą priėmė:</div>
-            <div className="col-4 font-weight-bold">Priėmimo data:</div>
-          </div>
-        )}
+        <div className="border border-dark rounded p-2 bg-light">
+          <div>{heading}</div>
+          <div>{moderatingInfo}</div>
+        </div>
+        <h4 className="my-4"> Dokumento peržiūra</h4>
         <div className="row">
           <div className="col-4 font-weight-bold">Autorius:</div>
           <div className="col-4 font-weight-bold">Dokumento tipas:</div>
