@@ -9,7 +9,9 @@ class GroupList extends Component {
   constructor() {
     super();
     this.state = {
-      groups: []
+      groups: [],
+      currentPage: 1,
+      groupsPerPage: 10
     };
   }
 
@@ -28,8 +30,18 @@ class GroupList extends Component {
       });
   };
 
+  handlePageChange = (event) => {
+    this.setState({
+      currentPage: Number(event.target.id)
+    });
+  }
+
   render() {
-    let group = this.state.groups.map((group, index) => {
+    const { currentPage, groupsPerPage } = this.state;
+    const indexOfLastGroup = currentPage * groupsPerPage;
+    const indexOfFirstGroup = indexOfLastGroup - groupsPerPage;
+    const currentGroup = this.state.groups.slice(indexOfFirstGroup, indexOfLastGroup);
+    let group = currentGroup.map((group, index) => {
       return (
         <GroupComponent
           key={group.id}
@@ -38,6 +50,15 @@ class GroupList extends Component {
           index={index}
         />
       );
+    });
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(this.state.groups.length / groupsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+    const renderPageNumbers = pageNumbers.map((number, index) => {
+      return (
+        <button className="btn btn-dark" key={index} id={number} onClick={this.handlePageChange}>{number}</button>
+      )
     });
     return (
       <div>
@@ -70,6 +91,13 @@ class GroupList extends Component {
             </thead>
             <tbody>{group}</tbody>
           </table>
+          <nav aria-label="Page navigation example">
+            <ul className="pagination justify-content-center">
+              <li className="page-item">
+                {renderPageNumbers}
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     );

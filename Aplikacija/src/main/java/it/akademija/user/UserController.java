@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,8 +40,13 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get users", notes = "Returns all users")
-	public List<User> getUsers(@PageableDefault(value = 10, page = 0) Pageable pageable) {
-		return userService.getUsers(pageable);
+	public List<User> getUsers(
+//			@RequestParam(defaultValue = "0") Integer pageNo,
+//			@RequestParam(defaultValue = "10") Integer pageSize
+	) {
+		return userService.getUsers(
+//				pageNo, pageSize
+		);
 	}
 
 	@RequestMapping(path = "/{id}/doctypesusercreates", method = RequestMethod.GET)

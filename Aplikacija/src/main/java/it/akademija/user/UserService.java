@@ -7,8 +7,6 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -51,9 +49,19 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public List<User> getUsers(Pageable pageable) {
-		Page page = userRepository.findAll(pageable);
-		return page.getContent();
+	public List<User> getUsers(
+//			Integer pageNo, Integer pageSize
+	) {
+//		Pageable paging = PageRequest.of(pageNo, pageSize);
+//
+//		Page<User> pagedResult = userRepository.findAll(paging);
+//
+//		if (pagedResult.hasContent()) {
+//			return pagedResult.getContent();
+//		} else {
+//			return new ArrayList<User>();
+//		}
+		return userRepository.findAll();
 	}
 
 	@Transactional

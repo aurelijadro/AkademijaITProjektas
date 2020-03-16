@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const UserComponent = props => {
   return (
     <tr>
-      <th scope="row">{props.id}</th>
+      <th scope="row">{props.index + 1}</th>
       <td>{props.username}</td>
       <td>{props.name}</td>
       <td>{props.surname}</td>

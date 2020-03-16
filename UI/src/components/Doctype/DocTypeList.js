@@ -8,7 +8,11 @@ import ApiUrl from "../../APIURL";
 class DocTypeList extends Component {
   constructor() {
     super();
-    this.state = { doctypes: [] };
+    this.state = {
+      doctypes: [],
+      currentPage: 1,
+      doctypesPerPage: 10
+    };
   }
 
   componentDidMount() {
@@ -26,8 +30,18 @@ class DocTypeList extends Component {
       });
   };
 
+  handlePageChange = (event) => {
+    this.setState({
+      currentPage: Number(event.target.id)
+    });
+  }
+
   render() {
-    let doctype = this.state.doctypes.map((doctype, index) => {
+    const { currentPage, doctypesPerPage } = this.state;
+    const indexOfLastDoctype = currentPage * doctypesPerPage;
+    const indexOfFirstDoctype = indexOfLastDoctype - doctypesPerPage;
+    const currentDoctype = this.state.doctypes.slice(indexOfFirstDoctype, indexOfLastDoctype);
+    let doctype = currentDoctype.map((doctype, index) => {
       return (
         <DocTypeComponent
           key={index}
@@ -36,6 +50,15 @@ class DocTypeList extends Component {
           title={doctype.title}
         />
       );
+    });
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(this.state.doctypes.length / doctypesPerPage); i++) {
+      pageNumbers.push(i);
+    }
+    const renderPageNumbers = pageNumbers.map((number, index) => {
+      return (
+        <button className="btn btn-dark" key={index} id={number} onClick={this.handlePageChange}>{number}</button>
+      )
     });
     return (
       <div>
@@ -68,6 +91,13 @@ class DocTypeList extends Component {
             </thead>
             <tbody>{doctype}</tbody>
           </table>
+          <nav aria-label="Page navigation example">
+            <ul className="pagination justify-content-center">
+              <li className="page-item">
+                {renderPageNumbers}
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     );

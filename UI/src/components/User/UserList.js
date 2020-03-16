@@ -8,7 +8,11 @@ import ApiUrl from "../../APIURL";
 class UserList extends Component {
   constructor() {
     super();
-    this.state = { users: [] };
+    this.state = {
+      users: [],
+      currentPage: 1,
+      usersPerPage: 10
+    };
   }
 
   componentDidMount() {
@@ -19,24 +23,46 @@ class UserList extends Component {
     axios
       .get(`${ApiUrl}users`)
       .then(response => {
-        this.setState({ users: response.data });
+        this.setState({
+          users: response.data,
+        });
       })
       .catch(error => {
         alert("Nėra galimybės pateikti duomenų apie vartotojus.");
       });
   };
 
+  handlePageChange = (event) => {
+    this.setState({
+      currentPage: Number(event.target.id)
+    });
+  }
+
   render() {
-    let user = this.state.users.map((user, index) => {
+    const { currentPage, usersPerPage } = this.state;
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUser = this.state.users.slice(indexOfFirstUser, indexOfLastUser);
+    let user = currentUser.map((user, index) => {
       return (
         <UserComponent
-          key={index}
+          key={user.id}
           id={user.id}
           username={user.username}
           name={user.name}
           surname={user.surname}
+          index={index}
         />
       );
+    });
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(this.state.users.length / usersPerPage); i++) {
+      pageNumbers.push(i);
+    }
+    const renderPageNumbers = pageNumbers.map((number, index) => {
+      return (
+        <button className="btn btn-dark" key={index} id={number} onClick={this.handlePageChange}>{number}</button>
+      )
     });
     return (
       <div>
@@ -60,7 +86,7 @@ class UserList extends Component {
           <table className=" text-center table table-striped">
             <thead>
               <tr>
-                <th scope="col">ID</th>
+                <th scope="col">#</th>
                 <th scope="col">Prisijungimo vardas</th>
                 <th scope="col">Vardas</th>
                 <th scope="col">Pavardė</th>
@@ -69,8 +95,15 @@ class UserList extends Component {
             </thead>
             <tbody>{user}</tbody>
           </table>
+          <nav aria-label="Page navigation example">
+            <ul className="pagination justify-content-center">
+              <li className="page-item">
+                {renderPageNumbers}
+              </li>
+            </ul>
+          </nav>
         </div>
-      </div>
+      </div >
     );
   }
 }
