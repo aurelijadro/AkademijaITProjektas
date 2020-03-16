@@ -1,28 +1,33 @@
 import React, { useEffect, useState } from "react";
-import ApiUrl from "../../APIURL";
+import ApiUrl from "../APIURL";
 import Axios from "axios";
 import { withRouter } from "react-router-dom";
-import NavigationForUSer from "../NavigationForUser";
+import NavigationForUSer from "../components/NavigationForUser";
 
 const ReviewDocument = withRouter(({ history, ...props }) => {
   const docId = props.match.params.docId;
   const [submittedDocument, setsubmittedDocument] = useState("loading");
   const [files, setFiles] = useState("loading");
   const [author, setAuthor] = useState("loading");
-  const [moderatorId, setModeratorId] = useState("loading");
-  const [denialReason, setDenialReason] = useState("");
-  const [decide, setDecide] = useState("choose");
-  const [denyError, setDenyError] = useState("Pateikite atmetimo priežastį");
-  const [canDeny, setCanDeny] = useState(true);
+  const [moderator, setModerator] = useState(null);
+  const [isModerator, setIsModerator] = useState(false);
 
   useEffect(
     function getsubmittedDocument() {
       Axios.get(
         `${ApiUrl}documents/${docId}
       `
-      ).then(resp => setsubmittedDocument(resp.data));
+      ).then(resp => {
+        setsubmittedDocument(resp.data);
+
+        if (resp.data.documentStatus !== "Pateiktas") {
+          Axios.get(
+            `${ApiUrl}users/${submittedDocument.approverId}`
+          ).then(resp => setModerator(resp.data));
+        }
+      });
     },
-    [docId]
+    [docId, submittedDocument.approverId]
   );
 
   useEffect(
@@ -34,9 +39,14 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
     [submittedDocument.creatorId]
   );
 
-  useEffect(function getModeratorId() {
-    Axios.get(`${ApiUrl}loggedUserId`).then(resp => setModeratorId(resp.data));
-  }, []);
+  useEffect(
+    function getIsModerator() {
+      Axios.get(`${ApiUrl}users/${author.id}/ismoderator`).then(resp =>
+        setIsModerator(resp.data)
+      );
+    },
+    [author.id]
+  );
 
   useEffect(
     function getFileList() {
@@ -44,26 +54,8 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
         `${ApiUrl}files/${submittedDocument.creatorId}/${submittedDocument.id}/uploadedFilesData`
       ).then(resp => setFiles(resp.data));
     },
-    [submittedDocument]
+    [submittedDocument.creatorId, submittedDocument.id]
   );
-
-  function approvesubmittedDocument() {
-    Axios.post(
-      `${ApiUrl}documents/${moderatorId}/${docId}/approvedStatusUpdate`
-    )
-      .then(alert("Dokumentas sėkmingai patvirtintas"))
-      .then(history.push("/Gentoo/user/moderate"));
-  }
-
-  function denysubmittedDocument() {
-    Axios.post(
-      `${ApiUrl}documents/${moderatorId}/${docId}/rejectedStatusUpdate`,
-      denialReason,
-      { headers: { "Content-Type": "text/plain" } }
-    )
-      .then(alert("Dokumentas atmestas"))
-      .then(history.push("/Gentoo/user/moderate"));
-  }
 
   function downloadAllDocumentFiles() {
     fetch(`${ApiUrl}files/${author.id}/${docId}/downloadZip`).then(response => {
@@ -77,28 +69,11 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
     });
   }
 
-  function chooseDeny(e) {
-    e.preventDefault();
-    setCanDeny(false);
-    setDecide("deny");
-  }
-
-  // insert navbar with moderator status
-
-  // get submittedDocument data from server
-
-  // show submittedDocument title, submitting, date, type, author, summary and attached pdf files
-
-  // allow moderator download files attached
-
-  // approve submittedDocument functionality
-  // deny submittedDocument functioanlity
-
   if (
     submittedDocument === "loading" ||
     author === "loading" ||
-    moderatorId === "loading" ||
-    files === "loading"
+    files === "loading" ||
+    (submittedDocument.documentStatus !== "Pateiktas" && moderator === null)
   ) {
     return (
       <div>
@@ -107,22 +82,41 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
     );
   }
 
-  const handleChange = e => {
-    setDenialReason(e.target.value);
-    validateDenyReason();
-  };
-
-  function validateDenyReason() {
-    if (denialReason.length >= 5) {
-      setDenyError(null);
-      setCanDeny(true);
-    }
-  }
+  const heading =
+    submittedDocument.documentStatus === "Pateiktas" ? (
+      <h5 className="text-center my-2">Dokumentas laukia patvirtinimo.</h5>
+    ) : submittedDocument.documentStatus === "Patvirtintas" ? (
+      <h5 className="text-center my-2 text-success">
+        Dokumentas yra patvirtintas.
+      </h5>
+    ) : (
+      <h5 className="text-center my-2 text-danger">Dokumentas yra atmestas.</h5>
+    );
 
   const summary =
     submittedDocument.summary === ""
       ? "Autorius nepateikė aprašymo."
       : submittedDocument.summary;
+
+  const moderatingInfo =
+    submittedDocument.documentStatus === "Pateiktas" ? null : (
+      <div>
+        <div className="row">
+          <div className="col-4 font-weight-bold">Dokumentą priėmė:</div>
+          <div className="col-4 font-weight-bold">Priėmimo data:</div>
+        </div>
+        <div className="row">
+          <div className="col-4">
+            {moderator.name} {moderator.surname}
+          </div>
+          <div className="col-4">
+            {submittedDocument.documentStatus === "Patvirtintas"
+              ? submittedDocument.approvalDate
+              : submittedDocument.rejectionDate}
+          </div>
+        </div>
+      </div>
+    );
 
   const fileList = files.map((file, index) => {
     function download() {
@@ -164,9 +158,13 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
 
   return (
     <div>
-      <NavigationForUSer isModerator={moderatorId !== "loading"} />
+      <NavigationForUSer isModerator={isModerator} />
       <div className="container my-4">
-        <h4> Dokumento peržiūra</h4>
+        <div className="border border-dark rounded p-2 bg-light">
+          <div>{heading}</div>
+          <div>{moderatingInfo}</div>
+        </div>
+        <h4 className="my-4"> Dokumento peržiūra</h4>
         <div className="row">
           <div className="col-4 font-weight-bold">Autorius:</div>
           <div className="col-4 font-weight-bold">Dokumento tipas:</div>
@@ -203,68 +201,7 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
           </div>
         </li>
         <div>{fileList}</div>
-        {decide === "choose" ? (
-          <div className="row my-4">
-            <div className="col-2"> </div>
-            <div className="col-4">
-              <button
-                className="btn btn-dark"
-                onClick={approvesubmittedDocument}
-              >
-                Patvirtinti dokumentą
-              </button>
-            </div>
-            <div className="col-4">
-              <button className="btn btn-dark" onClick={chooseDeny}>
-                Atmesti dokumentą
-              </button>
-            </div>
-            <div className="col-2"> </div>
-          </div>
-        ) : null}
-        <div>
-          {decide === "deny" ? (
-            <div className="my-4">
-              <form onSubmit={denysubmittedDocument}>
-                <div className="form-group">
-                  <label className="font-weight-bold">
-                    Įveskite atmetimo priežastį:
-                  </label>
-                  <textarea
-                    className={`form-control ${denyError ? "is-invalid" : ""}`}
-                    onChange={handleChange}
-                    required
-                    placeholder="Norint atmesti dokumentą būtina nurodyti atmetimo priežastį."
-                    onBlur={validateDenyReason}
-                  ></textarea>
-                  <div className="invalid-feedback">{denyError}</div>
-
-                  <div className="row my-4">
-                    <div className="col-2"> </div>
-                    <div className="col-4">
-                      <button
-                        className="btn btn-dark"
-                        onClick={approvesubmittedDocument}
-                      >
-                        Patvirtinti dokumentą
-                      </button>
-                    </div>
-                    <div className="col-4">
-                      <button
-                        className="btn btn-dark"
-                        disabled={!canDeny}
-                        type="submit"
-                      >
-                        Atmesti dokumentą
-                      </button>
-                    </div>
-                    <div className="col-2"> </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          ) : null}
-        </div>
+        <div></div>
       </div>
     </div>
   );

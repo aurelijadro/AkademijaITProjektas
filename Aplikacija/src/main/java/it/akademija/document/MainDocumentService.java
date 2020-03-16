@@ -140,4 +140,11 @@ public class MainDocumentService {
 		return mainDocRepository.findAllByDoctypesAndDocumentStatusOrderBySubmissionDateDesc(doctype, "Pateiktas");
 	}
 
+	@Transactional
+
+	public List<MainDocument> getAllNotCreatedDocuments(Long id) {
+
+		return mainDocRepository.findAllByCreatorIdAndDocumentStatusNotOrderBySubmissionDateDesc(id, "Sukurtas");
+	}
+
 }
