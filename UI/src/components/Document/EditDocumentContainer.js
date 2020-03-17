@@ -258,7 +258,7 @@ class EditDocumentContainer extends Component {
                         <button className="btn btn-dark" id="document"
                           onClick={e => {
                             if (this.state.files && this.state.files.length <= 0) {
-                              // alert("Nepridėjote nei vienos bylos.");
+
                             } else {
                               if (window.confirm("Ar tikrai norite ištrinti įkeltas bylas?"))
                                 this.handleClick(e);

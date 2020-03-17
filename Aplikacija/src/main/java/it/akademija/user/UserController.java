@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -47,6 +48,13 @@ public class UserController {
 		return userService.getUsers(
 //				pageNo, pageSize
 		);
+	}
+
+	@RequestMapping(path = "/allUsers", method = RequestMethod.GET)
+	@ApiOperation(value = "Get users", notes = "Returns all users")
+	public List<User> getAllUsers(@RequestParam(defaultValue = "0") Integer pageNo,
+			@RequestParam(defaultValue = "10") Integer pageSize) {
+		return userService.getAllUsers(pageNo, pageSize);
 	}
 
 	@RequestMapping(path = "/{id}/doctypesusercreates", method = RequestMethod.GET)

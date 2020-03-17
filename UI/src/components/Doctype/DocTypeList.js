@@ -56,9 +56,17 @@ class DocTypeList extends Component {
       pageNumbers.push(i);
     }
     const renderPageNumbers = pageNumbers.map((number, index) => {
-      return (
-        <button className="btn btn-dark" key={index} id={number} onClick={this.handlePageChange}>{number}</button>
-      )
+      if (
+        (number === this.state.currentPage - 1 || number === this.state.currentPage || number === this.state.currentPage + 1)
+      ) {
+        return (
+          <button className="btn btn-dark" key={index} id={number} onClick={this.handlePageChange}>{number}</button>
+        )
+      } else {
+        return (
+          <div key={index}></div>
+        );
+      }
     });
     return (
       <div>

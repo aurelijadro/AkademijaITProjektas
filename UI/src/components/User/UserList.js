@@ -11,7 +11,8 @@ class UserList extends Component {
     this.state = {
       users: [],
       currentPage: 1,
-      usersPerPage: 10
+      usersPerPage: 10,
+      disabled: true,
     };
   }
 
@@ -38,6 +39,25 @@ class UserList extends Component {
     });
   }
 
+  handlePreviousClick = (e) => {
+    if (this.state.currentPage > 1) {
+      this.setState({
+        currentPage: this.state.currentPage - 1,
+        disabled: false
+      })
+    } else {
+      this.setState({ disabled: true })
+    }
+  }
+
+  handleNextClick = (e) => {
+    if (this.state.currentPage < this.state.users.length / 10) {
+      this.setState({ currentPage: this.state.currentPage + 1 })
+    } else {
+      this.setState({ disabled: true })
+    }
+  }
+
   render() {
     const { currentPage, usersPerPage } = this.state;
     const indexOfLastUser = currentPage * usersPerPage;
@@ -60,9 +80,17 @@ class UserList extends Component {
       pageNumbers.push(i);
     }
     const renderPageNumbers = pageNumbers.map((number, index) => {
-      return (
-        <button className="btn btn-dark" key={index} id={number} onClick={this.handlePageChange}>{number}</button>
-      )
+      if (
+        (number === this.state.currentPage - 1 || number === this.state.currentPage || number === this.state.currentPage + 1)
+      ) {
+        return (
+          <button className="btn btn-dark" key={index} id={number} onClick={this.handlePageChange}>{number}</button>
+        )
+      } else {
+        return (
+          <div key={index}></div>
+        );
+      }
     });
     return (
       <div>
@@ -98,7 +126,13 @@ class UserList extends Component {
           <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
               <li className="page-item">
+                <button className="btn btn-dark mx-1" onClick={this.handlePreviousClick} aria-disabled={this.state.disabled}>&laquo;</button>
+              </li>
+              <li className="page-item">
                 {renderPageNumbers}
+              </li>
+              <li className="page-item">
+                <button className="btn btn-dark mx-1" onClick={this.handleNextClick} aria-disabled={this.state.disabled}>&raquo;</button>
               </li>
             </ul>
           </nav>

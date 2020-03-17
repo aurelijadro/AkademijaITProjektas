@@ -40,7 +40,7 @@ function App() {
     });
   }
 
-  useEffect(function() {
+  useEffect(function () {
     updateUserInformation();
     const timer = setInterval(updateUserInformation, 60000);
     return () => clearInterval(timer);
