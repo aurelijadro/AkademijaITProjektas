@@ -170,18 +170,23 @@ public class MainDocumentService {
 		return username;
 	}
 
+	public String getDoctypeTitle(Long docId) {
+		MainDocument mainDocument = mainDocRepository.findMainDocumentById(docId);
+		return mainDocument.getDoctypes().getTitle();
+	}
+
 	public void csvFileCreator(Long userId) throws IOException {
 		List<MainDocument> documentsForUser = getMainDocuments(userId);
 		String filename = "csvFile";
 		File file = Paths.get(("/tmp/Uploads/" + userId), filename + ".csv").toFile();
 		List<String[]> dataLines = new ArrayList<>();
-		dataLines.add(new String[] { "ID", "Author", "Title", "Summary", "Submission date", "Approval date",
-				"Rejection date", "Rejection reason" });
+		dataLines.add(new String[] { "Document ID", "Author", "Title", "Summary", "Submission date", "Approval date",
+				"Rejection date", "Rejection reason", "Doctype" });
 		for (MainDocument mainDocument : documentsForUser) {
 			dataLines.add(new String[] { mainDocument.getId().toString(), getUserName(userId), mainDocument.getTitle(),
 					mainDocument.getSummary(), formatDate(mainDocument.getSubmissionDate()),
 					formatDate(mainDocument.getApprovalDate()), formatDate(mainDocument.getRejectionDate()),
-					mainDocument.getRejectionReason() });
+					mainDocument.getRejectionReason(), getDoctypeTitle(mainDocument.getId()) });
 		}
 		try (PrintWriter pw = new PrintWriter(file)) {
 			dataLines.stream().map(this::convertToCSV).forEach(pw::println);
