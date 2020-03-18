@@ -1,5 +1,6 @@
 package it.akademija.document;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -183,5 +184,20 @@ public class MainDocumentController {
 		return documentsToModerate;
 
 	}
+
+	@RequestMapping(path = "/{userId}/csvFile", method = RequestMethod.POST)
+	public void csvFile(@PathVariable Long userId) throws IOException {
+		mainDocService.csvFileCreator(userId);
+	}
+
+//	@RequestMapping(path = "/{userId}/tryingToGetUserName", method = RequestMethod.GET)
+//	public String username(@PathVariable Long userId) {
+//		return mainDocService.getUserName(userId);
+//	}
+
+//	@RequestMapping(path = "/{doctypeId}/tryingToGetDoctypeTitle", method = RequestMethod.GET)
+//	public List<String> doctypeTitle(@PathVariable Long doctypeId) {
+//		return mainDocService.getDoctypeTitle(doctypeId);
+//	}
 
 }

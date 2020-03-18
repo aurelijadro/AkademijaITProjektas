@@ -1,8 +1,15 @@
 package it.akademija.document;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,4 +154,52 @@ public class MainDocumentService {
 		return mainDocRepository.findAllByCreatorIdAndDocumentStatusNotOrderBySubmissionDateDesc(id, "Sukurtas");
 	}
 
+	public String formatDate(LocalDate date) {
+		String dateToString = "";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+		if (!(date == null)) {
+			dateToString = date.format(formatter);
+		}
+		return dateToString;
+	}
+
+	public String convertToCSV(String[] data) {
+		return Stream.of(data).collect(Collectors.joining(","));
+	}
+
+	public String getUserName(Long userId) {
+		User user = userRepo.findUserById(userId);
+		String username = user.getName() + " " + user.getSurname();
+		return username;
+	}
+
+//	public List<String> getDoctypeTitle(Long userId) {
+//		List<MainDocument> documents = getMainDocuments(userId);
+//		List<String> doctypeTitle = new ArrayList<String>();
+//		for (MainDocument mainDocument : documents) {
+//			Long doctypeId = mainDocument.getDoctypes().getId();
+//			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
+//			doctypeTitle.add(doctype.getTitle());
+//		}
+//		return doctypeTitle;
+//	}
+
+	public void csvFileCreator(Long userId) throws IOException {
+		List<MainDocument> documentsForUser = getMainDocuments(userId);
+		String filename = "csvFile";
+		File file = Paths.get(("/tmp/Uploads/" + userId), filename + ".csv").toFile();
+		List<String[]> dataLines = new ArrayList<>();
+		dataLines.add(new String[] { "ID", "Author", "Title", "Summary", "Submission date", "Approval date",
+				"Rejection date", "Rejection reason" });
+		for (MainDocument mainDocument : documentsForUser) {
+			dataLines.add(new String[] { mainDocument.getId().toString(), getUserName(userId), mainDocument.getTitle(),
+					mainDocument.getSummary(), formatDate(mainDocument.getSubmissionDate()),
+					formatDate(mainDocument.getApprovalDate()), formatDate(mainDocument.getRejectionDate()),
+					mainDocument.getRejectionReason() });
+		}
+		try (PrintWriter pw = new PrintWriter(file)) {
+			dataLines.stream().map(this::convertToCSV).forEach(pw::println);
+		}
+
+	}
 }
