@@ -61,3 +61,13 @@ nav li a {
   margin-right: 5px;
   margin-bottom: 20px;
 }
+
+#bigButton {
+  display: block;
+  width: 100%;
+  padding: 14px 28px;
+  margin-top: 50px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}

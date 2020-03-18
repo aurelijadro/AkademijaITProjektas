@@ -108,14 +108,14 @@ public class FileController {
 		if (user == null) {
 			response.setStatus(404);
 		} else {
-			fileService.downloadAllUserFiles(userId, response);
+			if (fileService.getUploadedFiles(userId) == null) {
+				response.setStatus(404);
+			} else {
+				docService.csvFileCreator(userId);
+				fileService.downloadAllUserFiles(userId, response);
+			}
 		}
 
-	}
-
-	@RequestMapping(path = "{userId}/csvFile", method = RequestMethod.POST)
-	public void csvFile(@PathVariable Long userId) throws IOException {
-		fileService.sqlToCSV(userId);
 	}
 
 	@RequestMapping(value = "download", method = RequestMethod.POST)

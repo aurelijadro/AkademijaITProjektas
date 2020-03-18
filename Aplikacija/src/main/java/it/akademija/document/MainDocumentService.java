@@ -143,14 +143,11 @@ public class MainDocumentService {
 
 	@Transactional
 	public List<MainDocument> getSubmittedDocumentsByDoctype(DoctypeEntity doctype) {
-
 		return mainDocRepository.findAllByDoctypesAndDocumentStatusOrderBySubmissionDateDesc(doctype, "Pateiktas");
 	}
 
 	@Transactional
-
 	public List<MainDocument> getAllNotCreatedDocuments(Long id) {
-
 		return mainDocRepository.findAllByCreatorIdAndDocumentStatusNotOrderBySubmissionDateDesc(id, "Sukurtas");
 	}
 
@@ -172,17 +169,6 @@ public class MainDocumentService {
 		String username = user.getName() + " " + user.getSurname();
 		return username;
 	}
-
-//	public List<String> getDoctypeTitle(Long userId) {
-//		List<MainDocument> documents = getMainDocuments(userId);
-//		List<String> doctypeTitle = new ArrayList<String>();
-//		for (MainDocument mainDocument : documents) {
-//			Long doctypeId = mainDocument.getDoctypes().getId();
-//			DoctypeEntity doctype = doctypeRepo.findDoctypeById(doctypeId);
-//			doctypeTitle.add(doctype.getTitle());
-//		}
-//		return doctypeTitle;
-//	}
 
 	public void csvFileCreator(Long userId) throws IOException {
 		List<MainDocument> documentsForUser = getMainDocuments(userId);

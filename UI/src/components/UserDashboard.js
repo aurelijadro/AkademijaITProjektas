@@ -26,6 +26,20 @@ class UserDashboard extends Component {
     });
   }
 
+  downloadAllInfo = () => {
+    fetch(
+      `${ApiUrl}files/${this.state.userId}/downloadZip`)
+      .then(response => {
+        response.blob().then(blob => {
+          let url = window.URL.createObjectURL(blob);
+          let a = document.createElement("a");
+          a.href = url;
+          a.download = "Info.zip";
+          a.click();
+        });
+      });
+  }
+
   render() {
     if (this.state.userId === -2) {
       return <div>Loading...</div>;
@@ -35,6 +49,9 @@ class UserDashboard extends Component {
         <NavigationForUser isModerator={this.state.isModerator} />
         <div className="container my-4">
           <CreatedDocuments id={this.state.userId} />
+        </div>
+        <div className="container my-4">
+          <button className="btn btn-dark" id="bigButton" onClick={this.downloadAllInfo}>Atsisiųsti informaciją apie dokumentus ir visus prisegtus PDF failus zip formatu</button>
         </div>
       </div>
     );
