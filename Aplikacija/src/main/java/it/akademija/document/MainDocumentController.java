@@ -185,6 +185,23 @@ public class MainDocumentController {
 
 	}
 
+	@RequestMapping(path = "/{id}/archyveddocuments", method = RequestMethod.GET)
+	@ApiOperation(value = "Get archyved documents by user id")
+	public List<MainDocument> getArchyvedDocuments(@PathVariable Long id, HttpServletResponse response) {
+		Set<DoctypeEntity> doctypesUserModerates = userService.getDoctypesUserModerates(id);
+		if (doctypesUserModerates == null) {
+			response.setStatus(404);
+			return null;
+		}
+		List<MainDocument> archyvedDocuments = new ArrayList<MainDocument>();
+		for (DoctypeEntity doctype : doctypesUserModerates) {
+			archyvedDocuments.addAll(mainDocService.getArchyvedDocumentsByDoctype(doctype));
+		}
+		response.setStatus(200);
+		return archyvedDocuments;
+
+	}
+
 	@RequestMapping(path = "/{userId}/csvFile", method = RequestMethod.POST)
 	public void csvFile(@PathVariable Long userId) throws IOException {
 		mainDocService.csvFileCreator(userId);
