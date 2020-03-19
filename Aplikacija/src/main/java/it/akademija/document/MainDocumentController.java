@@ -195,9 +195,13 @@ public class MainDocumentController {
 //		return mainDocService.getUserName(userId);
 //	}
 
-//	@RequestMapping(path = "/{doctypeId}/tryingToGetDoctypeTitle", method = RequestMethod.GET)
-//	public List<String> doctypeTitle(@PathVariable Long doctypeId) {
-//		return mainDocService.getDoctypeTitle(doctypeId);
-//	}
+	@RequestMapping(path = "/{docId}/tryingToGetUserName", method = RequestMethod.GET)
+	public String doctypeTitle(@PathVariable Long docId, HttpServletResponse response) {
+		if (mainDocService.getAcceptorTitle(docId) == null) {
+			response.setStatus(404);
+			return null;
+		}
+		return mainDocService.getAcceptorTitle(docId);
+	}
 
 }

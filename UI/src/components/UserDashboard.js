@@ -37,8 +37,12 @@ class UserDashboard extends Component {
           a.download = "Info.zip";
           a.click();
         });
+      })
+      .catch(error => {
+        alert("Nėra dokumentų, kuriuos gaite atsisiųsti.")
       });
-  }
+  };
+
 
   render() {
     if (this.state.userId === -2) {

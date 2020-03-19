@@ -175,18 +175,27 @@ public class MainDocumentService {
 		return mainDocument.getDoctypes().getTitle();
 	}
 
+	public String getAcceptorTitle(Long docId) {
+		MainDocument mainDocument = mainDocRepository.findMainDocumentById(docId);
+		if (mainDocument.getApproverId() == null) {
+			return " ";
+		}
+		return getUserName(mainDocument.getApproverId());
+	}
+
 	public void csvFileCreator(Long userId) throws IOException {
 		List<MainDocument> documentsForUser = getMainDocuments(userId);
 		String filename = "csvFile";
 		File file = Paths.get(("/tmp/Uploads/" + userId), filename + ".csv").toFile();
 		List<String[]> dataLines = new ArrayList<>();
-		dataLines.add(new String[] { "Document ID", "Author", "Title", "Summary", "Submission date", "Approval date",
-				"Rejection date", "Rejection reason", "Doctype" });
+		dataLines.add(new String[] { "Dokumento numeris", "Autorius", "Tipas", "Pavadinimas", "Aprašymas",
+				"Pateikimo data", "Patvirtinimo data", "Atmetimo data", "Dokumento priėmėjas", "Atmetimo priežastis" });
 		for (MainDocument mainDocument : documentsForUser) {
-			dataLines.add(new String[] { mainDocument.getId().toString(), getUserName(userId), mainDocument.getTitle(),
-					mainDocument.getSummary(), formatDate(mainDocument.getSubmissionDate()),
-					formatDate(mainDocument.getApprovalDate()), formatDate(mainDocument.getRejectionDate()),
-					mainDocument.getRejectionReason(), getDoctypeTitle(mainDocument.getId()) });
+			dataLines.add(new String[] { mainDocument.getId().toString(), getUserName(userId),
+					getDoctypeTitle(mainDocument.getId()), mainDocument.getTitle(), mainDocument.getSummary(),
+					formatDate(mainDocument.getSubmissionDate()), formatDate(mainDocument.getApprovalDate()),
+					formatDate(mainDocument.getRejectionDate()), getAcceptorTitle(mainDocument.getId()),
+					mainDocument.getRejectionReason() });
 		}
 		try (PrintWriter pw = new PrintWriter(file)) {
 			dataLines.stream().map(this::convertToCSV).forEach(pw::println);

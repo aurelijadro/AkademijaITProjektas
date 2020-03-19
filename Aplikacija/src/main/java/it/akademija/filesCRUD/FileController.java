@@ -108,7 +108,8 @@ public class FileController {
 		if (user == null) {
 			response.setStatus(404);
 		} else {
-			if (fileService.getUploadedFiles(userId) == null) {
+			Path path = Paths.get("/tmp/Uploads/" + userId);
+			if (Files.notExists(path)) {
 				response.setStatus(404);
 			} else {
 				docService.csvFileCreator(userId);

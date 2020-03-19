@@ -44,17 +44,6 @@ public class FileService {
 	@Autowired
 	MainDocumentRepository mainDocRepo;
 
-//	@Transactional
-//	public FileEntity createNew(NewFile newFile, Long documentId) {
-//		MainDocument document = mainDocRepo.findMainDocumentById(documentId);
-//		FileEntity someFile = new FileEntity(newFile.getFileName(), newFile.getFileDownloadUri(), newFile.getFileType(),
-//				newFile.getSize(), document);
-//		someFile.setDocument(document);
-//		document.addFile(someFile);
-//		someFile.setDocument(document);
-//		return fileRepo.save(someFile);
-//	}
-
 	@Transactional
 	public String storeUploadedFile(MultipartFile file, Long userId, Long documentId) throws IOException {
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
