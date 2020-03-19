@@ -11,28 +11,18 @@ const ModeratorDashboard = () => {
   const [userId, setUserId] = useState("loading");
   const [isModerator, setIsModerator] = useState("loading");
 
-  useEffect(function getUserId() {
-    Axios.get(`${ApiUrl}loggedUserId`).then(resp => setUserId(resp.data));
-  }, []);
-
-  useEffect(
-    function getDocumentsToModerate() {
+  useEffect(function() {
+    Axios.get(`${ApiUrl}loggedUserId`).then(resp => {
+      setUserId(resp.data);
       Axios.get(
-        `${ApiUrl}documents/${userId}/documentstomoderate
+        `${ApiUrl}documents/${resp.data}/archyveddocuments
       `
-      ).then(resp => setDocumentsToModerate(resp.data));
-    },
-    [userId]
-  );
-
-  useEffect(
-    function getIsModerator() {
-      Axios.get(`${ApiUrl}users/${userId}/ismoderator`).then(resp =>
-        setIsModerator(resp.data)
+      ).then(response => setDocumentsToModerate(response.data));
+      Axios.get(`${ApiUrl}users/${resp.data}/ismoderator`).then(response2 =>
+        setIsModerator(response2.data)
       );
-    },
-    [userId]
-  );
+    });
+  }, []);
 
   if (
     documentsToModerate === "loading" ||
