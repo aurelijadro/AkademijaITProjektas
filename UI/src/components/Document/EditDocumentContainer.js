@@ -17,7 +17,7 @@ class EditDocumentContainer extends Component {
       files: [],
       file: null,
       loading: true,
-      isModerator: false
+      isModerator: false,
     };
   }
 
@@ -50,6 +50,7 @@ class EditDocumentContainer extends Component {
             axios
               .get(`${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesData`)
               .then(resp => {
+                console.log(resp.data)
                 this.setState({ files: resp.data });
               })
               .then(this.setState({ loading: false }))
@@ -115,7 +116,7 @@ class EditDocumentContainer extends Component {
         alert("Galite prisegti tik PDF tipo bylas.");
       }
     } else {
-      alert("Prisekite nors vieną bylą.")
+      // alert("Prisekite nors vieną bylą.")
     }
   };
 

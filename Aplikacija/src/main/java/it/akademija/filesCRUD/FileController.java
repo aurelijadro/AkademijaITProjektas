@@ -122,10 +122,6 @@ public class FileController {
 	@RequestMapping(value = "download", method = RequestMethod.POST)
 	public void downloadPDFResource(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody FileDTO fileData) {
-//If user is not authorized - he should be thrown out from here itself
-
-//Authorized user will download the file
-
 		Path file = Paths.get(
 				"/tmp/Uploads/" + fileData.getUserId() + "/" + fileData.getDocumentId() + "/" + fileData.getFileName());
 		if (Files.exists(file)) {

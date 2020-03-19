@@ -1,7 +1,6 @@
 package it.akademija.document;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,12 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import it.akademija.doctype.DoctypeEntity;
-import it.akademija.filesCRUD.FileEntity;
 import it.akademija.user.User;
 
 @Entity
@@ -54,8 +51,8 @@ public class MainDocument {
 	@JoinColumn(name = "doctype_id")
 	private DoctypeEntity doctypes;
 
-	@OneToMany(mappedBy = "mainDocument", cascade = CascadeType.ALL)
-	private List<FileEntity> filesForDocuments;
+//	@OneToMany(mappedBy = "mainDocument", cascade = CascadeType.ALL)
+//	private List<FileEntity> filesForDocuments;
 
 	public MainDocument() {
 	}
@@ -66,7 +63,6 @@ public class MainDocument {
 	}
 
 	public MainDocument(Long id, String title, String summary) {
-		super();
 		this.id = id;
 		this.title = title;
 		this.summary = summary;
@@ -205,10 +201,6 @@ public class MainDocument {
 
 	public void setApproverId(Long approverId) {
 		this.approverId = approverId;
-	}
-
-	public void addFile(FileEntity someFile) {
-		this.filesForDocuments.add(someFile);
 	}
 
 }

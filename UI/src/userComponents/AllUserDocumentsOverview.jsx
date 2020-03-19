@@ -20,7 +20,7 @@ const CreatedDocuments = props => {
     `).then(setSubmittedDocuments);
   };
 
-  useEffect(function() {
+  useEffect(function () {
     updateCachedData();
     // const timer = setInterval(updateCachedData, 2000);
     // return () => clearInterval(timer);
@@ -97,18 +97,19 @@ const CreatedDocuments = props => {
     );
   });
 
+
   const submittedDocumentsList = submittedDocuments.map((document, index) => {
     return (
       <li
         className={`list-group-item ${
           document.documentStatus === "Atmestas" ? "list-group-item-danger" : ""
-        }
+          }
        ${document.documentStatus === "Pateiktas" ? "list-group-item-dark" : ""} 
        ${
-         document.documentStatus === "Patvirtintas"
-           ? "list-group-item-success"
-           : ""
-       }`}
+          document.documentStatus === "Patvirtintas"
+            ? "list-group-item-success"
+            : ""
+          }`}
         key={document.id}
       >
         <div className="row my-1">
