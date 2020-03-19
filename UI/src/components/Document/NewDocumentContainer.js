@@ -7,10 +7,12 @@ class NewDocumentContainer extends Component {
   constructor() {
     super();
     this.state = {
-      doctypes: [{
-        id: "",
-        title: ""
-      }],
+      doctypes: [
+        {
+          id: "",
+          title: ""
+        }
+      ],
       userId: "",
       title: "",
       summary: "",
@@ -36,7 +38,7 @@ class NewDocumentContainer extends Component {
               .get(`${ApiUrl}users/${this.state.userId}/ismoderator`)
               .then(resp => this.setState({ isModerator: resp.data }))
           )
-          .catch(error => { });
+          .catch(error => {});
       })
       .catch(error => {
         alert("Tokio vartotojo nėra arba jis neprisijungęs.");
@@ -59,9 +61,15 @@ class NewDocumentContainer extends Component {
       summary: this.state.summary,
       doctypeItem: this.state.doctypeItem
     };
-    if (this.state.doctypeItem !== undefined && this.state.doctypeItem !== "Default") {
+    if (
+      this.state.doctypeItem !== undefined &&
+      this.state.doctypeItem !== "Default"
+    ) {
       axios
-        .post(`${ApiUrl}documents/${this.state.userId}/${this.state.doctypeItem}`, data)
+        .post(
+          `${ApiUrl}documents/${this.state.userId}/${this.state.doctypeItem}`,
+          data
+        )
         .then(response => {
           this.setState({ id: response.data.id });
           return this.state.id;
@@ -70,9 +78,9 @@ class NewDocumentContainer extends Component {
           this.setState({ showResults: true });
           alert("Prisekite papildomas bylas.");
         })
-        .catch(error => { });
+        .catch(error => {});
     } else {
-      alert("Pasirinkite dokumento tipą.")
+      alert("Pasirinkite dokumento tipą.");
     }
   };
 
@@ -93,60 +101,72 @@ class NewDocumentContainer extends Component {
           const data = new FormData();
           data.append("file", this.state.file);
           axios
-            .post(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadFile`, data)
+            .post(
+              `${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadFile`,
+              data
+            )
             .then(response => {
               axios
-                .get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesData`)
+                .get(
+                  `${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesData`
+                )
                 .then(resp => {
                   this.setState({ files: resp.data });
                 })
-                .catch(error => { });
+                .catch(error => {});
             })
             .catch(error => {
               alert("Pasirinkite bylą, kurią norite pridėti.");
             });
         } else {
-          alert("Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb.");
+          alert(
+            "Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb."
+          );
         }
       } else {
         alert("Galite prisegti tik PDF tipo bylas.");
       }
     } else {
-      alert("Prisekite nors vieną bylą.")
+      alert("Prisekite nors vieną bylą.");
     }
   };
 
   handleClick = e => {
     e.preventDefault();
     axios
-      .delete(`${ApiUrl}files/${this.state.userId}/${this.state.id}/documentsDelete`)
+      .delete(
+        `${ApiUrl}files/${this.state.userId}/${this.state.id}/documentsDelete`
+      )
       .then(response => {
         axios
-          .get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesData`)
+          .get(
+            `${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesData`
+          )
           .then(resp => {
-            console.log(resp.data)
+            console.log(resp.data);
             this.setState({ files: resp.data });
             alert("Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.");
           })
-          .catch(error => { });
+          .catch(error => {});
       })
-      .catch(error => { });
+      .catch(error => {});
   };
 
   downloadFiles = e => {
-    fetch(`${ApiUrl}files/${this.state.userId}/${this.state.id}/downloadZip`)
-      .then(response => {
-        if (this.state.files && this.state.files.length > 0) {
-          response.blob().then(blob => {
-            let url = window.URL.createObjectURL(blob);
-            let a = document.createElement("a");
-            a.href = url;
-            a.download = "Bylos.zip";
-            a.click();
-          });
-        } else {
-        }
-      });
+    fetch(
+      `${ApiUrl}files/${this.state.userId}/${this.state.id}/downloadZip`
+    ).then(response => {
+      if (this.state.files && this.state.files.length > 0) {
+        response.blob().then(blob => {
+          let url = window.URL.createObjectURL(blob);
+          let a = document.createElement("a");
+          a.href = url;
+          a.download = "Bylos.zip";
+          a.click();
+        });
+      } else {
+      }
+    });
   };
 
   saveDocument = e => {
@@ -169,10 +189,12 @@ class NewDocumentContainer extends Component {
         <li className="list-group-item list-group-item-dark" key={index}>
           <div className="row my-1">
             <div className="col-1">{index + 1}</div>
-            <div className="col-7" onChange={this.onFilesChoice}>{result.fileName}</div>
+            <div className="col-7" onChange={this.onFilesChoice}>
+              {result.fileName}
+            </div>
           </div>
         </li>
-      )
+      );
     });
     return (
       <div>
@@ -180,17 +202,29 @@ class NewDocumentContainer extends Component {
         <div className="container my-4">
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h3 className="panel-title"> Naujo dokumento kūrimas </h3>
+              <h4 className="panel-title"> Naujo dokumento kūrimas </h4>
             </div>
             <div className="panel-body">
               <form onSubmit={this.addNewDocument}>
                 <div className="form-group">
                   <label> Pavadinimas: </label>
-                  <input type="text" className="form-control" name="title" onChange={this.onChange} placeholder="Pavadinimas" required />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="title"
+                    onChange={this.onChange}
+                    placeholder="Pavadinimas"
+                    required
+                  />
                 </div>
                 <div className="form-group">
                   <label> Trumpas aprašymas </label>
-                  <textarea className="form-control" name="summary" onChange={this.onChange} rows="3"></textarea>
+                  <textarea
+                    className="form-control"
+                    name="summary"
+                    onChange={this.onChange}
+                    rows="3"
+                  ></textarea>
                 </div>
                 <div className="form-group">
                   <label>
@@ -217,22 +251,36 @@ class NewDocumentContainer extends Component {
                       <li className="list-group-item list-group-item-dark">
                         <div className="row my-2">
                           <div className="col-1 font-weight-bold">#</div>
-                          <div className="col-7 font-weight-bold">Failo pavadinimas</div>
+                          <div className="col-7 font-weight-bold">
+                            Failo pavadinimas
+                          </div>
                           <div className="col-2 font-weight-bold text-right">
-                            <button className="btn btn-dark" onClick={this.downloadFiles}>
+                            <button
+                              className="btn btn-dark"
+                              onClick={this.downloadFiles}
+                            >
                               Atsisiųsti bylas
                             </button>
                           </div>
                           <div className="col-2 font-weight-bold text-right">
-                            <button className="btn btn-dark" id="document"
+                            <button
+                              className="btn btn-dark"
+                              id="document"
                               onClick={e => {
-                                if (this.state.files && this.state.files.length <= 0) {
-
+                                if (
+                                  this.state.files &&
+                                  this.state.files.length <= 0
+                                ) {
                                 } else {
-                                  if (window.confirm("Ar tikrai norite ištrinti įkeltas bylas?"))
+                                  if (
+                                    window.confirm(
+                                      "Ar tikrai norite ištrinti įkeltas bylas?"
+                                    )
+                                  )
                                     this.handleClick(e);
                                 }
-                              }}>
+                              }}
+                            >
                               Ištrinti bylas
                             </button>
                           </div>
@@ -240,7 +288,11 @@ class NewDocumentContainer extends Component {
                       </li>
                       <div>{result}</div>
                       <div className="row"> </div>
-                      <input id="chooseFile" type="file" onChange={this.onFilesChange} />
+                      <input
+                        id="chooseFile"
+                        type="file"
+                        onChange={this.onFilesChange}
+                      />
                       <div>
                         <button id="uploadButton" type="submit">
                           Įkelti
@@ -248,7 +300,11 @@ class NewDocumentContainer extends Component {
                       </div>
                     </div>
                   </form>
-                  <button className="btn btn-dark" type="submit" onClick={this.saveDocument}>
+                  <button
+                    className="btn btn-dark"
+                    type="submit"
+                    onClick={this.saveDocument}
+                  >
                     Išsaugoti
                   </button>
                 </div>
@@ -256,7 +312,7 @@ class NewDocumentContainer extends Component {
             </div>
           </div>
         </div>
-      </div >
+      </div>
     );
   }
 }

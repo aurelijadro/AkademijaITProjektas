@@ -20,7 +20,7 @@ const CreatedDocuments = props => {
     `).then(setSubmittedDocuments);
   };
 
-  useEffect(function () {
+  useEffect(function() {
     updateCachedData();
     // const timer = setInterval(updateCachedData, 2000);
     // return () => clearInterval(timer);
@@ -97,19 +97,18 @@ const CreatedDocuments = props => {
     );
   });
 
-
   const submittedDocumentsList = submittedDocuments.map((document, index) => {
     return (
       <li
         className={`list-group-item ${
           document.documentStatus === "Atmestas" ? "list-group-item-danger" : ""
-          }
+        }
        ${document.documentStatus === "Pateiktas" ? "list-group-item-dark" : ""} 
        ${
-          document.documentStatus === "Patvirtintas"
-            ? "list-group-item-success"
-            : ""
-          }`}
+         document.documentStatus === "Patvirtintas"
+           ? "list-group-item-success"
+           : ""
+       }`}
         key={document.id}
       >
         <div className="row my-1">
@@ -128,14 +127,14 @@ const CreatedDocuments = props => {
   });
 
   return (
-    <div className="container">
+    <div>
       {saving ? (
         <span style={{ color: "white", position: "absolute", zIndex: 999 }}>
           Saving changes...
         </span>
       ) : null}
 
-      <h2 className="my-4">Sukurti dokumentai:</h2>
+      <h4 className="my-4">Sukurti dokumentai:</h4>
       <li className="list-group-item list-group-item-dark">
         <div className="row my-2">
           <div className="col-3 font-weight-bold">Pavadinimas</div>
@@ -147,7 +146,7 @@ const CreatedDocuments = props => {
       </li>
       <div>{createdDocumentsList}</div>
 
-      <h2 className="my-4">Pateikti dokumentai:</h2>
+      <h4 className="my-4">Pateikti dokumentai:</h4>
       <li className="list-group-item list-group-item-dark">
         <div className="row my-2">
           <div className="col-3 font-weight-bold">Pavadinimas</div>
