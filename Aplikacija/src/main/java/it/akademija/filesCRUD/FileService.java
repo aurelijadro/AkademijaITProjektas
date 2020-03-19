@@ -35,8 +35,8 @@ public class FileService {
 	private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 	private Path fileStorageLocation;
 
-	@Autowired
-	FileRepository fileRepo;
+//	@Autowired
+//	FileRepository fileRepo;
 
 	@Autowired
 	UserRepository userRepo;
@@ -133,22 +133,6 @@ public class FileService {
 			logger.error(e.toString());
 		}
 	}
-
-//	@Transactional
-//	public void deleteOneFile(Long userId, Long documentId, String fileName) {
-//		try {
-//			String fileName = storeUploadedFile(fileData, userId, documentId);
-//			String path = Paths.get("/tmp/Uploads/" + userId + "/" + documentId + "/" + fileName).toString();
-//
-//			File file = new File(path);
-//
-//			if (file != null) {
-//				file.delete();
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
 
 	@Transactional
 	public void downloadFile(Long userId, Long documentId, HttpServletResponse response) throws Exception {

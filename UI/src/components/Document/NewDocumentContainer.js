@@ -124,6 +124,7 @@ class NewDocumentContainer extends Component {
         axios
           .get(`${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesData`)
           .then(resp => {
+            console.log(resp.data)
             this.setState({ files: resp.data });
             alert("Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.");
           })
