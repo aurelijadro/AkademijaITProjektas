@@ -164,33 +164,55 @@ public class FileService {
 
 	}
 
+//	@Transactional
+//	public void downloadAllUserFiles(Long userId, HttpServletResponse response) throws Exception {
+//
+//		response.setContentType("application/octet-stream");
+//		response.setHeader("Content-Disposition", "attachment;filename=download.zip");
+//		response.setStatus(HttpServletResponse.SC_OK);
+//
+//		List<String> fileNames = getUploadedFiles(userId);
+//
+//		{
+//
+//			try (ZipOutputStream zippedOut = new ZipOutputStream(response.getOutputStream())) {
+//				for (String file : fileNames) {
+//					FileSystemResource resource = new FileSystemResource(file);
+//
+//					ZipEntry e = new ZipEntry(resource.getFilename());
+//					e.setSize(resource.contentLength());
+//					e.setTime(System.currentTimeMillis());
+//					zippedOut.putNextEntry(e);
+//					StreamUtils.copy(resource.getInputStream(), zippedOut);
+//					zippedOut.closeEntry();
+//				}
+//				zippedOut.finish();
+//			} catch (Exception e) {
+//				throw e;
+//			}
+//
+//		}
+//	}
+
 	@Transactional
-	public void downloadAllUserFiles(Long userId, HttpServletResponse response) throws Exception {
+	public void downloadAllUserFiles(Long userId, HttpServletResponse response) throws IOException {
 
 		response.setContentType("application/octet-stream");
 		response.setHeader("Content-Disposition", "attachment;filename=download.zip");
 		response.setStatus(HttpServletResponse.SC_OK);
 
-		List<String> fileNames = getUploadedFiles(userId);
-
-		{
-
-			try (ZipOutputStream zippedOut = new ZipOutputStream(response.getOutputStream())) {
-				for (String file : fileNames) {
-					FileSystemResource resource = new FileSystemResource(file);
-
-					ZipEntry e = new ZipEntry(resource.getFilename());
-					e.setSize(resource.contentLength());
-					e.setTime(System.currentTimeMillis());
-					zippedOut.putNextEntry(e);
-					StreamUtils.copy(resource.getInputStream(), zippedOut);
-					zippedOut.closeEntry();
+		try (ZipOutputStream zs = new ZipOutputStream(response.getOutputStream())) {
+			Path pp = Paths.get("/tmp/Uploads/" + userId);
+			Files.walk(pp).filter(path -> !Files.isDirectory(path)).forEach(path -> {
+				ZipEntry zipEntry = new ZipEntry(pp.relativize(path).toString());
+				try {
+					zs.putNextEntry(zipEntry);
+					Files.copy(path, zs);
+					zs.closeEntry();
+				} catch (IOException e) {
+					System.err.println(e);
 				}
-				zippedOut.finish();
-			} catch (Exception e) {
-				throw e;
-			}
-
+			});
 		}
 	}
 

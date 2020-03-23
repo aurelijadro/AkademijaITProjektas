@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import EditDoctypeFormComponent from "./EditDoctypeFormComponent";
 import ApiUrl from "../../APIURL";
+import swal from '@sweetalert/with-react';
 
 class EditDoctypeFormContainer extends Component {
   constructor() {
@@ -22,7 +23,16 @@ class EditDoctypeFormContainer extends Component {
         this.setState(response.data);
       })
       .catch(error => {
-        alert("Tokio dokumentų tipo nėra.");
+        swal({
+          text: "Tokio dokumentų tipo nėra.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true,
+          }
+        });
       });
   };
 
@@ -43,12 +53,29 @@ class EditDoctypeFormContainer extends Component {
         }
       )
       .then(() => {
-        alert("Dokumentų tipo duomenys atnaujinti sėkmingai.");
+        swal({
+          text: "Dokumentų tipo duomenys atnaujinti sėkmingai.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true,
+          }
+        });
         this.props.history.push("/Gentoo/admin/doctypes");
       })
-      .catch(function(error) {
-        alert(
-          "Dokumentų tipo duomenų išsaugoti nepavyko. Bandykite dar kartą."
+      .catch(function (error) {
+        swal({
+          text: "Dokumentų tipo duomenų išsaugoti nepavyko. Bandykite dar kartą.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true,
+          }
+        }
         );
       });
   };

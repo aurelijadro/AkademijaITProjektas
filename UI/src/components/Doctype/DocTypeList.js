@@ -4,6 +4,7 @@ import DocTypeComponent from "./DocTypeComponent";
 import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
 import ApiUrl from "../../APIURL";
+import swal from "@sweetalert/with-react";
 
 class DocTypeList extends Component {
   constructor() {
@@ -26,21 +27,33 @@ class DocTypeList extends Component {
         this.setState({ doctypes: response.data });
       })
       .catch(error => {
-        alert("Nėra galimybės pateikti duomenų apie dokumentų tipus.");
+        swal({
+          text: "Nėra galimybės pateikti duomenų apie dokumentų tipus.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
       });
   };
 
-  handlePageChange = (event) => {
+  handlePageChange = event => {
     this.setState({
       currentPage: Number(event.target.id)
     });
-  }
+  };
 
   render() {
     const { currentPage, doctypesPerPage } = this.state;
     const indexOfLastDoctype = currentPage * doctypesPerPage;
     const indexOfFirstDoctype = indexOfLastDoctype - doctypesPerPage;
-    const currentDoctype = this.state.doctypes.slice(indexOfFirstDoctype, indexOfLastDoctype);
+    const currentDoctype = this.state.doctypes.slice(
+      indexOfFirstDoctype,
+      indexOfLastDoctype
+    );
     let doctype = currentDoctype.map((doctype, index) => {
       return (
         <DocTypeComponent
@@ -52,20 +65,31 @@ class DocTypeList extends Component {
       );
     });
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(this.state.doctypes.length / doctypesPerPage); i++) {
+    for (
+      let i = 1;
+      i <= Math.ceil(this.state.doctypes.length / doctypesPerPage);
+      i++
+    ) {
       pageNumbers.push(i);
     }
     const renderPageNumbers = pageNumbers.map((number, index) => {
       if (
-        (number === this.state.currentPage - 1 || number === this.state.currentPage || number === this.state.currentPage + 1)
+        number === this.state.currentPage - 1 ||
+        number === this.state.currentPage ||
+        number === this.state.currentPage + 1
       ) {
         return (
-          <button className="btn btn-dark" key={index} id={number} onClick={this.handlePageChange}>{number}</button>
-        )
-      } else {
-        return (
-          <div key={index}></div>
+          <button
+            className="btn btn-dark"
+            key={index}
+            id={number}
+            onClick={this.handlePageChange}
+          >
+            {number}
+          </button>
         );
+      } else {
+        return <div key={index}></div>;
       }
     });
     return (
@@ -101,9 +125,7 @@ class DocTypeList extends Component {
           </table>
           <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
-              <li className="page-item">
-                {renderPageNumbers}
-              </li>
+              <li className="page-item">{renderPageNumbers}</li>
             </ul>
           </nav>
         </div>

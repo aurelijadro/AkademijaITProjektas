@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import ApiUrl from "../../APIURL";
 import NavigationForUSer from "../NavigationForUser";
+import swal from '@sweetalert/with-react';
 
 class EditDocumentContainer extends Component {
   constructor() {
@@ -52,20 +53,50 @@ class EditDocumentContainer extends Component {
                 `${ApiUrl}files/${this.state.userId}/${this.props.match.params.id}/uploadedFilesData`
               )
               .then(resp => {
-                console.log(resp.data);
                 this.setState({ files: resp.data });
               })
               .then(this.setState({ loading: false }))
               .catch(error => {
-                alert("Dokumentas turi turėti bent vieną bylą.");
+                swal({
+                  text:
+                    "Dokumentas turi turėti bent vieną bylą.",
+                  button: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "btn btn-dark",
+                    closeModal: true,
+                  }
+                }
+                );
               });
           })
           .catch(error => {
-            alert("Tokio vartotojo nėra arba jis neprisijungęs.");
+            swal({
+              text:
+                "Tokio vartotojo nėra arba jis neprisijungęs.",
+              button: {
+                text: "OK",
+                value: true,
+                visible: true,
+                className: "btn btn-dark",
+                closeModal: true,
+              }
+            });
           });
       })
       .catch(error => {
-        alert("Duomenų apie šį dokumentą nėra.");
+        swal({
+          text:
+            "Duomenų apie šį dokumentą nėra.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true,
+          }
+        });
       });
   };
 
@@ -107,19 +138,60 @@ class EditDocumentContainer extends Component {
                   this.setState({ files: resp.data });
                 })
                 .catch(error => {
-                  alert("Dokumentas turi turėti bent vieną bylą.");
+                  swal({
+                    text:
+                      "Dokumentas turi turėti bent vieną bylą.",
+                    button: {
+                      text: "OK",
+                      value: true,
+                      visible: true,
+                      className: "btn btn-dark",
+                      closeModal: true,
+                    }
+                  }
+                  );
                 });
             })
             .catch(error => {
-              alert("Įkelkite bent vieną bylą.");
+              swal({
+                text:
+                  "Įkelkite bent vieną bylą.",
+                button: {
+                  text: "OK",
+                  value: true,
+                  visible: true,
+                  className: "btn btn-dark",
+                  closeModal: true,
+                }
+              }
+              );
             });
         } else {
-          alert(
-            "Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb."
+          swal({
+            text:
+              "Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb.",
+            button: {
+              text: "OK",
+              value: true,
+              visible: true,
+              className: "btn btn-dark",
+              closeModal: true,
+            }
+          }
           );
         }
       } else {
-        alert("Galite prisegti tik PDF tipo bylas.");
+        swal({
+          text:
+            "Galite prisegti tik PDF tipo bylas.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true,
+          }
+        });
       }
     } else {
       // alert("Prisekite nors vieną bylą.")
@@ -139,11 +211,20 @@ class EditDocumentContainer extends Component {
           )
           .then(resp => {
             this.setState({ files: resp.data });
-            alert("Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.");
+            swal({
+              text: "Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.",
+              button: {
+                text: "OK",
+                value: true,
+                visible: true,
+                className: "btn btn-dark",
+                closeModal: true,
+              }
+            });
           })
-          .catch(error => {});
+          .catch(error => { });
       })
-      .catch(error => {});
+      .catch(error => { });
   };
 
   downloadFiles = e => {
@@ -177,13 +258,31 @@ class EditDocumentContainer extends Component {
       )
       .then(response => {
         if (this.state.files && this.state.files.length > 0) {
-          alert("Jūs sėkmingai pakeitėte dokumento duomenis.");
+          swal({
+            text: "Jūs sėkmingai pakeitėte dokumento duomenis.",
+            button: {
+              text: "OK",
+              value: true,
+              visible: true,
+              className: "btn btn-dark",
+              closeModal: true,
+            }
+          });
           this.props.history.push("/Gentoo/user");
         } else {
-          alert("Pridėkite bent vieną bylą.");
+          swal({
+            text: "Pridėkite bent vieną bylą.",
+            button: {
+              text: "OK",
+              value: true,
+              visible: true,
+              className: "btn btn-dark",
+              closeModal: true,
+            }
+          });
         }
       })
-      .catch(error => {});
+      .catch(error => { });
   };
 
   goBack = e => {
@@ -191,7 +290,16 @@ class EditDocumentContainer extends Component {
     if (this.state.files && this.state.files.length > 0) {
       this.props.history.push(`/Gentoo/user`);
     } else {
-      alert("Pridėkite bent vieną bylą.");
+      swal({
+        text: "Pridėkite bent vieną bylą.",
+        button: {
+          text: "OK",
+          value: true,
+          visible: true,
+          className: "btn btn-dark",
+          closeModal: true,
+        }
+      });
     }
   };
 
