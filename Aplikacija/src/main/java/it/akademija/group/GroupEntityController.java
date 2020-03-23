@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,7 @@ public class GroupEntityController {
 	@Autowired
 	private UserRepository userRepo;
 
+	@Secured({ "ROLE_ADMIN" })
 	@PostMapping()
 	public GroupEntity createGroup(@RequestBody NewGroup newGroup, HttpServletResponse response) {
 		if (groupService.findGroupByTitle(newGroup.getTitle()) == null) {
@@ -50,6 +52,7 @@ public class GroupEntityController {
 		return null;
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@GetMapping("/{id}")
 	public GroupEntity getGroupById(@PathVariable Long id, HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupById(id);
@@ -61,11 +64,13 @@ public class GroupEntityController {
 		return group;
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping()
 	public List<GroupEntity> getGroups() {
 		return groupService.getAllGroups();
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@PutMapping("/{id}")
 	public GroupEntity updateGroup(@PathVariable Long id, @RequestBody NewGroup group, HttpServletResponse response) {
 		GroupEntity someGroup = groupService.findGroupById(id);
@@ -90,6 +95,7 @@ public class GroupEntityController {
 //		groupService.deleteGroup(group);
 //	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@GetMapping("/{id}/doctypesToCreate")
 	public Set<DoctypeEntity> getDoctypesToCreateByGroupId(@PathVariable Long id, HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupById(id);
@@ -101,6 +107,7 @@ public class GroupEntityController {
 		return group.getDoctypesToCreate();
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@GetMapping("/{id}/doctypesToModerate")
 	public Set<DoctypeEntity> getDoctypesToModerateByGroupId(@PathVariable Long id, HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupById(id);
@@ -112,6 +119,7 @@ public class GroupEntityController {
 		return group.getDoctypesToModerate();
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@PostMapping("/{groupId}/doctypesToCreate/{doctypeId}")
 	public void addDoctypeToCreateByIdToGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
 			HttpServletResponse response) {
@@ -134,6 +142,7 @@ public class GroupEntityController {
 		}
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@PostMapping("/{groupId}/doctypesToModerate/{doctypeId}")
 	public void addDoctypeToModerateByIdToGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
 			HttpServletResponse response) {
@@ -156,6 +165,7 @@ public class GroupEntityController {
 		}
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@DeleteMapping("/{groupId}/doctypesToCreate/{doctypeId}")
 	public void deleteDoctypeToCreateByIdFromGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
 			HttpServletResponse response) {
@@ -179,6 +189,7 @@ public class GroupEntityController {
 
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@DeleteMapping("/{groupId}/doctypesToModerate/{doctypeId}")
 	public void deleteDoctypeToModerateByIdFromGroup(@PathVariable Long groupId, @PathVariable Long doctypeId,
 			HttpServletResponse response) {
@@ -202,6 +213,7 @@ public class GroupEntityController {
 
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping("/{id}/users")
 	public Set<User> getUsersInGroupByGroupId(@PathVariable Long id, HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupById(id);
@@ -213,6 +225,7 @@ public class GroupEntityController {
 		}
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping("/{id}/usersnotingroup")
 	public Set<User> getUsersNotInGroup(@PathVariable Long id, HttpServletResponse response) {
 		GroupEntity group = groupService.findGroupById(id);
@@ -226,6 +239,7 @@ public class GroupEntityController {
 		}
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@PostMapping("/{groupId}/users/{userId}")
 	public void addUserByUserIdToGroup(@PathVariable Long groupId, @PathVariable Long userId,
 			HttpServletResponse response) {
@@ -247,6 +261,7 @@ public class GroupEntityController {
 		}
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@DeleteMapping("/{groupId}/users/{userId}")
 	public void deleteUserByUserIdFromGroup(@PathVariable Long groupId, @PathVariable Long userId,
 			HttpServletResponse response) {
@@ -268,6 +283,7 @@ public class GroupEntityController {
 		}
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping("/userdoenstbelong/{userId}")
 	public Set<GroupEntity> getGroupsUserDoesntBelongTo(@PathVariable Long userId, HttpServletResponse response) {
 		User user = userRepo.findUserById(userId);
@@ -282,6 +298,7 @@ public class GroupEntityController {
 		}
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping("/{id}/notdoctypesToCreate")
 	public Set<DoctypeEntity> getDoctypesToCreateNotInGroupByGroupId(@PathVariable Long id,
 			HttpServletResponse response) {
@@ -295,6 +312,7 @@ public class GroupEntityController {
 		return notGroupDoctypes;
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping("/{id}/notdoctypesToModerate")
 	public Set<DoctypeEntity> getDoctypesToModerateNotInGroupByGroupId(@PathVariable Long id,
 			HttpServletResponse response) {

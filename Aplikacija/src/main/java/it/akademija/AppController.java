@@ -1,6 +1,7 @@
 package it.akademija;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,7 @@ public class AppController {
 	@Autowired
 	UserRepository userRepository;
 
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@RequestMapping(path = "/loggedUsername", method = RequestMethod.GET)
 	public String getLoggedInUsername() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -30,6 +32,7 @@ public class AppController {
 		return "not logged";
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@RequestMapping(path = "/loggedUserId", method = RequestMethod.GET)
 	public Long getLoggedInUserId() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

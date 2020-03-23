@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ public class DoctypeEntityController {
 	@Autowired
 	private MainDocumentService documentService;
 
+	@Secured({ "ROLE_ADMIN" })
 	@PostMapping()
 	public DoctypeEntity createDoctype(@RequestBody NewDoctype doctype, HttpServletResponse response) {
 		if (doctypeService.findDoctypeByTitle(doctype.getTitle()) == null) {
@@ -47,11 +49,13 @@ public class DoctypeEntityController {
 		return null;
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@GetMapping()
 	public List<DoctypeEntity> getDoctypes() {
 		return doctypeService.getAllDoctypes();
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@GetMapping("/{id}")
 	public DoctypeEntity getDoctypeById(@PathVariable Long id, HttpServletResponse response) {
 		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
@@ -63,6 +67,7 @@ public class DoctypeEntityController {
 		return doctype;
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@PutMapping("/{id}")
 	public DoctypeEntity updateDoctype(@Valid @PathVariable Long id, @RequestBody NewDoctype newDoctype,
 			HttpServletResponse response) {
@@ -77,6 +82,7 @@ public class DoctypeEntityController {
 		return doctype;
 	}
 
+	// ar mes kur nors trinam doctype'us?
 	@DeleteMapping("/{id}")
 	public void deleteDoctype(@PathVariable Long id, HttpServletResponse response) {
 		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
@@ -90,6 +96,7 @@ public class DoctypeEntityController {
 		doctypeService.deleteDoctype(doctype);
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping("/{id}/creatingGroups")
 	public Set<GroupEntity> getCreatingGroupsByDoctypeId(@PathVariable Long id, HttpServletResponse response) {
 		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
@@ -101,6 +108,7 @@ public class DoctypeEntityController {
 		return doctype.getCreatingGroups();
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping("/{id}/moderatingGroups")
 	public Set<GroupEntity> getModeratingGroupsByDoctypeId(@PathVariable Long id, HttpServletResponse response) {
 		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
@@ -112,6 +120,7 @@ public class DoctypeEntityController {
 		return doctype.getModeratingGroups();
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping("/{id}/notDoctypeCreatingGroups")
 	public Set<GroupEntity> getNotDoctypeCreatingGroups(@PathVariable Long id, HttpServletResponse response) {
 		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
@@ -125,6 +134,7 @@ public class DoctypeEntityController {
 		}
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@GetMapping("/{id}/notDoctypeModeratingGroups")
 	public Set<GroupEntity> getNotDoctypeModeratingGroups(@PathVariable Long id, HttpServletResponse response) {
 		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
@@ -138,6 +148,7 @@ public class DoctypeEntityController {
 		}
 	}
 
+	@Secured({ "ROLE_USER" })
 	@PostMapping("/{doctypeId}/documents/{documentId}")
 	public void addDocumentByIdToDoctype(@PathVariable Long doctypeId, @PathVariable Long documentId,
 			HttpServletResponse response) {

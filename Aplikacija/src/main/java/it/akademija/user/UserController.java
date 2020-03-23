@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,18 +40,21 @@ public class UserController {
 	@Autowired
 	PagingData paging;
 
+	@Secured({ "ROLE_ADMIN" })
 	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get users", notes = "Returns all users")
 	public List<User> getUsers() {
 		return userService.getUsers();
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@RequestMapping(path = "/all", method = RequestMethod.GET)
 	public List<User> getAllUsers(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer pageSize) {
 		return userService.getAllUsers(pageNo, pageSize);
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@RequestMapping(path = "/{id}/doctypesusercreates", method = RequestMethod.GET)
 	@ApiOperation(value = "Get doctypes user can create")
 	public Set<DoctypeEntity> getDoctypesUserCanCreate(
@@ -64,6 +68,7 @@ public class UserController {
 		return doctypestocreate;
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@RequestMapping(path = "/{id}/doctypesusermoderates", method = RequestMethod.GET)
 	@ApiOperation(value = "Get doctypes user can moderate")
 	public Set<DoctypeEntity> getDoctypesUserCanModerate(
@@ -77,6 +82,7 @@ public class UserController {
 		return doctypestomoderate;
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@RequestMapping(path = "/{id}/ismoderator", method = RequestMethod.GET)
 	@ApiOperation(value = "Check if user is moderator")
 	public Boolean isModerator(@ApiParam(value = "user id", required = true) @PathVariable Long id,
@@ -84,6 +90,7 @@ public class UserController {
 		return userService.isUserModerator(id);
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Find user by id", notes = "Returns user by id")
 	public UserDTO getUserById(@ApiParam(value = "user id", required = true) @PathVariable Long id,
@@ -97,6 +104,7 @@ public class UserController {
 		return user;
 	}
 
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@RequestMapping(path = "/{id}/groups", method = RequestMethod.GET)
 	@ApiOperation(value = "Get groups of user by user id", notes = "Returns all groups that user belongs to")
 	public Set<GroupEntity> getUsersGroupsByUserId(@ApiParam(value = "user id", required = true) @PathVariable Long id,
@@ -111,6 +119,7 @@ public class UserController {
 		}
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Add new user", notes = "Returns new user")
 	public User addNewUser(@RequestBody final NewUser newUser, HttpServletResponse response) {
@@ -127,6 +136,7 @@ public class UserController {
 
 	}
 
+	@Secured({ "ROLE_ADMIN" })
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Update existing user info", notes = "Returns user with new info")
 	public User updateUser(@PathVariable Long id, @RequestBody final NewUser newUser, HttpServletResponse response) {

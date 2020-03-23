@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import AddDoctypeFormComponent from "./AddDoctypeFormComponent";
 import ApiUrl from "../../APIURL";
-import swal from '@sweetalert/with-react';
+import swal from "@sweetalert/with-react";
 
 class AddDoctypeFormContainer extends Component {
   constructor() {
@@ -32,7 +32,7 @@ class AddDoctypeFormContainer extends Component {
             value: true,
             visible: true,
             className: "btn btn-dark",
-            closeModal: true,
+            closeModal: true
           }
         });
         this.props.history.push("/Gentoo/admin/doctypes");
@@ -45,7 +45,7 @@ class AddDoctypeFormContainer extends Component {
             value: true,
             visible: true,
             className: "btn btn-dark",
-            closeModal: true,
+            closeModal: true
           }
         });
       });

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,7 @@ public class FileController {
 	@Autowired
 	UserRepository userRepository;
 
+	@Secured({ "ROLE_USER" })
 	@PostMapping("{userId}/{documentId}/uploadFile")
 	public File uploadFile(@PathVariable Long userId, @PathVariable Long documentId, @RequestParam MultipartFile file)
 			throws IOException {
@@ -63,11 +65,13 @@ public class FileController {
 		}
 	}
 
+	@Secured({ "ROLE_USER" })
 	@GetMapping("{userId}/{documentId}/uploadedFilesNames")
 	public List<String> getListOfFiles(@PathVariable Long userId, @PathVariable Long documentId) throws IOException {
 		return fileService.getUploadedFilesNames(userId, documentId);
 	}
 
+	@Secured({ "ROLE_USER" })
 	@GetMapping("{userId}/{documentId}/uploadedFilesData")
 	public List<FileDTO> getListOfFilesData(@PathVariable Long userId, @PathVariable Long documentId)
 			throws IOException {
@@ -75,16 +79,19 @@ public class FileController {
 		return fileService.getUploadedFilesData(userId, documentId);
 	}
 
+	@Secured({ "ROLE_USER" })
 	@DeleteMapping("{userId}/{documentId}/delete")
 	public void deleteDocumentFolder(@PathVariable Long userId, @PathVariable Long documentId) throws IOException {
 		fileService.deleteDocumentFolder(userId, documentId);
 	}
 
+	@Secured({ "ROLE_USER" })
 	@DeleteMapping("{userId}/{documentId}/documentsDelete")
 	public void deleteFilesInFolder(@PathVariable Long userId, @PathVariable Long documentId) throws IOException {
 		fileService.deleteFilesInFolder(userId, documentId);
 	}
 
+	@Secured({ "ROLE_USER" })
 	@GetMapping("{userId}/{documentId}/downloadZip")
 	public void downloadZipFromDocumentById(@PathVariable Long userId, @PathVariable Long documentId,
 			HttpServletResponse response) throws Exception {
@@ -102,6 +109,7 @@ public class FileController {
 
 	}
 
+	@Secured({ "ROLE_USER" })
 	@GetMapping("{userId}/downloadZip")
 	public void downloadZipWithUserDocuments(@PathVariable Long userId, HttpServletResponse response) throws Exception {
 		User user = userRepository.findUserById(userId);
@@ -119,6 +127,7 @@ public class FileController {
 
 	}
 
+	@Secured({ "ROLE_USER" })
 	@RequestMapping(value = "download", method = RequestMethod.POST)
 	public void downloadPDFResource(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody FileDTO fileData) {

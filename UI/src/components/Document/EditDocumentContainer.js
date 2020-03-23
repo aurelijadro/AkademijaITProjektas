@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import ApiUrl from "../../APIURL";
 import NavigationForUSer from "../NavigationForUser";
-import swal from '@sweetalert/with-react';
+import swal from "@sweetalert/with-react";
 
 class EditDocumentContainer extends Component {
   constructor() {
@@ -58,43 +58,39 @@ class EditDocumentContainer extends Component {
               .then(this.setState({ loading: false }))
               .catch(error => {
                 swal({
-                  text:
-                    "Dokumentas turi turėti bent vieną bylą.",
+                  text: "Dokumentas turi turėti bent vieną bylą.",
                   button: {
                     text: "OK",
                     value: true,
                     visible: true,
                     className: "btn btn-dark",
-                    closeModal: true,
+                    closeModal: true
                   }
-                }
-                );
+                });
               });
           })
           .catch(error => {
             swal({
-              text:
-                "Tokio vartotojo nėra arba jis neprisijungęs.",
+              text: "Tokio vartotojo nėra arba jis neprisijungęs.",
               button: {
                 text: "OK",
                 value: true,
                 visible: true,
                 className: "btn btn-dark",
-                closeModal: true,
+                closeModal: true
               }
             });
           });
       })
       .catch(error => {
         swal({
-          text:
-            "Duomenų apie šį dokumentą nėra.",
+          text: "Duomenų apie šį dokumentą nėra.",
           button: {
             text: "OK",
             value: true,
             visible: true,
             className: "btn btn-dark",
-            closeModal: true,
+            closeModal: true
           }
         });
       });
@@ -139,32 +135,28 @@ class EditDocumentContainer extends Component {
                 })
                 .catch(error => {
                   swal({
-                    text:
-                      "Dokumentas turi turėti bent vieną bylą.",
+                    text: "Dokumentas turi turėti bent vieną bylą.",
                     button: {
                       text: "OK",
                       value: true,
                       visible: true,
                       className: "btn btn-dark",
-                      closeModal: true,
+                      closeModal: true
                     }
-                  }
-                  );
+                  });
                 });
             })
             .catch(error => {
               swal({
-                text:
-                  "Įkelkite bent vieną bylą.",
+                text: "Įkelkite bent vieną bylą.",
                 button: {
                   text: "OK",
                   value: true,
                   visible: true,
                   className: "btn btn-dark",
-                  closeModal: true,
+                  closeModal: true
                 }
-              }
-              );
+              });
             });
         } else {
           swal({
@@ -175,21 +167,19 @@ class EditDocumentContainer extends Component {
               value: true,
               visible: true,
               className: "btn btn-dark",
-              closeModal: true,
+              closeModal: true
             }
-          }
-          );
+          });
         }
       } else {
         swal({
-          text:
-            "Galite prisegti tik PDF tipo bylas.",
+          text: "Galite prisegti tik PDF tipo bylas.",
           button: {
             text: "OK",
             value: true,
             visible: true,
             className: "btn btn-dark",
-            closeModal: true,
+            closeModal: true
           }
         });
       }
@@ -218,13 +208,13 @@ class EditDocumentContainer extends Component {
                 value: true,
                 visible: true,
                 className: "btn btn-dark",
-                closeModal: true,
+                closeModal: true
               }
             });
           })
-          .catch(error => { });
+          .catch(error => {});
       })
-      .catch(error => { });
+      .catch(error => {});
   };
 
   downloadFiles = e => {
@@ -265,7 +255,7 @@ class EditDocumentContainer extends Component {
               value: true,
               visible: true,
               className: "btn btn-dark",
-              closeModal: true,
+              closeModal: true
             }
           });
           this.props.history.push("/Gentoo/user");
@@ -277,12 +267,12 @@ class EditDocumentContainer extends Component {
               value: true,
               visible: true,
               className: "btn btn-dark",
-              closeModal: true,
+              closeModal: true
             }
           });
         }
       })
-      .catch(error => { });
+      .catch(error => {});
   };
 
   goBack = e => {
@@ -297,7 +287,7 @@ class EditDocumentContainer extends Component {
           value: true,
           visible: true,
           className: "btn btn-dark",
-          closeModal: true,
+          closeModal: true
         }
       });
     }

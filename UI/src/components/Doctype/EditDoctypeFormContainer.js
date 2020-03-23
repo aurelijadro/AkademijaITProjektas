@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import EditDoctypeFormComponent from "./EditDoctypeFormComponent";
 import ApiUrl from "../../APIURL";
-import swal from '@sweetalert/with-react';
+import swal from "@sweetalert/with-react";
 
 class EditDoctypeFormContainer extends Component {
   constructor() {
@@ -30,7 +30,7 @@ class EditDoctypeFormContainer extends Component {
             value: true,
             visible: true,
             className: "btn btn-dark",
-            closeModal: true,
+            closeModal: true
           }
         });
       });
@@ -60,23 +60,23 @@ class EditDoctypeFormContainer extends Component {
             value: true,
             visible: true,
             className: "btn btn-dark",
-            closeModal: true,
+            closeModal: true
           }
         });
         this.props.history.push("/Gentoo/admin/doctypes");
       })
-      .catch(function (error) {
+      .catch(function(error) {
         swal({
-          text: "Dokumentų tipo duomenų išsaugoti nepavyko. Bandykite dar kartą.",
+          text:
+            "Dokumentų tipo duomenų išsaugoti nepavyko. Bandykite dar kartą.",
           button: {
             text: "OK",
             value: true,
             visible: true,
             className: "btn btn-dark",
-            closeModal: true,
+            closeModal: true
           }
-        }
-        );
+        });
       });
   };
 

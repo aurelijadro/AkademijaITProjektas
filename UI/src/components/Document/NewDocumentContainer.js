@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import ApiUrl from "../../APIURL";
 import NavigationForUSer from "../NavigationForUser";
-import swal from '@sweetalert/with-react';
+import swal from "@sweetalert/with-react";
 
 class NewDocumentContainer extends Component {
   constructor() {
@@ -39,7 +39,7 @@ class NewDocumentContainer extends Component {
               .get(`${ApiUrl}users/${this.state.userId}/ismoderator`)
               .then(resp => this.setState({ isModerator: resp.data }))
           )
-          .catch(error => { });
+          .catch(error => {});
       })
       .catch(error => {
         swal({
@@ -49,7 +49,7 @@ class NewDocumentContainer extends Component {
             value: true,
             visible: true,
             className: "btn btn-dark",
-            closeModal: true,
+            closeModal: true
           }
         });
       });
@@ -93,12 +93,11 @@ class NewDocumentContainer extends Component {
               value: true,
               visible: true,
               className: "btn btn-dark",
-              closeModal: true,
+              closeModal: true
             }
-          }
-          );
+          });
         })
-        .catch(error => { });
+        .catch(error => {});
     } else {
       swal({
         text: "Pasirinkite dokumento tipą.",
@@ -107,7 +106,7 @@ class NewDocumentContainer extends Component {
           value: true,
           visible: true,
           className: "btn btn-dark",
-          closeModal: true,
+          closeModal: true
         }
       });
     }
@@ -142,7 +141,7 @@ class NewDocumentContainer extends Component {
                 .then(resp => {
                   this.setState({ files: resp.data });
                 })
-                .catch(error => { });
+                .catch(error => {});
             })
             .catch(error => {
               swal({
@@ -152,7 +151,7 @@ class NewDocumentContainer extends Component {
                   value: true,
                   visible: true,
                   className: "btn btn-dark",
-                  closeModal: true,
+                  closeModal: true
                 }
               });
             });
@@ -165,10 +164,9 @@ class NewDocumentContainer extends Component {
               value: true,
               visible: true,
               className: "btn btn-dark",
-              closeModal: true,
+              closeModal: true
             }
-          }
-          );
+          });
         }
       } else {
         swal({
@@ -178,7 +176,7 @@ class NewDocumentContainer extends Component {
             value: true,
             visible: true,
             className: "btn btn-dark",
-            closeModal: true,
+            closeModal: true
           }
         });
       }
@@ -190,7 +188,7 @@ class NewDocumentContainer extends Component {
           value: true,
           visible: true,
           className: "btn btn-dark",
-          closeModal: true,
+          closeModal: true
         }
       });
     }
@@ -216,13 +214,13 @@ class NewDocumentContainer extends Component {
                 value: true,
                 visible: true,
                 className: "btn btn-dark",
-                closeModal: true,
+                closeModal: true
               }
             });
           })
-          .catch(error => { });
+          .catch(error => {});
       })
-      .catch(error => { });
+      .catch(error => {});
   };
 
   downloadFiles = e => {
@@ -258,7 +256,7 @@ class NewDocumentContainer extends Component {
         .then(response => {
           this.props.history.push(`/Gentoo/user`);
         })
-        .catch(error => { });
+        .catch(error => {});
     } else {
       swal({
         text: "Pridėkite bent vieną bylą.",
@@ -267,7 +265,7 @@ class NewDocumentContainer extends Component {
           value: true,
           visible: true,
           className: "btn btn-dark",
-          closeModal: true,
+          closeModal: true
         }
       });
     }
