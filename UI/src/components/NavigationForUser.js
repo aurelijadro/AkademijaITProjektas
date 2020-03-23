@@ -19,19 +19,19 @@ const NavigationForUser = withRouter(({ history, ...props }) => {
             </Link>
           </li>
           {props.isModerator ? (
-            <li className="nav-item">
-              <Link to="/Gentoo/user/moderate" className="nav-link">
-                Moderuoti dokumentus
-              </Link>
-            </li>
+            <>
+              <li className="nav-item">
+                <Link to="/Gentoo/user/moderate" className="nav-link">
+                  Moderuoti dokumentus
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/Gentoo/user/archyved" className="nav-link">
+                  Dokumentų archyvas
+                </Link>
+              </li>
+            </>
           ) : null}
-
-          {/*
-    <li className="nav-item">
-      <Link to="/user/documents/submited" className="nav-link">
-        Pateiktų dokumentų sąrašas
-      </Link>
-  </li> */}
         </ul>
         <button
           type="button"

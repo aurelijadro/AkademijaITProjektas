@@ -27,8 +27,7 @@ class UserDashboard extends Component {
   }
 
   downloadAllInfo = () => {
-    fetch(
-      `${ApiUrl}files/${this.state.userId}/downloadZip`)
+    fetch(`${ApiUrl}files/${this.state.userId}/downloadZip`)
       .then(response => {
         response.blob().then(blob => {
           let url = window.URL.createObjectURL(blob);
@@ -39,10 +38,9 @@ class UserDashboard extends Component {
         });
       })
       .catch(error => {
-        alert("Nėra dokumentų, kuriuos gaite atsisiųsti.")
+        alert("Nėra dokumentų, kuriuos gaite atsisiųsti.");
       });
   };
-
 
   render() {
     if (this.state.userId === -2) {
@@ -55,7 +53,14 @@ class UserDashboard extends Component {
           <CreatedDocuments id={this.state.userId} />
         </div>
         <div className="container my-4">
-          <button className="btn btn-dark" id="bigButton" onClick={this.downloadAllInfo}>Atsisiųsti informaciją apie dokumentus ir visus prisegtus PDF failus zip formatu</button>
+          <button
+            className="btn btn-dark"
+            id="bigButton"
+            onClick={this.downloadAllInfo}
+          >
+            Atsisiųsti informaciją apie dokumentus ir visus prisegtus PDF failus
+            zip formatu
+          </button>
         </div>
       </div>
     );

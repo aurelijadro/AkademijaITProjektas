@@ -137,6 +137,16 @@ public class MainDocumentService {
 	}
 
 	@Transactional
+	public List<MainDocument> getArchyvedDocumentsByDoctype(DoctypeEntity doctype) {
+		List<MainDocument> archyvedDocs = new ArrayList<>();
+		archyvedDocs.addAll(
+				mainDocRepository.findAllByDoctypesAndDocumentStatusOrderBySubmissionDateDesc(doctype, "Patvirtintas"));
+		archyvedDocs.addAll(
+				mainDocRepository.findAllByDoctypesAndDocumentStatusOrderBySubmissionDateDesc(doctype, "Atmestas"));
+		return archyvedDocs;
+	}
+
+	@Transactional
 	public List<MainDocument> getAllNotCreatedDocuments(Long id) {
 		return mainDocRepository.findAllByCreatorIdAndDocumentStatusNotOrderBySubmissionDateDesc(id, "Sukurtas");
 	}

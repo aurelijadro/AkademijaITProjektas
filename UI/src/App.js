@@ -30,6 +30,7 @@ import EditDocumentContainer from "./components/Document/EditDocumentContainer";
 import ReviewDocument from "./components/Moderator/ReviewDocument";
 import DocumentView from "./userComponents/DocumentView";
 import Default from "./Default";
+import ArchyvedDocuments from "./components/Moderator/ArchyvedDocuments";
 
 function App() {
   const [currentUsername, setCurrentUsername] = useState("loading");
@@ -40,7 +41,7 @@ function App() {
     });
   }
 
-  useEffect(function () {
+  useEffect(function() {
     updateUserInformation();
     const timer = setInterval(updateUserInformation, 60000);
     return () => clearInterval(timer);
@@ -154,6 +155,18 @@ function App() {
             <Route
               exact
               path="/Gentoo/user/view/:docId"
+              component={DocumentView}
+            />
+
+            <Route
+              exact
+              path="/Gentoo/user/archyved"
+              component={ArchyvedDocuments}
+            />
+
+            <Route
+              exact
+              path="/Gentoo/user/archyved/:docId"
               component={DocumentView}
             />
 

@@ -184,6 +184,7 @@ public class MainDocumentController {
 
 	}
 
+<<<<<<< HEAD
 	@RequestMapping(path = "/{id}/archyveddocuments", method = RequestMethod.GET)
 	@ApiOperation(value = "Get archyved documents by user id")
 	public List<MainDocument> getArchyvedDocuments(@PathVariable Long id, HttpServletResponse response) {
@@ -201,4 +202,25 @@ public class MainDocumentController {
 
 	}
 
+	@RequestMapping(path = "/{userId}/csvFile", method = RequestMethod.POST)
+	public void csvFile(@PathVariable Long userId) throws IOException {
+		mainDocService.csvFileCreator(userId);
+	}
+
+//	@RequestMapping(path = "/{userId}/tryingToGetUserName", method = RequestMethod.GET)
+//	public String username(@PathVariable Long userId) {
+//		return mainDocService.getUserName(userId);
+//	}
+
+	@RequestMapping(path = "/{docId}/tryingToGetUserName", method = RequestMethod.GET)
+	public String doctypeTitle(@PathVariable Long docId, HttpServletResponse response) {
+		if (mainDocService.getAcceptorTitle(docId) == null) {
+			response.setStatus(404);
+			return null;
+		}
+		return mainDocService.getAcceptorTitle(docId);
+	}
+
+=======
+>>>>>>> a84742081a10239f4ef4a414ab91d6785ca2d81a
 }
