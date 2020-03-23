@@ -15,7 +15,7 @@ const ModeratorDashboard = () => {
     Axios.get(`${ApiUrl}loggedUserId`).then(resp => {
       setUserId(resp.data);
       Axios.get(
-        `${ApiUrl}documents/${resp.data}/archyveddocuments
+        `${ApiUrl}documents/${resp.data}/documentstomoderate
       `
       ).then(response => setDocumentsToModerate(response.data));
       Axios.get(`${ApiUrl}users/${resp.data}/ismoderator`).then(response2 =>

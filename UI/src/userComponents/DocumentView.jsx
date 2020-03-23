@@ -104,6 +104,11 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
         <div className="row">
           <div className="col-4 font-weight-bold">Dokumentą priėmė:</div>
           <div className="col-4 font-weight-bold">Priėmimo data:</div>
+          <div className="col-4 font-weight-bold">
+            {submittedDocument.documentStatus === "Atmestas"
+              ? "Atmetimo priežastis:"
+              : null}
+          </div>
         </div>
         <div className="row">
           <div className="col-4">
@@ -113,6 +118,11 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
             {submittedDocument.documentStatus === "Patvirtintas"
               ? submittedDocument.approvalDate
               : submittedDocument.rejectionDate}
+          </div>
+          <div className="col-4">
+            {submittedDocument.documentStatus === "Atmestas"
+              ? submittedDocument.rejectionReason
+              : null}
           </div>
         </div>
       </div>

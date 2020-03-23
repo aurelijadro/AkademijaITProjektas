@@ -12,7 +12,9 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
   const [moderatorId, setModeratorId] = useState("loading");
   const [denialReason, setDenialReason] = useState("");
   const [decide, setDecide] = useState("choose");
-  const [denyError, setDenyError] = useState("Pateikite atmetimo priežastį");
+  const [denyError, setDenyError] = useState(
+    "Pateikite atmetimo priežastį (5-250 simbilių)"
+  );
   const [canDeny, setCanDeny] = useState(true);
 
   useEffect(
@@ -83,17 +85,6 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
     setDecide("deny");
   }
 
-  // insert navbar with moderator status
-
-  // get submittedDocument data from server
-
-  // show submittedDocument title, submitting, date, type, author, summary and attached pdf files
-
-  // allow moderator download files attached
-
-  // approve submittedDocument functionality
-  // deny submittedDocument functioanlity
-
   if (
     submittedDocument === "loading" ||
     author === "loading" ||
@@ -113,7 +104,7 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
   };
 
   function validateDenyReason() {
-    if (denialReason.length >= 5) {
+    if (denialReason.length >= 5 && denialReason.length <= 250) {
       setDenyError(null);
       setCanDeny(true);
     }
