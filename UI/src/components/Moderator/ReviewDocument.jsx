@@ -104,7 +104,7 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
   };
 
   function validateDenyReason() {
-    if (denialReason.length >= 5 && denialReason.length <= 250) {
+    if (denialReason.length >= 5) {
       setDenyError(null);
       setCanDeny(true);
     }
@@ -222,6 +222,7 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
                     Įveskite atmetimo priežastį:
                   </label>
                   <textarea
+                    maxLength="250"
                     className={`form-control ${denyError ? "is-invalid" : ""}`}
                     onChange={handleChange}
                     required
