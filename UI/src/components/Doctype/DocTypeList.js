@@ -4,6 +4,7 @@ import DocTypeComponent from "./DocTypeComponent";
 import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
 import ApiUrl from "../../APIURL";
+import swal from '@sweetalert/with-react';
 
 class DocTypeList extends Component {
   constructor() {
@@ -26,7 +27,17 @@ class DocTypeList extends Component {
         this.setState({ doctypes: response.data });
       })
       .catch(error => {
-        alert("Nėra galimybės pateikti duomenų apie dokumentų tipus.");
+        swal({
+          text: "Nėra galimybės pateikti duomenų apie dokumentų tipus.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true,
+          }
+        }
+        );
       });
   };
 

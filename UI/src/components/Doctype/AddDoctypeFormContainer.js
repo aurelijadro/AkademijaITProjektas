@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import AddDoctypeFormComponent from "./AddDoctypeFormComponent";
 import ApiUrl from "../../APIURL";
+import swal from '@sweetalert/with-react';
 
 class AddDoctypeFormContainer extends Component {
   constructor() {
@@ -24,11 +25,29 @@ class AddDoctypeFormContainer extends Component {
     axios
       .post(`${ApiUrl}doctypes`, data)
       .then(response => {
-        alert("Jūs sėkmingai sukūrėte dokumentų tipą: " + this.state.title);
+        swal({
+          text: "Jūs sėkmingai sukūrėte dokumentų tipą: " + this.state.title,
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true,
+          }
+        });
         this.props.history.push("/Gentoo/admin/doctypes");
       })
       .catch(error => {
-        alert("Dokumentų tipo sukurti nepavyko.");
+        swal({
+          text: "Dokumentų tipo sukurti nepavyko.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true,
+          }
+        });
       });
     event.preventDefault();
   };
