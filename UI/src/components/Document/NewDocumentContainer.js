@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import ApiUrl from "../../APIURL";
 import NavigationForUSer from "../NavigationForUser";
+import swal from '@sweetalert/with-react';
 
 class NewDocumentContainer extends Component {
   constructor() {
@@ -38,10 +39,19 @@ class NewDocumentContainer extends Component {
               .get(`${ApiUrl}users/${this.state.userId}/ismoderator`)
               .then(resp => this.setState({ isModerator: resp.data }))
           )
-          .catch(error => {});
+          .catch(error => { });
       })
       .catch(error => {
-        alert("Tokio vartotojo nėra arba jis neprisijungęs.");
+        swal({
+          text: "Tokio vartotojo nėra arba jis neprisijungęs.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true,
+          }
+        });
       });
   }
 
@@ -76,11 +86,30 @@ class NewDocumentContainer extends Component {
         })
         .then(response => {
           this.setState({ showResults: true });
-          alert("Prisekite papildomas bylas.");
+          swal({
+            text: "Prisekite papildomas bylas.",
+            button: {
+              text: "OK",
+              value: true,
+              visible: true,
+              className: "btn btn-dark",
+              closeModal: true,
+            }
+          }
+          );
         })
-        .catch(error => {});
+        .catch(error => { });
     } else {
-      alert("Pasirinkite dokumento tipą.");
+      swal({
+        text: "Pasirinkite dokumento tipą.",
+        button: {
+          text: "OK",
+          value: true,
+          visible: true,
+          className: "btn btn-dark",
+          closeModal: true,
+        }
+      });
     }
   };
 
@@ -113,21 +142,57 @@ class NewDocumentContainer extends Component {
                 .then(resp => {
                   this.setState({ files: resp.data });
                 })
-                .catch(error => {});
+                .catch(error => { });
             })
             .catch(error => {
-              alert("Pasirinkite bylą, kurią norite pridėti.");
+              swal({
+                text: "Pasirinkite bylą, kurią norite pridėti.",
+                button: {
+                  text: "OK",
+                  value: true,
+                  visible: true,
+                  className: "btn btn-dark",
+                  closeModal: true,
+                }
+              });
             });
         } else {
-          alert(
-            "Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb."
+          swal({
+            text:
+              "Pasirinkta byla per didelė. \nByla negali būti didesnė nei 10Mb.",
+            button: {
+              text: "OK",
+              value: true,
+              visible: true,
+              className: "btn btn-dark",
+              closeModal: true,
+            }
+          }
           );
         }
       } else {
-        alert("Galite prisegti tik PDF tipo bylas.");
+        swal({
+          text: "Galite prisegti tik PDF tipo bylas.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true,
+          }
+        });
       }
     } else {
-      alert("Prisekite nors vieną bylą.");
+      swal({
+        text: "Prisekite nors vieną bylą.",
+        button: {
+          text: "OK",
+          value: true,
+          visible: true,
+          className: "btn btn-dark",
+          closeModal: true,
+        }
+      });
     }
   };
 
@@ -143,13 +208,21 @@ class NewDocumentContainer extends Component {
             `${ApiUrl}files/${this.state.userId}/${this.state.id}/uploadedFilesData`
           )
           .then(resp => {
-            console.log(resp.data);
             this.setState({ files: resp.data });
-            alert("Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.");
+            swal({
+              text: "Sėkmingai ištrynėte visas bylas. \nGalite įkelti naujas.",
+              button: {
+                text: "OK",
+                value: true,
+                visible: true,
+                className: "btn btn-dark",
+                closeModal: true,
+              }
+            });
           })
-          .catch(error => {});
+          .catch(error => { });
       })
-      .catch(error => {});
+      .catch(error => { });
   };
 
   downloadFiles = e => {
@@ -171,10 +244,32 @@ class NewDocumentContainer extends Component {
 
   saveDocument = e => {
     e.preventDefault();
+    const data = {
+      title: this.state.title,
+      summary: this.state.summary,
+      doctypeItem: this.state.doctypeItem
+    };
     if (this.state.files && this.state.files.length > 0) {
-      this.props.history.push(`/Gentoo/user`);
+      axios
+        .put(
+          `${ApiUrl}documents/${this.state.id}/${this.state.doctypeItem}`,
+          data
+        )
+        .then(response => {
+          this.props.history.push(`/Gentoo/user`);
+        })
+        .catch(error => { });
     } else {
-      alert("Pridėkiti bent vieną bylą.");
+      swal({
+        text: "Pridėkite bent vieną bylą.",
+        button: {
+          text: "OK",
+          value: true,
+          visible: true,
+          className: "btn btn-dark",
+          closeModal: true,
+        }
+      });
     }
   };
 
