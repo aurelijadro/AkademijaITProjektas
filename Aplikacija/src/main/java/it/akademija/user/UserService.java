@@ -144,4 +144,10 @@ public class UserService implements UserDetailsService {
 		return true;
 	}
 
+	@Transactional
+	public List<User> searchForUsers(String searchText) {
+		return userRepository.findByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(
+				searchText, searchText, searchText);
+	}
+
 }
