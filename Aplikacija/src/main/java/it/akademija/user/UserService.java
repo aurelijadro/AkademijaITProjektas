@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,9 +146,12 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public List<User> searchForUsers(String searchText) {
-		return userRepository.findByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(
-				searchText, searchText, searchText);
+	public List<UserDTO> searchForUsers(String searchText) {
+		return userRepository
+				.findByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(searchText,
+						searchText, searchText)
+				.stream().map((user) -> new UserDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername(),
+						user.getGroups()))
+				.collect(Collectors.toList());
 	}
-
 }

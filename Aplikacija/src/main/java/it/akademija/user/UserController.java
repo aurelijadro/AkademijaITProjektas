@@ -156,7 +156,7 @@ public class UserController {
 
 	@RequestMapping(path = "search/{searchText}", method = RequestMethod.GET)
 	@ApiOperation(value = "Search for users", notes = "Returns found list of users")
-	public List<User> searchForUsers(@PathVariable String searchText) {
+	public List<UserDTO> searchForUsers(@PathVariable String searchText) {
 		return userService.searchForUsers(searchText);
 	}
 
