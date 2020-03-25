@@ -14,63 +14,64 @@ class UserList extends Component {
       currentPage: 0,
       usersPerPage: 10,
       disabled: true,
+      searchText: ""
     };
   }
 
   componentDidMount() {
-    this.getUsers();
+    // this.getUsers();
     this.getAllUsers();
   }
 
-  getUsers = () => {
-    axios
-      .get(`${ApiUrl}users/all?pageNo=${this.state.currentPage}&pageSize=10`)
-      .then(response => {
-        console.log("users", response.data)
-        this.setState({
-          users: response.data,
-        });
-      })
-      .catch(error => {
-        alert("Nėra galimybės pateikti duomenų apie vartotojus.");
-      });
-  };
+  // getUsers = () => {
+  //   axios
+  //     .get(`${ApiUrl}users/all?pageNo=${this.state.currentPage}&pageSize=10`)
+  //     .then(response => {
+  //       console.log("users", response.data)
+  //       this.setState({
+  //         users: response.data,
+  //       });
+  //     })
+  //     .catch(error => {
+  //       alert("Nėra galimybės pateikti duomenų apie vartotojus.");
+  //     });
+  // };
 
   getAllUsers = () => {
     axios
       .get(`${ApiUrl}users`)
       .then(response => {
-        console.log("allUsers", response.data)
-        this.setState({ allUsers: response.data });
+        console.log("allUsers", response.data);
+        this.setState({ users: response.data });
       })
-      .catch(error => { });
+      .catch(error => {});
   };
 
-  handlePageChange = (event) => {
+  handlePageChange = event => {
     this.setState({
       currentPage: Number(event.target.id)
     });
-    console.log("current page", this.state.currentPage)
-  }
+    console.log("current page", this.state.currentPage);
+  };
 
-  handlePreviousClick = (e) => {
+  handlePreviousClick = e => {
     if (this.state.currentPage > 1) {
       this.setState({
         currentPage: this.state.currentPage - 1,
         disabled: false
-      })
+      });
     } else {
-      this.setState({ disabled: true })
+      this.setState({ disabled: true });
     }
-  }
+  };
 
-  handleNextClick = (e) => {
+  handleNextClick = e => {
     if (this.state.currentPage < this.state.users.length / 10) {
-      this.setState({ currentPage: this.state.currentPage + 1 })
+      this.setState({ currentPage: this.state.currentPage + 1 });
     } else {
-      this.setState({ disabled: true })
+      this.setState({ disabled: true });
     }
-  }
+  };
 
   render() {
     const { usersPerPage } = this.state;
@@ -90,20 +91,31 @@ class UserList extends Component {
       );
     });
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(this.state.allUsers.length / usersPerPage); i++) {
+    for (
+      let i = 1;
+      i <= Math.ceil(this.state.allUsers.length / usersPerPage);
+      i++
+    ) {
       pageNumbers.push(i);
     }
     const renderPageNumbers = pageNumbers.map((number, index) => {
       if (
-        (number === this.state.currentPage - 1 || number === this.state.currentPage || number === this.state.currentPage + 1)
+        number === this.state.currentPage - 1 ||
+        number === this.state.currentPage ||
+        number === this.state.currentPage + 1
       ) {
         return (
-          <button className="btn btn-dark" key={index} id={number} onClick={this.handlePageChange}>{number}</button>
-        )
-      } else {
-        return (
-          <div key={index}></div>
+          <button
+            className="btn btn-dark"
+            key={index}
+            id={number}
+            onClick={this.handlePageChange}
+          >
+            {number}
+          </button>
         );
+      } else {
+        return <div key={index}></div>;
       }
     });
     return (
@@ -140,18 +152,28 @@ class UserList extends Component {
           <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
               <li className="page-item">
-                <button className="btn btn-dark mx-1" onClick={this.handlePreviousClick} aria-disabled={this.state.disabled}>&laquo;</button>
+                <button
+                  className="btn btn-dark mx-1"
+                  onClick={this.handlePreviousClick}
+                  aria-disabled={this.state.disabled}
+                >
+                  &laquo;
+                </button>
               </li>
+              <li className="page-item">{renderPageNumbers}</li>
               <li className="page-item">
-                {renderPageNumbers}
-              </li>
-              <li className="page-item">
-                <button className="btn btn-dark mx-1" onClick={this.handleNextClick} aria-disabled={this.state.disabled}>&raquo;</button>
+                <button
+                  className="btn btn-dark mx-1"
+                  onClick={this.handleNextClick}
+                  aria-disabled={this.state.disabled}
+                >
+                  &raquo;
+                </button>
               </li>
             </ul>
           </nav>
         </div>
-      </div >
+      </div>
     );
   }
 }

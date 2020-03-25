@@ -154,10 +154,10 @@ public class UserController {
 		return userService.updateUser(id, newUser);
 	}
 
-	@RequestMapping(path = "search/{searchText}", method = RequestMethod.GET)
+	@RequestMapping(path = "search/{searchText}/{pageNum}", method = RequestMethod.GET)
 	@ApiOperation(value = "Search for users", notes = "Returns found list of users")
-	public List<UserDTO> searchForUsers(@PathVariable String searchText) {
-		return userService.searchForUsers(searchText);
+	public List<UserDTO> searchForUsers(@RequestParam(defaultValue = "") String searchText, @PathVariable int pageNum) {
+		return userService.searchForUsersWithPaging(searchText, pageNum);
 	}
 
 }

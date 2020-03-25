@@ -146,12 +146,17 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public List<UserDTO> searchForUsers(String searchText) {
+	public List<UserDTO> searchForUsersWithPaging(String searchText, int page) {
+		Pageable pageable = PageRequest.of(page, 15);
 		return userRepository
 				.findByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(searchText,
-						searchText, searchText)
-				.stream().map((user) -> new UserDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername(),
-						user.getGroups()))
+						searchText, searchText, pageable)
+				.stream()
+				.map((user) -> new UserDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername(),
+						user.getGroups(),
+						userRepository
+								.countByUsernameContainingIgnoreCaseOrNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(
+										searchText, searchText, searchText)))
 				.collect(Collectors.toList());
 	}
 }
