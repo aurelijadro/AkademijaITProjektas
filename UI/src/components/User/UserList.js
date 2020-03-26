@@ -11,10 +11,12 @@ class UserList extends Component {
     this.state = {
       users: [],
       currentPage: 0,
-      disabled: true,
+      disabledNext: false,
+      disabledBack: true,
       searchText: "",
       usersCount: 0,
-      numOfPages: 0
+      numOfPages: 0,
+      loading: true
     };
   }
 
@@ -50,31 +52,35 @@ class UserList extends Component {
     this.setState({ currentPage: num }, () => this.getUsers());
   };
 
-  // handlePageChange = event => {
-  //   event.preventDefault();
-  //   console.log("event target id: ", event.target.id);
-  //   this.setState({
-  //     currentPage: Number(event.target.id)
-  //   });
-  //   console.log("current page", this.state.currentPage);
-  // };
-
   handlePreviousClick = e => {
-    if (this.state.currentPage > 0) {
-      this.setState({
-        currentPage: this.state.currentPage - 1,
-        disabled: false
-      });
-    } else {
-      this.setState({ disabled: true });
+    if (this.state.currentPage === 1) {
+      this.setState(
+        {
+          currentPage: this.state.currentPage - 1,
+          disabledBack: true
+        },
+        () => this.getUsers()
+      );
+    }
+    if (this.state.currentPage > 1) {
+      this.setState(
+        {
+          currentPage: this.state.currentPage - 1,
+          disabledBack: false
+        },
+        () => this.getUsers()
+      );
     }
   };
 
   handleNextClick = e => {
-    if (this.state.currentPage < this.state.users.length / 10) {
-      this.setState({ currentPage: this.state.currentPage + 1 });
+    if (this.state.currentPage < this.state.numOfPages) {
+      console.log("mažiau");
+      this.setState({ currentPage: this.state.currentPage + 1 }, () =>
+        this.getUsers()
+      );
     } else {
-      this.setState({ disabled: true });
+      this.setState({ disabledNext: true });
     }
   };
 
@@ -96,12 +102,7 @@ class UserList extends Component {
       pageNumbers.push(i);
     }
     const renderPageNumbers = pageNumbers.map((number, index) => {
-      console.log("page numbers ", pageNumbers);
-      const handlePageChange = () => {
-        console.log("clicked page num: ", number);
-        this.setCurrentPage(index);
-        console.log("current page", this.state.currentPage);
-      };
+      const handlePageChange = () => this.setCurrentPage(index);
 
       if (
         number === this.state.currentPage - 2 ||
