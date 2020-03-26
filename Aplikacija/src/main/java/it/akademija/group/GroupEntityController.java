@@ -82,19 +82,6 @@ public class GroupEntityController {
 		return groupService.updateGroupInfo(id, group);
 	}
 
-//	@DeleteMapping("/{id}")
-//	public void deleteGroup(@PathVariable Long id, HttpServletResponse response) {
-//		GroupEntity group = groupService.findGroupById(id);
-//		if (group == null) {
-//			response.setStatus(404);
-//			return;
-//		}
-//		response.setStatus(200);
-//		logger.debug("Initiated by [{}]: Group [{}] was  deleted",
-//				SecurityContextHolder.getContext().getAuthentication().getName(), group.getTitle());
-//		groupService.deleteGroup(group);
-//	}
-
 	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@GetMapping("/{id}/doctypesToCreate")
 	public Set<DoctypeEntity> getDoctypesToCreateByGroupId(@PathVariable Long id, HttpServletResponse response) {

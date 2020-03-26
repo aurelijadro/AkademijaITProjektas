@@ -90,11 +90,6 @@ public class GroupService {
 		groupRepo.save(group);
 	}
 
-//	@Transactional
-//	public void deleteGroup(GroupEntity group) {
-//		groupRepo.delete(group);
-//	}
-
 	@Transactional
 	public Set<GroupEntity> getGroupsUserDoesntBelongTo(User user) {
 		Set<GroupEntity> userGroups = user.getGroups();

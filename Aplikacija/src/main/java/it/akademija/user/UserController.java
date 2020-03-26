@@ -22,7 +22,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import it.akademija.PagingData;
 import it.akademija.doctype.DoctypeEntity;
-import it.akademija.document.MainDocument;
 import it.akademija.group.GroupEntity;
 
 @RestController

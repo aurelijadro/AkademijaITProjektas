@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.akademija.user.User;
 import it.akademija.user.UserRepository;
-import it.akademija.user.UserService;
 
 @RestController
 @RequestMapping(value = "/api")

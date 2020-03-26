@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,20 +79,6 @@ public class DoctypeEntityController {
 		logger.debug("Initiated by [{}]: Doctype with ID [{}] was  updated",
 				SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getId());
 		return doctype;
-	}
-
-	// ar mes kur nors trinam doctype'us?
-	@DeleteMapping("/{id}")
-	public void deleteDoctype(@PathVariable Long id, HttpServletResponse response) {
-		DoctypeEntity doctype = doctypeService.findDoctypeById(id);
-		if (doctype == null) {
-			response.setStatus(404);
-			return;
-		}
-		response.setStatus(200);
-		logger.debug("Initiated by [{}]: Doctype with ID [{}] was  deleted",
-				SecurityContextHolder.getContext().getAuthentication().getName(), doctype.getId());
-		doctypeService.deleteDoctype(doctype);
 	}
 
 	@Secured({ "ROLE_ADMIN" })

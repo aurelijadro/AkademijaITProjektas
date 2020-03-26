@@ -51,9 +51,6 @@ public class MainDocument {
 	@JoinColumn(name = "doctype_id")
 	private DoctypeEntity doctypes;
 
-//	@OneToMany(mappedBy = "mainDocument", cascade = CascadeType.ALL)
-//	private List<FileEntity> filesForDocuments;
-
 	public MainDocument() {
 	}
 

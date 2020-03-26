@@ -53,12 +53,6 @@ public class DoctypeService {
 	}
 
 	@Transactional
-	public void deleteDoctype(DoctypeEntity doctype) {
-		doctypeRepo.delete(doctype);
-
-	}
-
-	@Transactional
 	public void addDoctypeToDocuments(DoctypeEntity doctype, MainDocument document) {
 		doctype.addDocument(document);
 		doctypeRepo.save(doctype);

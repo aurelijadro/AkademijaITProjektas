@@ -184,7 +184,6 @@ class EditDocumentContainer extends Component {
         });
       }
     } else {
-      // alert("Prisekite nors vieną bylą.")
     }
   };
 
@@ -212,9 +211,9 @@ class EditDocumentContainer extends Component {
               }
             });
           })
-          .catch(error => {});
+          .catch(error => { });
       })
-      .catch(error => {});
+      .catch(error => { });
   };
 
   downloadFiles = e => {
@@ -236,43 +235,56 @@ class EditDocumentContainer extends Component {
 
   updateDocument = e => {
     e.preventDefault();
-    const data = {
-      title: this.state.title,
-      summary: this.state.summary,
-      doctypeItemId: this.state.doctypeItemId
-    };
-    axios
-      .put(
-        `${ApiUrl}documents/${this.props.match.params.id}/${this.state.doctypeItemId}`,
-        data
-      )
-      .then(response => {
-        if (this.state.files && this.state.files.length > 0) {
-          swal({
-            text: "Jūs sėkmingai pakeitėte dokumento duomenis.",
-            button: {
-              text: "OK",
-              value: true,
-              visible: true,
-              className: "btn btn-dark",
-              closeModal: true
-            }
-          });
-          this.props.history.push("/Gentoo/user");
-        } else {
-          swal({
-            text: "Pridėkite bent vieną bylą.",
-            button: {
-              text: "OK",
-              value: true,
-              visible: true,
-              className: "btn btn-dark",
-              closeModal: true
-            }
-          });
+    if (this.state.title.length > 1) {
+      const data = {
+        title: this.state.title,
+        summary: this.state.summary,
+        doctypeItemId: this.state.doctypeItemId
+      };
+      axios
+        .put(
+          `${ApiUrl}documents/${this.props.match.params.id}/${this.state.doctypeItemId}`,
+          data
+        )
+        .then(response => {
+          if (this.state.files && this.state.files.length > 0) {
+            swal({
+              text: "Jūs sėkmingai pakeitėte dokumento duomenis.",
+              button: {
+                text: "OK",
+                value: true,
+                visible: true,
+                className: "btn btn-dark",
+                closeModal: true
+              }
+            });
+            this.props.history.push("/Gentoo/user");
+          } else {
+            swal({
+              text: "Pridėkite bent vieną bylą.",
+              button: {
+                text: "OK",
+                value: true,
+                visible: true,
+                className: "btn btn-dark",
+                closeModal: true
+              }
+            });
+          }
+        })
+        .catch(error => { });
+    } else {
+      swal({
+        text: "Nurodykite dokumento pavadinimą",
+        button: {
+          text: "OK",
+          value: true,
+          visible: true,
+          className: "btn btn-dark",
+          closeModal: true
         }
       })
-      .catch(error => {});
+    }
   };
 
   goBack = e => {
