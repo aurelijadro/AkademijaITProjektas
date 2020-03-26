@@ -34,7 +34,6 @@ class UserList extends Component {
         }
       )
       .then(response => {
-        console.log("users", response.data);
         this.setState({
           users: response.data.users,
           usersCount: response.data.usersCount,
@@ -47,8 +46,6 @@ class UserList extends Component {
   };
 
   setCurrentPage = num => {
-    console.log("num in set: ", num);
-    console.log("set: ", this.setState({ currentPage: num }));
     this.setState({ currentPage: num }, () => this.getUsers());
   };
 
@@ -74,13 +71,22 @@ class UserList extends Component {
   };
 
   handleNextClick = e => {
-    if (this.state.currentPage < this.state.numOfPages) {
-      console.log("mažiau");
-      this.setState({ currentPage: this.state.currentPage + 1 }, () =>
-        this.getUsers()
+    if (this.state.currentPage === this.state.numOfPages - 1) {
+      return;
+    }
+    if (this.state.currentPage + 1 === this.state.numOfPages - 1) {
+      this.setState(
+        {
+          currentPage: this.state.currentPage + 1,
+          disabledNext: true
+        },
+        () => this.getUsers()
       );
-    } else {
-      this.setState({ disabledNext: true });
+    } else if (this.state.currentPage < this.state.numOfPages) {
+      this.setState(
+        { currentPage: this.state.currentPage + 1, disabledNext: false },
+        () => this.getUsers()
+      );
     }
   };
 
@@ -160,7 +166,7 @@ class UserList extends Component {
                 <button
                   className="btn btn-dark mx-1"
                   onClick={this.handlePreviousClick}
-                  aria-disabled={this.state.disabled}
+                  aria-disabled={this.state.disabledBack}
                 >
                   &laquo;
                 </button>
@@ -170,7 +176,7 @@ class UserList extends Component {
                 <button
                   className="btn btn-dark mx-1"
                   onClick={this.handleNextClick}
-                  aria-disabled={this.state.disabled}
+                  aria-disabled={this.state.disabledNext}
                 >
                   &raquo;
                 </button>
