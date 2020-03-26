@@ -40,36 +40,39 @@ class GroupList extends Component {
       });
   };
 
-  handlePageChange = (event) => {
+  handlePageChange = event => {
     this.setState({
       currentPage: Number(event.target.id)
     });
-  }
+  };
 
-  handlePreviousClick = (e) => {
+  handlePreviousClick = e => {
     if (this.state.currentPage > 1) {
       this.setState({
         currentPage: this.state.currentPage - 1,
         disabled: false
-      })
+      });
     } else {
-      this.setState({ disabled: true })
+      this.setState({ disabled: true });
     }
-  }
+  };
 
-  handleNextClick = (e) => {
+  handleNextClick = e => {
     if (this.state.currentPage < this.state.users.length / 10) {
-      this.setState({ currentPage: this.state.currentPage + 1 })
+      this.setState({ currentPage: this.state.currentPage + 1 });
     } else {
-      this.setState({ disabled: true })
+      this.setState({ disabled: true });
     }
-  }
+  };
 
   render() {
     const { currentPage, groupsPerPage } = this.state;
     const indexOfLastGroup = currentPage * groupsPerPage;
     const indexOfFirstGroup = indexOfLastGroup - groupsPerPage;
-    const currentGroup = this.state.groups.slice(indexOfFirstGroup, indexOfLastGroup);
+    const currentGroup = this.state.groups.slice(
+      indexOfFirstGroup,
+      indexOfLastGroup
+    );
     let group = currentGroup.map((group, index) => {
       return (
         <GroupComponent
@@ -81,20 +84,31 @@ class GroupList extends Component {
       );
     });
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(this.state.groups.length / groupsPerPage); i++) {
+    for (
+      let i = 1;
+      i <= Math.ceil(this.state.groups.length / groupsPerPage);
+      i++
+    ) {
       pageNumbers.push(i);
     }
     const renderPageNumbers = pageNumbers.map((number, index) => {
       if (
-        (number === this.state.currentPage - 1 || number === this.state.currentPage || number === this.state.currentPage + 1)
+        number === this.state.currentPage - 1 ||
+        number === this.state.currentPage ||
+        number === this.state.currentPage + 1
       ) {
         return (
-          <button className="btn btn-dark" key={index} id={number} onClick={this.handlePageChange}>{number}</button>
-        )
-      } else {
-        return (
-          <div key={index}></div>
+          <button
+            className="btn btn-dark"
+            key={index}
+            id={number}
+            onClick={this.handlePageChange}
+          >
+            {number}
+          </button>
         );
+      } else {
+        return <div key={index}></div>;
       }
     });
     return (
@@ -131,13 +145,23 @@ class GroupList extends Component {
           <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
               <li className="page-item">
-                <button className="btn btn-dark mx-1" onClick={this.handlePreviousClick} aria-disabled={this.state.disabled}>&laquo;</button>
+                <button
+                  className="btn btn-dark mx-1"
+                  onClick={this.handlePreviousClick}
+                  aria-disabled={this.state.disabled}
+                >
+                  &laquo;
+                </button>
               </li>
+              <li className="page-item">{renderPageNumbers}</li>
               <li className="page-item">
-                {renderPageNumbers}
-              </li>
-              <li className="page-item">
-                <button className="btn btn-dark mx-1" onClick={this.handleNextClick} aria-disabled={this.state.disabled}>&raquo;</button>
+                <button
+                  className="btn btn-dark mx-1"
+                  onClick={this.handleNextClick}
+                  aria-disabled={this.state.disabled}
+                >
+                  &raquo;
+                </button>
               </li>
             </ul>
           </nav>
