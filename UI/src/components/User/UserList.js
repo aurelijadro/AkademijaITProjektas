@@ -11,16 +11,17 @@ class UserList extends Component {
     this.state = {
       users: [],
       currentPage: 0,
-      disabled: true,
+      disabledNext: false,
+      disabledBack: true,
       searchText: "",
       usersCount: 0,
-      numOfPages: 0
+      numOfPages: 0,
+      loading: true
     };
   }
 
   componentDidMount() {
     this.getUsers();
-    // this.getAllUsers();
   }
 
   getUsers = () => {
@@ -33,7 +34,6 @@ class UserList extends Component {
         }
       )
       .then(response => {
-        console.log("users", response.data);
         this.setState({
           users: response.data.users,
           usersCount: response.data.usersCount,
@@ -45,61 +45,53 @@ class UserList extends Component {
       });
   };
 
-  // getUsers = () => {
-  //   axios
-  //     .get(`${ApiUrl}users/all?pageNo=${this.state.currentPage}&pageSize=10`)
-  //     .then(response => {
-  //       console.log("users", response.data);
-  //       this.setState({
-  //         users: response.data
-  //       });
-  //     })
-  //     .catch(error => {
-  //       alert("Nėra galimybės pateikti duomenų apie vartotojus.");
-  //     });
-  // };
-
-  // getAllUsers = () => {
-  //   axios
-  //     .get(`${ApiUrl}users`)
-  //     .then(response => {
-  //       console.log("allUsers", response.data);
-  //       this.setState({ users: response.data });
-  //     })
-  //     .catch(error => {});
-  // };
-
-  handlePageChange = event => {
-    this.setState({
-      currentPage: Number(event.target.id)
-    });
-    console.log("current page", this.state.currentPage);
+  setCurrentPage = num => {
+    this.setState({ currentPage: num }, () => this.getUsers());
   };
 
   handlePreviousClick = e => {
+    if (this.state.currentPage === 1) {
+      this.setState(
+        {
+          currentPage: this.state.currentPage - 1,
+          disabledBack: true
+        },
+        () => this.getUsers()
+      );
+    }
     if (this.state.currentPage > 1) {
-      this.setState({
-        currentPage: this.state.currentPage - 1,
-        disabled: false
-      });
-    } else {
-      this.setState({ disabled: true });
+      this.setState(
+        {
+          currentPage: this.state.currentPage - 1,
+          disabledBack: false
+        },
+        () => this.getUsers()
+      );
     }
   };
 
   handleNextClick = e => {
-    if (this.state.currentPage < this.state.users.length / 10) {
-      this.setState({ currentPage: this.state.currentPage + 1 });
-    } else {
-      this.setState({ disabled: true });
+    if (this.state.currentPage === this.state.numOfPages - 1) {
+      return;
+    }
+    if (this.state.currentPage + 1 === this.state.numOfPages - 1) {
+      this.setState(
+        {
+          currentPage: this.state.currentPage + 1,
+          disabledNext: true
+        },
+        () => this.getUsers()
+      );
+    } else if (this.state.currentPage < this.state.numOfPages) {
+      this.setState(
+        { currentPage: this.state.currentPage + 1, disabledNext: false },
+        () => this.getUsers()
+      );
     }
   };
 
   render() {
-    // const indexOfLastUser = currentPage * usersPerPage;
-    // const indexOfFirstUser = indexOfLastUser - usersPerPage;
-    // const currentUser = this.state.users.slice(indexOfFirstUser, indexOfLastUser);
-    let user = this.state.users.map((user, index) => {
+    const user = this.state.users.map((user, index) => {
       return (
         <UserComponent
           key={user.id}
@@ -116,17 +108,19 @@ class UserList extends Component {
       pageNumbers.push(i);
     }
     const renderPageNumbers = pageNumbers.map((number, index) => {
+      const handlePageChange = () => this.setCurrentPage(index);
+
       if (
-        number === this.state.currentPage - 1 ||
         number === this.state.currentPage ||
-        number === this.state.currentPage + 1
+        number === this.state.currentPage + 1 ||
+        number === this.state.currentPage + 2
       ) {
         return (
           <button
-            className="btn btn-dark"
+            className="btn btn-dark mx-2"
             key={index}
-            id={number}
-            onClick={this.handlePageChange}
+            id={index}
+            onClick={handlePageChange}
           >
             {number}
           </button>
@@ -172,7 +166,7 @@ class UserList extends Component {
                 <button
                   className="btn btn-dark mx-1"
                   onClick={this.handlePreviousClick}
-                  aria-disabled={this.state.disabled}
+                  aria-disabled={this.state.disabledBack}
                 >
                   &laquo;
                 </button>
@@ -182,7 +176,7 @@ class UserList extends Component {
                 <button
                   className="btn btn-dark mx-1"
                   onClick={this.handleNextClick}
-                  aria-disabled={this.state.disabled}
+                  aria-disabled={this.state.disabledNext}
                 >
                   &raquo;
                 </button>
