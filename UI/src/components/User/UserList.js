@@ -111,13 +111,13 @@ class UserList extends Component {
       const handlePageChange = () => this.setCurrentPage(index);
 
       if (
-        number === this.state.currentPage - 2 ||
+        number === this.state.currentPage ||
         number === this.state.currentPage + 1 ||
         number === this.state.currentPage + 2
       ) {
         return (
           <button
-            className="btn btn-dark"
+            className="btn btn-dark mx-2"
             key={index}
             id={index}
             onClick={handlePageChange}
