@@ -9,27 +9,49 @@ class UserList extends Component {
   constructor() {
     super();
     this.state = {
-      allUsers: [],
       users: [],
       currentPage: 0,
-      usersPerPage: 10,
       disabled: true,
-      searchText: ""
+      searchText: "",
+      usersCount: 0,
+      numOfPages: 0
     };
   }
 
   componentDidMount() {
-    // this.getUsers();
-    this.getAllUsers();
+    this.getUsers();
+    // this.getAllUsers();
   }
+
+  getUsers = () => {
+    axios
+      .put(
+        `${ApiUrl}users/search/${this.state.currentPage}`,
+        this.state.searchText,
+        {
+          headers: { "Content-Type": "text/plain" }
+        }
+      )
+      .then(response => {
+        console.log("users", response.data);
+        this.setState({
+          users: response.data.users,
+          usersCount: response.data.usersCount,
+          numOfPages: Math.ceil(response.data.usersCount / 15)
+        });
+      })
+      .catch(error => {
+        alert("Nėra galimybės pateikti duomenų apie vartotojus.");
+      });
+  };
 
   // getUsers = () => {
   //   axios
   //     .get(`${ApiUrl}users/all?pageNo=${this.state.currentPage}&pageSize=10`)
   //     .then(response => {
-  //       console.log("users", response.data)
+  //       console.log("users", response.data);
   //       this.setState({
-  //         users: response.data,
+  //         users: response.data
   //       });
   //     })
   //     .catch(error => {
@@ -37,15 +59,15 @@ class UserList extends Component {
   //     });
   // };
 
-  getAllUsers = () => {
-    axios
-      .get(`${ApiUrl}users`)
-      .then(response => {
-        console.log("allUsers", response.data);
-        this.setState({ users: response.data });
-      })
-      .catch(error => {});
-  };
+  // getAllUsers = () => {
+  //   axios
+  //     .get(`${ApiUrl}users`)
+  //     .then(response => {
+  //       console.log("allUsers", response.data);
+  //       this.setState({ users: response.data });
+  //     })
+  //     .catch(error => {});
+  // };
 
   handlePageChange = event => {
     this.setState({
@@ -74,7 +96,6 @@ class UserList extends Component {
   };
 
   render() {
-    const { usersPerPage } = this.state;
     // const indexOfLastUser = currentPage * usersPerPage;
     // const indexOfFirstUser = indexOfLastUser - usersPerPage;
     // const currentUser = this.state.users.slice(indexOfFirstUser, indexOfLastUser);
@@ -91,11 +112,7 @@ class UserList extends Component {
       );
     });
     const pageNumbers = [];
-    for (
-      let i = 1;
-      i <= Math.ceil(this.state.allUsers.length / usersPerPage);
-      i++
-    ) {
+    for (let i = 1; i <= this.state.numOfPages; i++) {
       pageNumbers.push(i);
     }
     const renderPageNumbers = pageNumbers.map((number, index) => {

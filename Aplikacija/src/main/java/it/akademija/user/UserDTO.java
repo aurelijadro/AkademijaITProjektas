@@ -16,23 +16,12 @@ public class UserDTO {
 
 	private Set<GroupEntity> groups;
 
-	private Long count;
-
 	public UserDTO(Long id, String name, String surname, String username, Set<GroupEntity> groups) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
 		this.groups = groups;
-	}
-
-	public UserDTO(Long id, String name, String surname, String username, Set<GroupEntity> groups, Long count) {
-		this.id = id;
-		this.name = name;
-		this.surname = surname;
-		this.username = username;
-		this.groups = groups;
-		this.count = count;
 	}
 
 	public Long getId() {
@@ -45,14 +34,6 @@ public class UserDTO {
 
 	public String getName() {
 		return name;
-	}
-
-	public Long getCount() {
-		return count;
-	}
-
-	public void setCount(Long count) {
-		this.count = count;
 	}
 
 	public void setName(String name) {
