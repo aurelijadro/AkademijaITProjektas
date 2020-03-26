@@ -4,6 +4,7 @@ import UserComponent from "./UserComponent";
 import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
 import ApiUrl from "../../APIURL";
+import swal from "sweetalert";
 
 class UserList extends Component {
   constructor() {
@@ -20,11 +21,18 @@ class UserList extends Component {
 
   componentDidMount() {
     this.getUsers();
+<<<<<<< HEAD
+=======
     // this.getAllUsers();
+>>>>>>> 0f9c6073473caae9229f9a00c1f5c769a984ab91
   }
 
   getUsers = () => {
     axios
+<<<<<<< HEAD
+      .get(`${ApiUrl}users`)
+      .then(response => {
+=======
       .put(
         `${ApiUrl}users/search/${this.state.currentPage}`,
         this.state.searchText,
@@ -34,6 +42,7 @@ class UserList extends Component {
       )
       .then(response => {
         console.log("users", response.data);
+>>>>>>> 0f9c6073473caae9229f9a00c1f5c769a984ab91
         this.setState({
           users: response.data.users,
           usersCount: response.data.usersCount,
@@ -41,10 +50,27 @@ class UserList extends Component {
         });
       })
       .catch(error => {
-        alert("Nėra galimybės pateikti duomenų apie vartotojus.");
+        swal({
+          text: "Nėra galimybės pateikti duomenų apie vartotojus.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
       });
   };
 
+<<<<<<< HEAD
+  handlePageChange = (event) => {
+    this.setState({
+      currentPage: Number(event.target.id)
+    });
+    console.log(this.state.currentPage)
+  }
+=======
   // getUsers = () => {
   //   axios
   //     .get(`${ApiUrl}users/all?pageNo=${this.state.currentPage}&pageSize=10`)
@@ -75,6 +101,7 @@ class UserList extends Component {
     });
     console.log("current page", this.state.currentPage);
   };
+>>>>>>> 0f9c6073473caae9229f9a00c1f5c769a984ab91
 
   handlePreviousClick = e => {
     if (this.state.currentPage > 1) {
@@ -96,10 +123,18 @@ class UserList extends Component {
   };
 
   render() {
+<<<<<<< HEAD
+    const { currentPage, usersPerPage } = this.state;
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUser = this.state.users.slice(indexOfFirstUser, indexOfLastUser);
+    let user = currentUser.map((user, index) => {
+=======
     // const indexOfLastUser = currentPage * usersPerPage;
     // const indexOfFirstUser = indexOfLastUser - usersPerPage;
     // const currentUser = this.state.users.slice(indexOfFirstUser, indexOfLastUser);
     let user = this.state.users.map((user, index) => {
+>>>>>>> 0f9c6073473caae9229f9a00c1f5c769a984ab91
       return (
         <UserComponent
           key={user.id}
@@ -112,7 +147,11 @@ class UserList extends Component {
       );
     });
     const pageNumbers = [];
+<<<<<<< HEAD
+    for (let i = 1; i <= Math.ceil(this.state.users.length / usersPerPage); i++) {
+=======
     for (let i = 1; i <= this.state.numOfPages; i++) {
+>>>>>>> 0f9c6073473caae9229f9a00c1f5c769a984ab91
       pageNumbers.push(i);
     }
     const renderPageNumbers = pageNumbers.map((number, index) => {

@@ -22,6 +22,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import it.akademija.PagingData;
 import it.akademija.doctype.DoctypeEntity;
+import it.akademija.document.MainDocument;
 import it.akademija.group.GroupEntity;
 
 @RestController
@@ -154,10 +155,13 @@ public class UserController {
 		return userService.updateUser(id, newUser);
 	}
 
-	@RequestMapping(path = "search/{searchText}", method = RequestMethod.GET)
+	@RequestMapping(path = "search/{pageNum}", method = RequestMethod.PUT)
 	@ApiOperation(value = "Search for users", notes = "Returns found list of users")
-	public List<UserDTO> searchForUsers(@PathVariable String searchText) {
-		return userService.searchForUsers(searchText);
+	public UsersForPaging searchForUsers(@RequestBody(required = false) String searchText, @PathVariable int pageNum) {
+		if (searchText == null) {
+			searchText = "";
+		}
+		return userService.searchForUsersWithPaging(searchText, pageNum);
 	}
 
 }
