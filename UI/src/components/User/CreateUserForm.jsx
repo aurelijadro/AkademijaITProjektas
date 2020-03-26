@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import NavigationForAdmin from "../NavigationForAdmin";
 import ApiUrl from "../../APIURL";
+import swal from "sweetalert";
 
 class CreateUserForm extends Component {
   constructor() {
@@ -93,18 +94,35 @@ class CreateUserForm extends Component {
     axios
       .post(`${ApiUrl}users`, { name, surname, username, password, role })
       .then(result => {
-        alert(
-          "Jūs sėkmingai sukūrėte naują vartotoją: \n Vardas: " +
+        swal({
+          text:
+            "Jūs sėkmingai sukūrėte naują vartotoją: \n Vardas: " +
             this.state.name +
             "\n Pavardė: " +
             this.state.surname +
             "\n Vartotojo vardas: " +
-            this.state.username
-        );
+            this.state.username,
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
         this.props.history.push("/Gentoo/admin/users");
       })
       .catch(error => {
-        alert("Toks vartotojas jau egzistuoja.");
+        swal({
+          text: "Toks vartotojas jau egzistuoja.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
       });
   };
 
@@ -132,7 +150,7 @@ class CreateUserForm extends Component {
                     type="text"
                     className={`form-control ${
                       this.state.nameError ? "is-invalid" : ""
-                    }`}
+                      }`}
                     name="name"
                     value={name}
                     onChange={this.handleNameChange}
@@ -148,7 +166,7 @@ class CreateUserForm extends Component {
                     type="text"
                     className={`form-control ${
                       this.state.surnameError ? "is-invalid" : ""
-                    }`}
+                      }`}
                     name="surname"
                     value={surname}
                     onChange={this.handleSurnameChange}
@@ -166,7 +184,7 @@ class CreateUserForm extends Component {
                     type="text"
                     className={`form-control ${
                       this.state.usernameError ? "is-invalid" : ""
-                    }`}
+                      }`}
                     name="username"
                     value={username}
                     onChange={this.handleUsernameChange}
@@ -184,7 +202,7 @@ class CreateUserForm extends Component {
                     type="password"
                     className={`form-control ${
                       this.state.passwordError ? "is-invalid" : ""
-                    }`}
+                      }`}
                     name="password"
                     value={password}
                     onChange={this.handlePasswordChange}

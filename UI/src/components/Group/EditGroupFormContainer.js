@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import NavigationForAdmin from "../NavigationForAdmin";
 import ApiUrl from "../../APIURL";
+import swal from "sweetalert";
 
 class EditGroupFormContainer extends Component {
   constructor(props) {
@@ -26,7 +27,16 @@ class EditGroupFormContainer extends Component {
         this.setState(response.data);
       })
       .catch(error => {
-        alert("Nėra galimybės pateikti duomenų apie grupę.");
+        swal({
+          text: "Nėra galimybės pateikti duomenų apie grupę.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
       });
   };
 
@@ -58,11 +68,29 @@ class EditGroupFormContainer extends Component {
         title: this.state.title
       })
       .then(() => {
-        alert("Jūs sėkmingai pakeitėte grupės duomenis.");
+        swal({
+          text: "Jūs sėkmingai pakeitėte grupės duomenis.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
         this.props.history.push("/Gentoo/admin/groups");
       })
-      .catch(function(error) {
-        alert("Tokia grupė jau egzistuoja.");
+      .catch(function (error) {
+        swal({
+          text: "Tokia grupė jau egzistuoja.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
       });
   };
 
@@ -86,7 +114,7 @@ class EditGroupFormContainer extends Component {
                     type="text"
                     className={`form-control ${
                       this.state.titleError ? "is-invalid" : ""
-                    }`}
+                      }`}
                     name="title"
                     value={title}
                     onChange={this.handleTitleChange}

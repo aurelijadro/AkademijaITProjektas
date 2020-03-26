@@ -3,6 +3,7 @@ import axios from "axios";
 import { withRouter } from "react-router-dom";
 import { useMyData } from "../context";
 import ApiForLogin from "../ApiForLogin";
+import swal from "sweetalert";
 
 axios.defaults.withCredentials = true;
 const Login = withRouter(({ history, ...props }) => {
@@ -25,7 +26,16 @@ const Login = withRouter(({ history, ...props }) => {
         history.push("/Gentoo/" + role);
       })
       .catch(e => {
-        alert("Neteisingai suvesti duomenys. Bandykite dar kartą.");
+        swal({
+          text: "Neteisingai suvesti duomenys. Bandykite dar kartą.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
       });
     event.preventDefault();
   };

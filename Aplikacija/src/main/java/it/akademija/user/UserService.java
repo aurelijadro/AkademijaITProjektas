@@ -80,7 +80,8 @@ public class UserService implements UserDetailsService {
 	@Transactional
 	public UserDTO findById(Long id) {
 		User user = userRepository.findUserById(id);
-		return new UserDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername(), user.getGroups());
+		return new UserDTO(user.getId(), user.getName(), user.getSurname(), user.getUsername(), user.getRole(),
+				user.getGroups());
 	}
 
 	@Transactional

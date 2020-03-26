@@ -16,6 +16,17 @@ public class UserDTO {
 
 	private Set<GroupEntity> groups;
 
+	private String role;
+
+	public UserDTO(Long id, String name, String surname, String username, String role, Set<GroupEntity> groups) {
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.username = username;
+		this.groups = groups;
+		this.role = role;
+	}
+
 	public UserDTO(Long id, String name, String surname, String username, Set<GroupEntity> groups) {
 		this.id = id;
 		this.name = name;
@@ -62,6 +73,14 @@ public class UserDTO {
 
 	public void setGroups(Set<GroupEntity> groups) {
 		this.groups = groups;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 }

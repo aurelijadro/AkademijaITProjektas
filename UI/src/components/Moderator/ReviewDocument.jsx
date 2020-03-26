@@ -3,6 +3,7 @@ import ApiUrl from "../../APIURL";
 import Axios from "axios";
 import { withRouter } from "react-router-dom";
 import NavigationForUSer from "../NavigationForUser";
+import swal from "sweetalert";
 
 const ReviewDocument = withRouter(({ history, ...props }) => {
   const docId = props.match.params.docId;
@@ -13,7 +14,7 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
   const [denialReason, setDenialReason] = useState("");
   const [decide, setDecide] = useState("choose");
   const [denyError, setDenyError] = useState(
-    "Pateikite atmetimo priežastį (5-250 simbilių)"
+    "Pateikite atmetimo priežastį (5-250 simbolių)"
   );
   const [canDeny, setCanDeny] = useState(true);
 
@@ -53,7 +54,16 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
     Axios.post(
       `${ApiUrl}documents/${moderatorId}/${docId}/approvedStatusUpdate`
     )
-      .then(alert("Dokumentas sėkmingai patvirtintas"))
+      .then(swal({
+        text: "Dokumentas sėkmingai patvirtintas",
+        button: {
+          text: "OK",
+          value: true,
+          visible: true,
+          className: "btn btn-dark",
+          closeModal: true
+        }
+      }))
       .then(history.push("/Gentoo/user/moderate"));
   }
 
@@ -63,7 +73,16 @@ const ReviewDocument = withRouter(({ history, ...props }) => {
       denialReason,
       { headers: { "Content-Type": "text/plain" } }
     )
-      .then(alert("Dokumentas atmestas"))
+      .then(swal({
+        text: "Dokumentas atmestas",
+        button: {
+          text: "OK",
+          value: true,
+          visible: true,
+          className: "btn btn-dark",
+          closeModal: true
+        }
+      }))
       .then(history.push("/Gentoo/user/moderate"));
   }
 

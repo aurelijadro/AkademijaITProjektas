@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import NavigationForAdmin from "../NavigationForAdmin";
 import ApiUrl from "../../APIURL";
+import swal from "sweetalert";
 
 class EditFormContainer extends Component {
   constructor(props) {
@@ -31,7 +32,16 @@ class EditFormContainer extends Component {
         this.setState({ password: "" });
       })
       .catch(error => {
-        alert("Nėra galimybės pateikti duomenų apie vartotoją.");
+        swal({
+          text: "Nėra galimybės pateikti duomenų apie vartotoją.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
       });
   };
 
@@ -118,11 +128,29 @@ class EditFormContainer extends Component {
         role: this.state.role
       })
       .then(() => {
-        alert("Jūs sėkmingai pakeitėte vartotojo duomenis.");
+        swal({
+          text: "Jūs sėkmingai pakeitėte vartotojo duomenis.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
         this.props.history.push("/Gentoo/admin/users");
       })
       .catch(function (error) {
-        alert("Toks vartotojo vardas jau egzistuoja.");
+        swal({
+          text: "Toks vartotojo vardas jau egzistuoja.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
       });
   };
 

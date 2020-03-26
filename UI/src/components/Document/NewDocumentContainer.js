@@ -20,7 +20,8 @@ class NewDocumentContainer extends Component {
       id: "",
       files: [],
       file: null,
-      isModerator: false
+      isModerator: false,
+      summaryError: "",
     };
   }
 
@@ -39,7 +40,7 @@ class NewDocumentContainer extends Component {
               .get(`${ApiUrl}users/${this.state.userId}/ismoderator`)
               .then(resp => this.setState({ isModerator: resp.data }))
           )
-          .catch(error => {});
+          .catch(error => { });
       })
       .catch(error => {
         swal({
@@ -59,9 +60,25 @@ class NewDocumentContainer extends Component {
     this.setState({ doctypeItem: e.target.value });
   };
 
+  handleSummaryChange = e => {
+    this.setState({ summary: e.target.value }, () => {
+      this.validateSummary();
+    });
+  };
+
   onChange = event => {
     event.preventDefault();
     this.setState({ [event.target.name]: event.target.value });
+  };
+
+  validateSummary = () => {
+    const { summary } = this.state;
+    this.setState({
+      summaryError:
+        summary.length <= 254
+          ? null
+          : "Aprašymas negali būti ilgesnis nei 254 simboliai."
+    });
   };
 
   addNewDocument = e => {
@@ -97,7 +114,7 @@ class NewDocumentContainer extends Component {
             }
           });
         })
-        .catch(error => {});
+        .catch(error => { });
     } else {
       swal({
         text: "Pasirinkite dokumento tipą.",
@@ -141,7 +158,7 @@ class NewDocumentContainer extends Component {
                 .then(resp => {
                   this.setState({ files: resp.data });
                 })
-                .catch(error => {});
+                .catch(error => { });
             })
             .catch(error => {
               swal({
@@ -218,9 +235,9 @@ class NewDocumentContainer extends Component {
               }
             });
           })
-          .catch(error => {});
+          .catch(error => { });
       })
-      .catch(error => {});
+      .catch(error => { });
   };
 
   downloadFiles = e => {
@@ -256,7 +273,7 @@ class NewDocumentContainer extends Component {
         .then(response => {
           this.props.history.push(`/Gentoo/user`);
         })
-        .catch(error => {});
+        .catch(error => { });
     } else {
       swal({
         text: "Pridėkite bent vieną bylą.",
@@ -272,6 +289,7 @@ class NewDocumentContainer extends Component {
   };
 
   render() {
+    const { summary } = this.state;
     const doctypeItem = this.state.doctypes.map(doctype => (
       <option key={doctype.id} value={doctype.id}>
         {doctype.title}
@@ -313,18 +331,25 @@ class NewDocumentContainer extends Component {
                 <div className="form-group">
                   <label> Trumpas aprašymas </label>
                   <textarea
-                    className="form-control"
+                    className={`form-control ${
+                      this.state.summaryError ? "is-invalid" : ""
+                      }`}
                     name="summary"
-                    onChange={this.onChange}
+                    value={summary}
+                    onChange={this.handleSummaryChange}
+                    onBlur={this.validateSummary}
                     rows="3"
                   ></textarea>
+                  <div className="invalid-feedback">
+                    {this.state.summaryError}
+                  </div>
                 </div>
                 <div className="form-group">
                   <label>
                     Pasirinkite dokumento tipą:
                     <select onChange={this.handleDoctypesChange}>
                       <option value="Default">
-                        Pasirinkite dokumento tipą
+                        Dokumento tipas
                       </option>
                       {doctypeItem}
                     </select>

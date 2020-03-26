@@ -46,6 +46,25 @@ class DocTypeList extends Component {
     });
   };
 
+  handlePreviousClick = (e) => {
+    if (this.state.currentPage > 1) {
+      this.setState({
+        currentPage: this.state.currentPage - 1,
+        disabled: false
+      })
+    } else {
+      this.setState({ disabled: true })
+    }
+  }
+
+  handleNextClick = (e) => {
+    if (this.state.currentPage < this.state.users.length / 10) {
+      this.setState({ currentPage: this.state.currentPage + 1 })
+    } else {
+      this.setState({ disabled: true })
+    }
+  }
+
   render() {
     const { currentPage, doctypesPerPage } = this.state;
     const indexOfLastDoctype = currentPage * doctypesPerPage;
@@ -125,7 +144,13 @@ class DocTypeList extends Component {
           </table>
           <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
+              <li className="page-item">
+                <button className="btn btn-dark mx-1" onClick={this.handlePreviousClick} aria-disabled={this.state.disabled}>&laquo;</button>
+              </li>
               <li className="page-item">{renderPageNumbers}</li>
+              <li className="page-item">
+                <button className="btn btn-dark mx-1" onClick={this.handleNextClick} aria-disabled={this.state.disabled}>&raquo;</button>
+              </li>
             </ul>
           </nav>
         </div>
