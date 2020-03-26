@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import NavigationForUser from "./NavigationForUser";
 import axios from "axios";
 import ApiUrl from "../APIURL";
-
+import swal from "sweetalert";
 import CreatedDocuments from "../userComponents/AllUserDocumentsOverview";
 
 class UserDashboard extends Component {
@@ -38,7 +38,16 @@ class UserDashboard extends Component {
         });
       })
       .catch(error => {
-        alert("Nėra dokumentų, kuriuos gaite atsisiųsti.");
+        swal({
+          text: "Nėra dokumentų, kuriuos gaite atsisiųsti.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
       });
   };
 

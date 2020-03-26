@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ApiUrl from "../APIURL.jsx";
 import { Redirect, Link } from "react-router-dom";
+import swal from "sweetalert";
 
 const CreatedDocuments = props => {
   const userId = props.id;
@@ -20,7 +21,7 @@ const CreatedDocuments = props => {
     `).then(setSubmittedDocuments);
   };
 
-  useEffect(function() {
+  useEffect(function () {
     updateCachedData();
     // const timer = setInterval(updateCachedData, 2000);
     // return () => clearInterval(timer);
@@ -57,15 +58,31 @@ const CreatedDocuments = props => {
               )
             );
           } else {
-            alert(
-              "Norit pateikti dokumentą būtina prikabinti bent vieną pdf bylą"
-            );
+            swal({
+              text:
+                "Norit pateikti dokumentą būtina prikabinti bent vieną pdf bylą",
+              button: {
+                text: "OK",
+                value: true,
+                visible: true,
+                className: "btn btn-dark",
+                closeModal: true
+              }
+            });
           }
         })
         .catch(error =>
-          alert(
-            "Norit pateikti dokumentą būtina prikabinti bent vieną pdf bylą"
-          )
+          swal({
+            text:
+              "Norit pateikti dokumentą būtina prikabinti bent vieną pdf bylą",
+            button: {
+              text: "OK",
+              value: true,
+              visible: true,
+              className: "btn btn-dark",
+              closeModal: true
+            }
+          })
         );
     }
     function deleteDocumet() {
@@ -102,13 +119,13 @@ const CreatedDocuments = props => {
       <li
         className={`list-group-item ${
           document.documentStatus === "Atmestas" ? "list-group-item-danger" : ""
-        }
+          }
        ${document.documentStatus === "Pateiktas" ? "list-group-item-dark" : ""} 
        ${
-         document.documentStatus === "Patvirtintas"
-           ? "list-group-item-success"
-           : ""
-       }`}
+          document.documentStatus === "Patvirtintas"
+            ? "list-group-item-success"
+            : ""
+          }`}
         key={document.id}
       >
         <div className="row my-1">

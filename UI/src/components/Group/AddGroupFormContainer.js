@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import AddGroupFormComponent from "./AddGroupFormComponent";
 import ApiUrl from "../../APIURL";
+import swal from "@sweetalert/with-react";
 
 class AddGroupFormContainer extends Component {
   constructor() {
@@ -22,11 +23,29 @@ class AddGroupFormContainer extends Component {
     axios
       .post(`${ApiUrl}groups`, data)
       .then(response => {
-        alert("Jūs sėkmingai sukūrėte grupę: " + this.state.title);
+        swal({
+          text: "Jūs sėkmingai sukūrėte grupę: " + this.state.title,
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
         this.props.history.push("/Gentoo/admin/groups");
       })
       .catch(error => {
-        alert("Grupės sukurti nepavyko.");
+        swal({
+          text: "Grupės sukurti nepavyko.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
       });
     event.preventDefault();
   };

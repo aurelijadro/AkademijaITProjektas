@@ -4,12 +4,12 @@ import UserComponent from "./UserComponent";
 import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
 import ApiUrl from "../../APIURL";
+import swal from "sweetalert";
 
 class UserList extends Component {
   constructor() {
     super();
     this.state = {
-      allUsers: [],
       users: [],
       currentPage: 0,
       usersPerPage: 10,
@@ -19,38 +19,35 @@ class UserList extends Component {
 
   componentDidMount() {
     this.getUsers();
-    this.getAllUsers();
   }
 
   getUsers = () => {
     axios
-      .get(`${ApiUrl}users/all?pageNo=${this.state.currentPage}&pageSize=10`)
+      .get(`${ApiUrl}users`)
       .then(response => {
-        console.log("users", response.data)
         this.setState({
           users: response.data,
         });
       })
       .catch(error => {
-        alert("Nėra galimybės pateikti duomenų apie vartotojus.");
+        swal({
+          text: "Nėra galimybės pateikti duomenų apie vartotojus.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
       });
-  };
-
-  getAllUsers = () => {
-    axios
-      .get(`${ApiUrl}users`)
-      .then(response => {
-        console.log("allUsers", response.data)
-        this.setState({ allUsers: response.data });
-      })
-      .catch(error => { });
   };
 
   handlePageChange = (event) => {
     this.setState({
       currentPage: Number(event.target.id)
     });
-    console.log("current page", this.state.currentPage)
+    console.log(this.state.currentPage)
   }
 
   handlePreviousClick = (e) => {
@@ -73,11 +70,11 @@ class UserList extends Component {
   }
 
   render() {
-    const { usersPerPage } = this.state;
-    // const indexOfLastUser = currentPage * usersPerPage;
-    // const indexOfFirstUser = indexOfLastUser - usersPerPage;
-    // const currentUser = this.state.users.slice(indexOfFirstUser, indexOfLastUser);
-    let user = this.state.users.map((user, index) => {
+    const { currentPage, usersPerPage } = this.state;
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUser = this.state.users.slice(indexOfFirstUser, indexOfLastUser);
+    let user = currentUser.map((user, index) => {
       return (
         <UserComponent
           key={user.id}
@@ -90,7 +87,7 @@ class UserList extends Component {
       );
     });
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(this.state.allUsers.length / usersPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(this.state.users.length / usersPerPage); i++) {
       pageNumbers.push(i);
     }
     const renderPageNumbers = pageNumbers.map((number, index) => {

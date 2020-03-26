@@ -4,6 +4,7 @@ import GroupComponent from "./GroupComponent";
 import { Link } from "react-router-dom";
 import NavigationForAdmin from "../NavigationForAdmin";
 import ApiUrl from "../../APIURL";
+import swal from "sweetalert";
 
 class GroupList extends Component {
   constructor() {
@@ -26,7 +27,16 @@ class GroupList extends Component {
         this.setState({ groups: response.data });
       })
       .catch(error => {
-        alert("Nėra galimybės pateikti duomenų apie grupes.");
+        swal({
+          text: "Nėra galimybės pateikti duomenų apie grupes.",
+          button: {
+            text: "OK",
+            value: true,
+            visible: true,
+            className: "btn btn-dark",
+            closeModal: true
+          }
+        });
       });
   };
 
@@ -34,6 +44,25 @@ class GroupList extends Component {
     this.setState({
       currentPage: Number(event.target.id)
     });
+  }
+
+  handlePreviousClick = (e) => {
+    if (this.state.currentPage > 1) {
+      this.setState({
+        currentPage: this.state.currentPage - 1,
+        disabled: false
+      })
+    } else {
+      this.setState({ disabled: true })
+    }
+  }
+
+  handleNextClick = (e) => {
+    if (this.state.currentPage < this.state.users.length / 10) {
+      this.setState({ currentPage: this.state.currentPage + 1 })
+    } else {
+      this.setState({ disabled: true })
+    }
   }
 
   render() {
@@ -102,7 +131,13 @@ class GroupList extends Component {
           <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
               <li className="page-item">
+                <button className="btn btn-dark mx-1" onClick={this.handlePreviousClick} aria-disabled={this.state.disabled}>&laquo;</button>
+              </li>
+              <li className="page-item">
                 {renderPageNumbers}
+              </li>
+              <li className="page-item">
+                <button className="btn btn-dark mx-1" onClick={this.handleNextClick} aria-disabled={this.state.disabled}>&raquo;</button>
               </li>
             </ul>
           </nav>
