@@ -20,7 +20,6 @@ class UserList extends Component {
 
   componentDidMount() {
     this.getUsers();
-    // this.getAllUsers();
   }
 
   getUsers = () => {
@@ -45,39 +44,23 @@ class UserList extends Component {
       });
   };
 
-  // getUsers = () => {
-  //   axios
-  //     .get(`${ApiUrl}users/all?pageNo=${this.state.currentPage}&pageSize=10`)
-  //     .then(response => {
-  //       console.log("users", response.data);
-  //       this.setState({
-  //         users: response.data
-  //       });
-  //     })
-  //     .catch(error => {
-  //       alert("Nėra galimybės pateikti duomenų apie vartotojus.");
-  //     });
-  // };
-
-  // getAllUsers = () => {
-  //   axios
-  //     .get(`${ApiUrl}users`)
-  //     .then(response => {
-  //       console.log("allUsers", response.data);
-  //       this.setState({ users: response.data });
-  //     })
-  //     .catch(error => {});
-  // };
-
-  handlePageChange = event => {
-    this.setState({
-      currentPage: Number(event.target.id)
-    });
-    console.log("current page", this.state.currentPage);
+  setCurrentPage = num => {
+    console.log("num in set: ", num);
+    console.log("set: ", this.setState({ currentPage: num }));
+    this.setState({ currentPage: num }, () => this.getUsers());
   };
 
+  // handlePageChange = event => {
+  //   event.preventDefault();
+  //   console.log("event target id: ", event.target.id);
+  //   this.setState({
+  //     currentPage: Number(event.target.id)
+  //   });
+  //   console.log("current page", this.state.currentPage);
+  // };
+
   handlePreviousClick = e => {
-    if (this.state.currentPage > 1) {
+    if (this.state.currentPage > 0) {
       this.setState({
         currentPage: this.state.currentPage - 1,
         disabled: false
@@ -96,10 +79,7 @@ class UserList extends Component {
   };
 
   render() {
-    // const indexOfLastUser = currentPage * usersPerPage;
-    // const indexOfFirstUser = indexOfLastUser - usersPerPage;
-    // const currentUser = this.state.users.slice(indexOfFirstUser, indexOfLastUser);
-    let user = this.state.users.map((user, index) => {
+    const user = this.state.users.map((user, index) => {
       return (
         <UserComponent
           key={user.id}
@@ -116,17 +96,24 @@ class UserList extends Component {
       pageNumbers.push(i);
     }
     const renderPageNumbers = pageNumbers.map((number, index) => {
+      console.log("page numbers ", pageNumbers);
+      const handlePageChange = () => {
+        console.log("clicked page num: ", number);
+        this.setCurrentPage(index);
+        console.log("current page", this.state.currentPage);
+      };
+
       if (
-        number === this.state.currentPage - 1 ||
-        number === this.state.currentPage ||
-        number === this.state.currentPage + 1
+        number === this.state.currentPage - 2 ||
+        number === this.state.currentPage + 1 ||
+        number === this.state.currentPage + 2
       ) {
         return (
           <button
             className="btn btn-dark"
             key={index}
-            id={number}
-            onClick={this.handlePageChange}
+            id={index}
+            onClick={handlePageChange}
           >
             {number}
           </button>
