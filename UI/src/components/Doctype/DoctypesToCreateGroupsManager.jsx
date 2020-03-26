@@ -24,7 +24,7 @@ const DoctypesToCreateGroupsManager = props => {
     `).then(setNonDoctypeGroups);
   };
 
-  useEffect(function() {
+  useEffect(function () {
     updateCachedData();
     // const timer = setInterval(updateCachedData, 2000);
     // return () => clearInterval(timer);
@@ -36,7 +36,7 @@ const DoctypesToCreateGroupsManager = props => {
       axios
         .get(`${ApiUrl}doctypes/${doctypeId}`)
         .then(resp => setSelectedDoctype(resp.data))
-        .catch(e => console.log(e));
+        .catch(e => { });
     },
     [doctypeId]
   );

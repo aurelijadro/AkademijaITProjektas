@@ -50,13 +50,11 @@ class UserList extends Component {
   };
 
   handleSearchTextChange = e => {
-    console.log(this.state.searchText);
     this.setState({ searchText: e.target.value });
   };
 
   search = e => {
     e.preventDefault();
-    console.log(this.state.searchText);
     this.getUsers();
   };
 

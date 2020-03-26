@@ -26,7 +26,7 @@ const GroupDocsToModerateManager = props => {
     );
   };
 
-  useEffect(function() {
+  useEffect(function () {
     updateCachedData();
     // const timer = setInterval(updateCachedData, 2000);
     // return () => clearInterval(timer);
@@ -38,7 +38,7 @@ const GroupDocsToModerateManager = props => {
       axios
         .get(`${ApiUrl}groups/${groupId}`)
         .then(resp => setSelectedGroup(resp.data))
-        .catch(e => console.log(e));
+        .catch(e => { });
     },
     [groupId]
   );
