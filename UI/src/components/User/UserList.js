@@ -37,7 +37,7 @@ class UserList extends Component {
         this.setState({
           users: response.data.users,
           usersCount: response.data.usersCount,
-          numOfPages: Math.ceil(response.data.usersCount / 15)
+          numOfPages: Math.ceil(response.data.usersCount / 12)
         });
       })
       .catch(error => {
@@ -47,6 +47,17 @@ class UserList extends Component {
 
   setCurrentPage = num => {
     this.setState({ currentPage: num }, () => this.getUsers());
+  };
+
+  handleSearchTextChange = e => {
+    console.log(this.state.searchText);
+    this.setState({ searchText: e.target.value });
+  };
+
+  search = e => {
+    e.preventDefault();
+    console.log(this.state.searchText);
+    this.getUsers();
   };
 
   handlePreviousClick = e => {
@@ -139,15 +150,37 @@ class UserList extends Component {
           </div>
         </div>
         <div className="container">
-          <Link to="/Gentoo/admin/users/add">
-            <button
-              type="button"
-              className="btn btn-dark my-4"
-              onClick={this.props.onAddNew}
-            >
-              Pridėti naują vartotoją
-            </button>
-          </Link>
+          <div className="row my-4">
+            <div className="col-8">
+              <Link to="/Gentoo/admin/users/add">
+                <button
+                  type="button"
+                  className="btn btn-dark "
+                  onClick={this.props.onAddNew}
+                >
+                  Pridėti naują vartotoją
+                </button>
+              </Link>
+            </div>
+            <div className="col-4">
+              <form onSubmit={this.search}>
+                <div className="input-group mb-3">
+                  <input
+                    type="text"
+                    className="form-control"
+                    onChange={this.handleSearchTextChange}
+                    placeholder="Paieška"
+                  />
+                  <div className="input-group-append">
+                    <button className="btn btn-dark" type="submit">
+                      Ieškoti
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
           <table className=" text-center table table-striped">
             <thead>
               <tr>
